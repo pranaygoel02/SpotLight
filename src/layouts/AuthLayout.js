@@ -3,6 +3,7 @@ import { Link, Outlet } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 import {IoArrowBack}   from 'react-icons/io5'
 import {MdOutlineArrowBack}  from 'react-icons/md'
+import BackBtn from '../components/BackBtn'
 
 function AuthLayout() {
     const {pathname} = useLocation();
@@ -15,12 +16,7 @@ function AuthLayout() {
   return (
     <div className='p-4 min-h-screen grid grid-cols-2 text-black'>
         <div>
-        {!token && <Link to='/' className='flex gap-1 font-bold items-center group  w-max rounded-[18px] transition-all duration-500'>
-            <MdOutlineArrowBack
-            className='bg-white rounded-full group-hover:bg-white group-hover:p-1 group-hover:text-black'
-            size={24}/>
-            <p className='text-white relative text-transparent group-hover:text-black translate-x-16 group-hover:translate-x-0 group-hover:block transition-all'>Go back</p>
-        </Link>}
+        {!token && <BackBtn to={'/'} />}
         <div className='flex flex-col h-full justify-center p-16 gap-4'>
             <h2 className='text-3xl font-bold'>{pageTitle}</h2>
             <Outlet/>
