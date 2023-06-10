@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -11,100 +11,110 @@ body,
 .app {
   height: 100%;
   width: 100%;
-  font-family: 'Space Grotesk', sans-serif;
-  @apply bg-gray-100
+  font-family: "Space Grotesk", sans-serif;
+  @apply bg-gray-100;
 }
 a:hover {
   @apply transition duration-200;
-  @apply text-accent
+  @apply text-accent;
 }
 
 :root {
-    --swiper-pagination-color: #F7A427;
+  --swiper-pagination-color: #f7a427;
 }
 
 .swiper-pagination-bullet-active {
-    outline:  1px solid #F7A427;
-    outline-offset: 3px;
+  outline: 1px solid #f7a427;
+  outline-offset: 3px;
 }
 
-.active {
-    @apply text-accent
+* {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
-*{
-    box-sizing: border-box;
-    scroll-behavior: smooth;
+::-webkit-scrollbar {
+  width: 0.4rem;
 }
 
-::-webkit-scrollbar{
-    width: 0.4rem;
+::-webkit-scrollbar-thumb {
+  @apply bg-secondary;
+  border-radius: 10px;
 }
 
-::-webkit-scrollbar-thumb{
-    @apply bg-secondary;
-    border-radius: 10px;
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
-::-webkit-scrollbar-track{
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
-
-
-.container{
-    @apply px-6 sm:px-12 md:px-20 lg:px-24 max-w-7xl mx-auto;
+.container {
+  @apply px-6 sm:px-12 md:px-20 lg:px-24 max-w-7xl mx-auto;
 }
 
 .swiper {
-    padding-inline: 14% !important;
-    padding-block: 3rem !important;
+  padding-inline: 14% !important;
+  padding-block: 3rem !important;
 }
 
 .testimonial-slider {
-    padding-inline: 0 !important;
+  padding-inline: 0 !important;
 }
 
-
 .testimonial-title {
-    position: relative;
-    z-index: 10 !important; 
-    @apply p-8 px-6 lg:px-32;
+  position: relative;
+  z-index: 10 !important;
+  @apply p-8 px-6 lg:px-32;
 }
 
 .testimonial-title::after {
-    content: open-quote;
-    position: absolute;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    isolation: isolate;
-    font-size: 13rem;
-    z-index: -1;
-    @apply text-secondary opacity-20 -top-16 md:top-0 left-0
+  content: open-quote;
+  position: absolute;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  isolation: isolate;
+  font-size: 13rem;
+  z-index: -1;
+  @apply text-secondary opacity-20 -top-16 md:top-0 left-0;
 }
 
 @media screen and (max-width: 1024px) {
-    .swiper {
-        padding-inline: 5rem !important;
-    }
-    .testimonial-slider {
-        padding-inline: 0 !important;
-    }
+  .swiper {
+    padding-inline: 5rem !important;
+  }
+  .testimonial-slider {
+    padding-inline: 0 !important;
+  }
 }
 
-@media screen and (max-width: 820px){
-    .swiper {
-        padding-inline: 2rem !important;
-    }
-    .testimonial-slider {
-        padding-inline: 0 !important;
-    }
+@media screen and (max-width: 820px) {
+  .swiper {
+    padding-inline: 2rem !important;
+  }
+  .testimonial-slider {
+    padding-inline: 0 !important;
+  }
 }
 
-@media screen and (max-width: 640px){
-    .swiper {
-        padding-inline: 1rem !important;
-    }
-    .testimonial-slider {
-        padding-inline: 0 !important;
-    }
+@media screen and (max-width: 640px) {
+  .swiper {
+    padding-inline: 1rem !important;
+  }
+  .testimonial-slider {
+    padding-inline: 0 !important;
+  }
+}
+
+.active {
+  @apply text-secondary;
+}
+
+.sidebar-link {
+  @apply p-2 px-4 my-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900 focus:outline-none focus:bg-gray-200 focus:text-gray-900 active:bg-gray-200 active:text-gray-900 transition duration-150 ease-in-out;
+}
+
+.primary-btn {
+  @apply p-2 px-4 my-2 rounded-md text-sm font-medium text-white bg-black hover:shadow-md focus:outline-none  inline-flex items-center gap-2
+}
+
+.page-title {
+    @apply text-2xl font-bold;
 }

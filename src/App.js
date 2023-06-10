@@ -15,6 +15,7 @@ import Otp from "./pages/landing/Otp";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Error from "./pages/Error";
+import Create from "./pages/dashboard/Create";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         </Route>
         <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
           <Route path="" element={<Dashboard />} />
+          <Route path="create" element={<Create />} />
           <Route path="account" element={<Account />} />
           <Route path="scrum" element={<Scrum />} />
         </Route>
