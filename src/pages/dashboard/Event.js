@@ -1,18 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GetEventLogic from "../../Logic/EventsLogic/getEvents";
 import { Link } from "react-router-dom";
-import { MdComputer, MdDelete, MdEdit } from "react-icons/md";
+import { MdComputer, MdDelete, MdEdit, MdInsertInvitation } from "react-icons/md";
 import { ColorExtractor } from "react-color-extractor";
-import { IoCopy, IoLocation, IoWalletOutline } from "react-icons/io5";
+
+import CreateMembershipLogic from "../../Logic/Membership/CreateMembership.logic";
+
+import {
+  IoClose,
+  IoCopy,
+  IoLocation,
+  IoSearch,
+  IoWalletOutline,
+} from "react-icons/io5";
 import { toast } from "react-hot-toast";
 import { Databases, Teams } from "appwrite";
 import client from "../../appwrite.config";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading";
+import GetUsersLogic from "../../Logic/UserLogic.js/GetUsers.logic";
 
 function Event() {
   const { loading, error, events, id } = GetEventLogic();
   console.log(events);
+
+  const {
+    users,
+    toggleShowUsers,
+    showUsers,
+    loading: fetchingUsers,
+    filterUsers,
+    filteredUsers,
+  } = GetUsersLogic();
 
   const [colors, setColors] = useState([]);
 
@@ -48,7 +67,7 @@ function Event() {
     try {
       const teams = new Teams(client);
       const database = new Databases(client);
-      const teamResponse = await teams.delete(events?.teamId)
+      const teamResponse = await teams.delete(events?.teamId);
       console.log(teamResponse);
       const response = await database.deleteDocument(
         process.env.REACT_APP_DATABASE_ID,
@@ -66,7 +85,7 @@ function Event() {
     e.preventDefault();
     navigator.clipboard.writeText(events?.teamId);
     toast.success("Invitation ID copied to clipboard");
-  }
+  };
 
   const deleteEventToast = (e) => {
     e.preventDefault();
@@ -135,6 +154,14 @@ function Event() {
     ));
   };
 
+  useEffect(() => {
+    client.subscribe("teams", (response) => {
+      console.log('Team RT: ', response);
+    });
+  })
+
+  const { createMembership } = CreateMembershipLogic();
+
   if (loading) return <Loading />;
 
   if (error) return <p>{error}</p>;
@@ -143,20 +170,24 @@ function Event() {
     !loading &&
     events && (
       <div
-        className="w-full"
+        className="w-full grid md:grid-cols-4 lg:grid-cols-5 gap-4"
         style={{
           color: `rgb(${colors[5]?.join(",")})`,
         }}
       >
-        <section className="py-4 grid grid-cols-1 md:gid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="relative h-full col-span-2">
-            <div className="absolute top-4 left-4 inline-flex gap-2">
+        <section
+          className={`py-4 ${
+            showUsers ? "md:col-span-2 lg:col-span-4" : "md:col-span-4 lg:col-span-5"
+          } grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 transition-all`}
+        >
+          <div className="relative h-full  lg:col-span-2">
+            <div className="absolute top-4 left-4 inline-flex gap-2 flex-wrap">
               <Link
                 to={`/dashboard/create?id=${events?.$id}`}
                 className="shadow-md primary-btn group overflow-hidden transition-all"
               >
                 <MdEdit />
-                <p className="transition-all translate-x-[0px]  group-hover:translate-x-0">
+                <p className="transition-all translate-x-[0px] hidden lg:block group-hover:translate-x-0">
                   Edit Event
                 </p>
               </Link>
@@ -165,17 +196,26 @@ function Event() {
                 className="shadow-md primary-btn group overflow-hidden transition-all"
               >
                 <MdDelete />
-                <p className="transition-all translate-x-[0px]  group-hover:translate-x-0">
+                <p className="transition-all translate-x-[0px]  hidden lg:block group-hover:translate-x-0">
                   Delete Event
                 </p>
               </button>
               <button
                 onClick={copyTeamId}
-                className="shadow-md primary-btn group overflow-hidden transition-all ml-auto"
+                className="shadow-md primary-btn group overflow-hidden transition-all"
               >
                 <IoCopy />
-                <p className="transition-all translate-x-[0px]  group-hover:translate-x-0">
+                <p className="transition-all translate-x-[0px] hidden lg:block  group-hover:translate-x-0">
                   Copy Invite ID
+                </p>
+              </button>
+              <button
+                onClick={toggleShowUsers}
+                className="shadow-md primary-btn group overflow-hidden transition-all"
+              >
+                <MdInsertInvitation />
+                <p className="transition-all translate-x-[0px] hidden lg:block group-hover:translate-x-0">
+                  Invite Users
                 </p>
               </button>
             </div>
@@ -221,7 +261,8 @@ function Event() {
                 </h2>
               )}
               <h2 className="text-lg inline-flex items-center gap-2">
-                <IoWalletOutline /> {events?.price > 0 ? `Rs. ${events?.price}`: 'Free'}
+                <IoWalletOutline />{" "}
+                {events?.price > 0 ? `Rs. ${events?.price}` : "Free"}
               </h2>
             </div>
           </div>
@@ -237,6 +278,80 @@ function Event() {
             </p>
           </div>
         </section>
+        {showUsers && (
+          <div className="flex flex-col h-full gap-2 p-4 border-l border-neutral-300 bg-gray-100 shadow lg:shadow-none fixed top-0 right-0 overflow-auto">
+            <button
+              onClick={toggleShowUsers}
+              className="absolute top-6 right-4 z-10"
+            >
+              <IoClose />
+            </button>
+            <div className="w-full space-y-4">
+              <p className="page-title">Search Users</p>
+              <div className="w-full px-3 rounded-[18px] bg-neutral-200 outline outline-1 outline-neutral-200 flex items-center justify-between">
+                <input
+                  onChange={filterUsers}
+                  type="text"
+                  placeholder="Search name or email"
+                  className="w-full bg-transparent py-2 outline-none"
+                />
+                <IoSearch />
+              </div>
+            </div>
+            {fetchingUsers ? (
+              <Loading />
+            ) : (
+              <div className="flex flex-col gap-2 overflow-auto">
+                {(filteredUsers ?? users)?.map((u) => (
+                  <div
+                    key={u.$id}
+                    className="w-full px-3 rounded-[18px] border-b border-neutral-200  flex items-center justify-between"
+                  >
+                    <p
+                      className="font-bold p-2 rounded-full flex aspect-square text-center items-center justify-center w-10 outline outline-1 outline-neutral-300"
+                      style={{
+                        backgroundColor: `rgb(${colors[
+                          Math.floor(Math.random() * 5) + 3
+                        ]?.join(",")})`,
+                        color: `rgb(${colors[
+                          Math.floor(Math.random() * 2) + 1
+                        ]?.join(",")})`,
+                      }}
+                    >
+                      {u.name.charAt(0)}
+                    </p>
+                    <p className="text-sm text-left">{u.name}</p>
+                    <button
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        try {
+                          const res = await createMembership({
+                            eventId: id,
+                            teamId: events?.teamId,
+                            userId: u.userId,
+                            name: u.name,
+                            email: u.email,
+                          });
+                          console.log(res);
+                          toast.success(
+                            `${u.name} has been invited to the event`
+                          );
+                        } catch (err) {
+                          console.log(err);
+                          toast.error(err.message);
+                        } finally {
+                        }
+                      }}
+                      className="sidebar-link focus:primary-btn"
+                    >
+                      Invite
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     )
   );

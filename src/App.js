@@ -18,6 +18,7 @@ import Error from "./pages/Error";
 import Create from "./pages/dashboard/Create";
 import Events from "./pages/dashboard/Events";
 import Event from "./pages/dashboard/Event";
+import AcceptInvite from "./pages/AcceptInvite";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="account" element={<Account />} />
           <Route path="scrum" element={<Scrum />} />
         </Route>
+        <Route path="/accept-invite/:eventId" element={<AcceptInvite />} />
       </Routes>
     </Router>
     </>
