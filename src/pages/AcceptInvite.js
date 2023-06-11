@@ -67,7 +67,7 @@ function AcceptInvite() {
       navigate("/");
     } catch (err) {
       console.log(err);
-      toast.error("Something went wrong!");
+      toast.error(err.message ?? err);
     } finally {
       setAccepting((prev) => false);
     }
@@ -84,7 +84,7 @@ function AcceptInvite() {
       navigate("/");
     } catch (err) {
       console.log(err);
-      toast.error("Something went wrong!");
+      toast.error(err.message ?? err);
     } finally {
       setAccepting((prev) => false);
     }
