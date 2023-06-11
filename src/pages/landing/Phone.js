@@ -21,6 +21,7 @@ function Phone() {
                       </p>
                     </div>
                   }
+                  show={true}
                 {...input}/>
             ))
         }

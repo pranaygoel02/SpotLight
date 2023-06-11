@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import client from "../../appwrite.config";
-import { Databases, Storage, ID } from "appwrite";
+import { Databases, Storage, ID, Teams } from "appwrite";
 import { categories } from "./categories";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
@@ -27,8 +27,8 @@ function CreateEventLogic() {
   const [longitude, setLongitude] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [maxParticipants, setMaxParticipants] = useState("");
-  const [price, setPrice] = useState("");
+  const [maxParticipants, setMaxParticipants] = useState(null);
+  const [price, setPrice] = useState(null);
   const [category, setCategory] = useState("");
   const [medium, setMedium] = useState("offline");
   const [meetLink, setMeetLink] = useState("");
@@ -73,7 +73,7 @@ function CreateEventLogic() {
         meet,
         privacy,
         image,
-        imageId
+        imageId,
       } = response;
       setFetchedDoc((prev) => response);
       setTitle((prev) => title);
@@ -102,24 +102,35 @@ function CreateEventLogic() {
   }, [id]);
 
   useEffect(() => {
-    if(id) getEventById();
+    if (id) getEventById();
   }, [getEventById]);
 
-
   const getUpdatedValues = (value) => {
-    const updatedObj = {}  
+    const updatedObj = {};
     if (value.title !== fetchedDoc.title) {
       updatedObj.title = title;
     }
     if (value.description !== fetchedDoc.description) {
       updatedObj.description = description;
     }
-    console.log(new Date(value.startDate).toUTCString() === new Date(fetchedDoc.startDate.split('+')[0]).toUTCString());
-    if (new Date(value.startDate).toUTCString() !== new Date(fetchedDoc.startDate.split('+')[0]).toUTCString()) {
+    console.log(
+      new Date(value.startDate).toUTCString() ===
+        new Date(fetchedDoc.startDate.split("+")[0]).toUTCString()
+    );
+    if (
+      new Date(value.startDate).toUTCString() !==
+      new Date(fetchedDoc.startDate.split("+")[0]).toUTCString()
+    ) {
       updatedObj.startDate = startDate;
     }
-    console.log(new Date(value.endDate).toUTCString() === new Date(fetchedDoc.endDate.split('+')[0]).toUTCString());
-    if (new Date(value.endDate).toUTCString() !== new Date(fetchedDoc.endDate.split('+')[0]).toUTCString()) {
+    console.log(
+      new Date(value.endDate).toUTCString() ===
+        new Date(fetchedDoc.endDate.split("+")[0]).toUTCString()
+    );
+    if (
+      new Date(value.endDate).toUTCString() !==
+      new Date(fetchedDoc.endDate.split("+")[0]).toUTCString()
+    ) {
       updatedObj.endDate = endDate;
     }
     if (value.maxParticipants !== fetchedDoc.maxParticipants) {
@@ -144,8 +155,7 @@ function CreateEventLogic() {
     updatedObj.location = value.location;
     updatedObj.meet = value.meet;
     return updatedObj;
-  }
-
+  };
 
   const handleCreateEvent = async (e) => {
     e.preventDefault();
@@ -212,11 +222,13 @@ function CreateEventLogic() {
         let uploadedFile, filePreviewUrl;
         const storage = new Storage(client);
         if (typeof image !== "string") {
-          const deletedFile = await storage.deleteFile(
-            process.env.REACT_APP_IMAGES_BUCKET_ID,
-            fetchedDoc.imageId
-          );
-          console.log(deletedFile);
+          if (fetchedDoc?.imageId) {
+            const deletedFile = await storage.deleteFile(
+              process.env.REACT_APP_IMAGES_BUCKET_ID,
+              fetchedDoc.imageId
+            );
+            console.log(deletedFile);
+          }
           uploadedFile = await storage.createFile(
             process.env.REACT_APP_IMAGES_BUCKET_ID,
             ID.unique(),
@@ -228,16 +240,14 @@ function CreateEventLogic() {
             uploadedFile.$id
           );
           console.log(filePreviewUrl);
-        }
-        else if(image === null) {
+        } else if (image === null) {
           const deletedFile = await storage.deleteFile(
             process.env.REACT_APP_IMAGES_BUCKET_ID,
             fetchedDoc.imageId
           );
           console.log(deletedFile);
           filePreviewUrl = null;
-        }
-        else {
+        } else {
           filePreviewUrl = image;
         }
         const value = {
@@ -247,28 +257,43 @@ function CreateEventLogic() {
           startDate,
           endDate,
           category,
-          maxParticipants,
-          location: medium === 'online' ? [] : [String(location), String(latitude), String(longitude)],
-          meet: medium === 'offline' ? [] : [String(meetLink), String(meetId), String(meetPassword)],
+          maxParticipants: maxParticipants ?? 0,
+          location:
+            medium === "online"
+              ? []
+              : [String(location), String(latitude), String(longitude)],
+          meet:
+            medium === "offline"
+              ? []
+              : [String(meetLink), String(meetId), String(meetPassword)],
           privacy,
           createdBy: token.userId,
           image: filePreviewUrl,
           imageId: filePreviewUrl ? uploadedFile?.$id : fetchedDoc.imageId,
-          price,
+          price: price ?? 0,
         };
         const updatedValues = id ? getUpdatedValues(value) : value;
         console.log(updatedValues);
         const databases = new Databases(client);
-        const response = id ? await databases.updateDocument(
+        const teams = new Teams(client);
+        let teamId;
+        if (id === undefined || id === null || id === "" || !id) {
+          const teamResponse = await teams.create(ID.unique(), title);
+          console.log(teamResponse);
+          teamId = teamResponse.$id;
+        }
+        const response = id
+          ? await databases.updateDocument(
               process.env.REACT_APP_DATABASE_ID,
               process.env.REACT_APP_EVENTS_COLLECTION_ID,
               id,
               updatedValues
-        ) : await databases.createDocument(
+            )
+          : await databases.createDocument(
               process.env.REACT_APP_DATABASE_ID,
               process.env.REACT_APP_EVENTS_COLLECTION_ID,
               ID.unique(),
-              value
+              { ...value, teamId }
             );
         console.log(response);
         toast.success(`Event ${id ? "updated" : "created"} successfully`);

@@ -7,6 +7,7 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { MdUpload } from "react-icons/md";
 import { RiLoaderFill, RiShieldCrossFill } from "react-icons/ri";
+import Loading from "../../components/Loading";
 
 function Create() {
   const {
@@ -28,10 +29,7 @@ function Create() {
   const pageTitle = id ? "Edit Event" : "Create Event";
 
   if(fetchingDoc) return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
-      <RiLoaderFill className="text-5xl animate-spin"/>
-      <p className="text-xl">Fetching Event Details</p>
-    </div>
+    <Loading />
   )
 
   return (

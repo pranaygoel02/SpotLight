@@ -17,11 +17,13 @@ function GetEventLogic() {
     const [error, setError] = useState(null)
 
     const buildQuery = useCallback(() => {
-        if(filter === 'private' || filter === 'public') return [Query.equal('privacy', filter)]
-        if(filter === 'offline' || filter === 'online') return [Query.equal('medium', filter)]
+        const userQuery = Query.equal('createdBy', JSON.parse(localStorage.getItem('token')).userId) 
+        if(filter === 'private' || filter === 'public') return [Query.equal('privacy', filter), userQuery]
+        if(filter === 'offline' || filter === 'online') return [Query.equal('medium', filter), userQuery]
         return [
             Query.equal('privacy', filter?.split(',')),
-            Query.equal('medium', filter?.split(','))
+            Query.equal('medium', filter?.split(',')),
+            userQuery
         ]
     }, [filter])
 
@@ -35,7 +37,9 @@ function GetEventLogic() {
             const response = await database.listDocuments(
                 process.env.REACT_APP_DATABASE_ID,
                 process.env.REACT_APP_EVENTS_COLLECTION_ID,
-                (filter === null || filter === 'total') ? [] : buildQuery()
+                (filter === null || filter === 'total') ? [
+                    Query.equal('createdBy', JSON.parse(localStorage.getItem('token')).userId)
+                ] : buildQuery()
             );
             console.log(response);
             setEvents(prev => response?.documents);
@@ -51,7 +55,7 @@ function GetEventLogic() {
         finally {
             setLoading(prev => false)
         }
-    }, [])
+    }, [searchParams])
 
     const getEventById = useCallback(async () => {
         try {
@@ -60,7 +64,10 @@ function GetEventLogic() {
             const response = await database.getDocument(
                 process.env.REACT_APP_DATABASE_ID,
                 process.env.REACT_APP_EVENTS_COLLECTION_ID,
-                id
+                id,
+                [
+                    Query.equal('createdBy', JSON.parse(localStorage.getItem('token')).userId)
+                ]
             );
             console.log(response);
             setEvents(prev => response);
@@ -81,7 +88,7 @@ function GetEventLogic() {
 
 
   return {
-    loading, error, events, eventCount, privateEvent, publicEvent, offlineEvent, onlineEvent, filter, id
+    loading, error, events, eventCount, privateEvent, publicEvent, offlineEvent, onlineEvent, filter, id, setSearchParams, searchParams, getEvents
   };
 }
 export default GetEventLogic;

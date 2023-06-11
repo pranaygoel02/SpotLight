@@ -5,8 +5,11 @@ import { Link } from "react-router-dom";
 import { MdComputer } from "react-icons/md";
 
 const EventCard = ({
-  event: { title, description, category, image, location, $id, medium },
+  event: { title, description, category, image, location, $id, medium, startDate, endDate },
 }) => {
+
+  console.log(startDate);
+
   return (
     <Link to={`/dashboard/event/${$id}`} className="bg-white overflow-hidden text-black p-2 rounded-[18px] mr-2 outline outline-1 outline-neutral-100 shadow-sm hover:shadow-lg transition-all">
       <div className="relative">
@@ -35,13 +38,16 @@ const EventCard = ({
         </div>
       </div>
       <div className="flex flex-row justify-between items-start gap-4 p-2">
-        <div className="flex flex-col items-start max-w-[85%]">
+        <div className="flex flex-col items-start max-w-[80%]">
           <p className="text-xl font-bold">{title}</p>
-          <p className="text-xs text-neutral-600 line-clamp-5">{description}</p>
+          <p className="text-xs text-neutral-600 line-clamp-5 pt-2">{description}</p>
         </div>
-        <div className="flex flex-col items-end justify-end">
-          <p>19:00</p>
-          <p className="text-xs text-neutral-600">Wed, Jul 12</p>
+        <div className="flex flex-col gap-2 items-end h-full justify-evenly">
+          <p>{new Date(startDate.split('+')[0]).toTimeString().slice(0,5)}</p>
+          <p className="text-xs text-neutral-600">{new Date(startDate.split('+')[0]).toDateString().slice(4)}</p>
+          <hr className="w-full"></hr>
+          <p>{new Date(endDate.split('+')[0]).toTimeString().slice(0,5)}</p>
+          <p className="text-xs text-neutral-600">{new Date(endDate.split('+')[0]).toDateString().slice(4)}</p>
         </div>
       </div>
     </Link>

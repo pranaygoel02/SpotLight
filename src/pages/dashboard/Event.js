@@ -3,11 +3,12 @@ import GetEventLogic from "../../Logic/EventsLogic/getEvents";
 import { Link } from "react-router-dom";
 import { MdComputer, MdDelete, MdEdit } from "react-icons/md";
 import { ColorExtractor } from "react-color-extractor";
-import { IoLocation, IoWalletOutline } from "react-icons/io5";
+import { IoCopy, IoLocation, IoWalletOutline } from "react-icons/io5";
 import { toast } from "react-hot-toast";
-import { Databases } from "appwrite";
+import { Databases, Teams } from "appwrite";
 import client from "../../appwrite.config";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/Loading";
 
 function Event() {
   const { loading, error, events, id } = GetEventLogic();
@@ -45,7 +46,10 @@ function Event() {
 
   const deleteEvent = async () => {
     try {
+      const teams = new Teams(client);
       const database = new Databases(client);
+      const teamResponse = await teams.delete(events?.teamId)
+      console.log(teamResponse);
       const response = await database.deleteDocument(
         process.env.REACT_APP_DATABASE_ID,
         process.env.REACT_APP_EVENTS_COLLECTION_ID,
@@ -58,9 +62,14 @@ function Event() {
     }
   };
 
+  const copyTeamId = (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(events?.teamId);
+    toast.success("Invitation ID copied to clipboard");
+  }
+
   const deleteEventToast = (e) => {
     e.preventDefault();
-    // toast({
     //   title: "Delete Event?",
     //   description: "Are you sure you want to delete this event?",
     //   status: "warning",
@@ -88,7 +97,7 @@ function Event() {
       <div
         className={`${
           t.visible ? "animate-enter" : "animate-leave"
-        } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        } max-w-md w-full bg-white shadow-lg rounded-[18px] overflow-hidden pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
       >
         <div className="flex-1 w-0 p-4">
           <div className="flex items-start">
@@ -102,22 +111,31 @@ function Event() {
             </div>
           </div>
         </div>
-        <div className="flex border-l border-gray-200">
+        <div className="flex flex-col border-l border-gray-200">
           <button
             onClick={async () => {
               await deleteEvent();
               toast.dismiss(t.id);
             }}
-            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full border border-transparent rounded-none p-4 flex items-center justify-center text-sm font-medium text-red-600 hover:bg-red-600 hover:text-white focus:outline-none"
           >
             Delete
+          </button>
+          <button
+            onClick={async (e) => {
+              e.preventDefault();
+              toast.dismiss(t.id);
+            }}
+            className="w-full border border-transparent rounded-none border-t border-neutral-300 p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:bg-indigo-500 hover:text-white focus:outline-none"
+          >
+            Cancel
           </button>
         </div>
       </div>
     ));
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loading />;
 
   if (error) return <p>{error}</p>;
 
@@ -149,6 +167,15 @@ function Event() {
                 <MdDelete />
                 <p className="transition-all translate-x-[0px]  group-hover:translate-x-0">
                   Delete Event
+                </p>
+              </button>
+              <button
+                onClick={copyTeamId}
+                className="shadow-md primary-btn group overflow-hidden transition-all ml-auto"
+              >
+                <IoCopy />
+                <p className="transition-all translate-x-[0px]  group-hover:translate-x-0">
+                  Copy Invite ID
                 </p>
               </button>
             </div>
