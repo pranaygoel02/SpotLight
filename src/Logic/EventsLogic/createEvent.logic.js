@@ -1,13 +1,20 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import client from "../../appwrite.config";
 import { Databases, Storage, ID } from "appwrite";
 import { categories } from "./categories";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { useSearchParams } from "react-router-dom";
 
 function CreateEventLogic() {
   const [validateMessage, setValidateMessage] = useState(null);
   const [signingin, setSigningin] = useState(false);
+
+  const [searchParams] = useSearchParams();
+
+  const id = searchParams.get("id");
+
+  console.log(id);
 
   const navigate = useNavigate();
 
@@ -31,6 +38,9 @@ function CreateEventLogic() {
   const [image, setImage] = useState(null);
   const [imageError, setImageError] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [fetchedDoc, setFetchedDoc] = useState(null);
+  const [fetchingDoc, setFetchingDoc] = useState(false);
+  const [imageId, setImageId] = useState(null);
 
   const handleImage = (e) => {
     if (e.target.files[0]) {
@@ -39,6 +49,103 @@ function CreateEventLogic() {
       setImagePreview(URL.createObjectURL(e.target.files[0]));
     }
   };
+
+  const getEventById = useCallback(async () => {
+    try {
+      setFetchingDoc((prev) => true);
+      const database = new Databases(client);
+      const response = await database.getDocument(
+        process.env.REACT_APP_DATABASE_ID,
+        process.env.REACT_APP_EVENTS_COLLECTION_ID,
+        id
+      );
+      console.log(response);
+      const {
+        title,
+        description,
+        location,
+        startDate,
+        endDate,
+        maxParticipants,
+        price,
+        category,
+        medium,
+        meet,
+        privacy,
+        image,
+        imageId
+      } = response;
+      setFetchedDoc((prev) => response);
+      setTitle((prev) => title);
+      setDescription((prev) => description);
+      setLocation((prev) => location[0]);
+      setLatitude((prev) => location[1]);
+      setLongitude((prev) => location[2]);
+      setStartDate((prev) => startDate.split("+")[0]);
+      setEndDate((prev) => endDate.split("+")[0]);
+      setMaxParticipants((prev) => maxParticipants);
+      setPrice((prev) => price);
+      setCategory((prev) => category);
+      setMedium((prev) => medium);
+      setMeetLink((prev) => meet[0]);
+      setMeetId((prev) => meet[1]);
+      setMeetPassword((prev) => meet[2]);
+      setPrivacy((prev) => privacy);
+      setImage((prev) => image);
+      setImagePreview((prev) => image);
+      setImageId((prev) => imageId);
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setFetchingDoc((prev) => false);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if(id) getEventById();
+  }, [getEventById]);
+
+
+  const getUpdatedValues = (value) => {
+    const updatedObj = {}  
+    if (value.title !== fetchedDoc.title) {
+      updatedObj.title = title;
+    }
+    if (value.description !== fetchedDoc.description) {
+      updatedObj.description = description;
+    }
+    console.log(new Date(value.startDate).toUTCString() === new Date(fetchedDoc.startDate.split('+')[0]).toUTCString());
+    if (new Date(value.startDate).toUTCString() !== new Date(fetchedDoc.startDate.split('+')[0]).toUTCString()) {
+      updatedObj.startDate = startDate;
+    }
+    console.log(new Date(value.endDate).toUTCString() === new Date(fetchedDoc.endDate.split('+')[0]).toUTCString());
+    if (new Date(value.endDate).toUTCString() !== new Date(fetchedDoc.endDate.split('+')[0]).toUTCString()) {
+      updatedObj.endDate = endDate;
+    }
+    if (value.maxParticipants !== fetchedDoc.maxParticipants) {
+      updatedObj.maxParticipants = maxParticipants;
+    }
+    if (value.price !== fetchedDoc.price) {
+      updatedObj.price = price;
+    }
+    if (value.category !== fetchedDoc.category) {
+      updatedObj.category = category;
+    }
+    if (value.privacy !== fetchedDoc.privacy) {
+      updatedObj.privacy = privacy;
+    }
+    if (value.imageId !== fetchedDoc.imageId) {
+      updatedObj.imageId = value.imageId;
+      updatedObj.image = value.image;
+    }
+    if (value.medium !== fetchedDoc.medium) {
+      updatedObj.medium = medium;
+    }
+    updatedObj.location = value.location;
+    updatedObj.meet = value.meet;
+    return updatedObj;
+  }
+
 
   const handleCreateEvent = async (e) => {
     e.preventDefault();
@@ -57,7 +164,7 @@ function CreateEventLogic() {
         throw new Error("Please provide a privacy for your event.");
       }
       if (!startDate) {
-        throw new Error("Please provide a start date for your event.")        
+        throw new Error("Please provide a start date for your event.");
       }
       if (!endDate) {
         throw new Error("Please provide an end date for your event.");
@@ -76,14 +183,14 @@ function CreateEventLogic() {
           throw new Error("Please provide a longitude for your event.");
         }
       }
-      if (medium === "online") {
-        if (!meetLink) {
-          throw new Error("Please provide a meeting link for your event.");
-        }
-        if (!meetId) {
-          throw new Error("Please provide a meeting id for your event.");
-        }
-      }
+      // if (medium === "online") {
+      //   if (!meetLink) {
+      //     throw new Error("Please provide a meeting link for your event.");
+      //   }
+      //   if (!meetId) {
+      //     throw new Error("Please provide a meeting id for your event.");
+      //   }
+      // }
       if (image === null) {
         throw new Error("Please provide an image for your event.");
       }
@@ -102,49 +209,81 @@ function CreateEventLogic() {
         image: image,
       });
       try {
+        let uploadedFile, filePreviewUrl;
         const storage = new Storage(client);
-        const uploadedFile = await storage.createFile(process.env.REACT_APP_IMAGES_BUCKET_ID, ID.unique(), image);
-        console.log(uploadedFile);
-        const filePreviewUrl = await storage.getFilePreview(uploadedFile.bucketId, uploadedFile.$id);
-        console.log(filePreviewUrl);
+        if (typeof image !== "string") {
+          const deletedFile = await storage.deleteFile(
+            process.env.REACT_APP_IMAGES_BUCKET_ID,
+            fetchedDoc.imageId
+          );
+          console.log(deletedFile);
+          uploadedFile = await storage.createFile(
+            process.env.REACT_APP_IMAGES_BUCKET_ID,
+            ID.unique(),
+            image
+          );
+          console.log(uploadedFile);
+          filePreviewUrl = await storage.getFilePreview(
+            uploadedFile.bucketId,
+            uploadedFile.$id
+          );
+          console.log(filePreviewUrl);
+        }
+        else if(image === null) {
+          const deletedFile = await storage.deleteFile(
+            process.env.REACT_APP_IMAGES_BUCKET_ID,
+            fetchedDoc.imageId
+          );
+          console.log(deletedFile);
+          filePreviewUrl = null;
+        }
+        else {
+          filePreviewUrl = image;
+        }
+        const value = {
+          title,
+          description,
+          medium,
+          startDate,
+          endDate,
+          category,
+          maxParticipants,
+          location: medium === 'online' ? [] : [String(location), String(latitude), String(longitude)],
+          meet: medium === 'offline' ? [] : [String(meetLink), String(meetId), String(meetPassword)],
+          privacy,
+          createdBy: token.userId,
+          image: filePreviewUrl,
+          imageId: filePreviewUrl ? uploadedFile?.$id : fetchedDoc.imageId,
+          price,
+        };
+        const updatedValues = id ? getUpdatedValues(value) : value;
+        console.log(updatedValues);
         const databases = new Databases(client);
-        const response = await databases.createDocument(
-          process.env.REACT_APP_DATABASE_ID,
-          process.env.REACT_APP_EVENTS_COLLECTION_ID,
-          ID.unique(),
-          {
-            title,
-            description,
-            medium,
-            startDate,
-            endDate,
-            category,
-            maxParticipants,
-            location: [String(location), String(latitude), String(longitude)],
-            meet: [String(meetLink), String(meetId), String(meetPassword)],
-            privacy,
-            createdBy: token.userId,
-            image: filePreviewUrl,
-            price,
-          }
-        );
+        const response = id ? await databases.updateDocument(
+              process.env.REACT_APP_DATABASE_ID,
+              process.env.REACT_APP_EVENTS_COLLECTION_ID,
+              id,
+              updatedValues
+        ) : await databases.createDocument(
+              process.env.REACT_APP_DATABASE_ID,
+              process.env.REACT_APP_EVENTS_COLLECTION_ID,
+              ID.unique(),
+              value
+            );
         console.log(response);
-        toast.success("Event created successfully");
+        toast.success(`Event ${id ? "updated" : "created"} successfully`);
         navigate(-1);
       } catch (error) {
         console.log(error);
         setValidateMessage((prev) => error.message);
         toast.error(error.message);
-      } 
-    } catch(err) {
+      }
+    } catch (err) {
       console.log(err);
       toast.error(err.message);
-
-    }
-    finally {
+    } finally {
       setSigningin((prev) => false);
     }
-    
   };
 
   const inputs = [
@@ -232,7 +371,7 @@ function CreateEventLogic() {
     {
       label: "Price",
       value: price,
-      placeholder: "Leave blank if it's a free event.",
+      placeholder: "Leave blank if it's a free event. (in INR))",
       cb: setPrice,
       type: "number",
       show: true,
@@ -279,7 +418,6 @@ function CreateEventLogic() {
       cb: setMeetLink,
       type: "url",
       show: medium === "online",
-      required: medium === "online",
     },
     {
       label: "Meet ID",
@@ -287,7 +425,6 @@ function CreateEventLogic() {
       placeholder: "Please provide a meet ID for your event.",
       cb: setMeetId,
       show: medium === "online",
-      required: medium === "online",
     },
     {
       label: "Meet Password",
@@ -299,7 +436,7 @@ function CreateEventLogic() {
   ];
 
   const removeImage = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setImagePreview((prev) => null);
     setImage((prev) => null);
   };
@@ -318,7 +455,9 @@ function CreateEventLogic() {
     imagePreview,
     setImagePreview,
     setImage,
-    removeImage
+    removeImage,
+    id,
+    fetchingDoc,
   };
 }
 export default CreateEventLogic;

@@ -16,6 +16,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Error from "./pages/Error";
 import Create from "./pages/dashboard/Create";
+import Events from "./pages/dashboard/Events";
+import Event from "./pages/dashboard/Event";
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
         <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
           <Route path="" element={<Dashboard />} />
           <Route path="create" element={<Create />} />
+          <Route path="events" element={<Events />} />
+          <Route path="event/:id" element={<Event />} />
           <Route path="account" element={<Account />} />
           <Route path="scrum" element={<Scrum />} />
         </Route>

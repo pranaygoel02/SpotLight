@@ -6,7 +6,7 @@ import CreateEventLogic from "../../Logic/EventsLogic/createEvent.logic";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { MdUpload } from "react-icons/md";
-import { RiShieldCrossFill } from "react-icons/ri";
+import { RiLoaderFill, RiShieldCrossFill } from "react-icons/ri";
 
 function Create() {
   const {
@@ -20,14 +20,25 @@ function Create() {
     imagePreview,
     fileRef,
     handleCreateEvent,
-    removeImage
+    removeImage,
+    id,
+    fetchingDoc
   } = CreateEventLogic();
+
+  const pageTitle = id ? "Edit Event" : "Create Event";
+
+  if(fetchingDoc) return (
+    <div className="w-full h-full flex flex-col items-center justify-center">
+      <RiLoaderFill className="text-5xl animate-spin"/>
+      <p className="text-xl">Fetching Event Details</p>
+    </div>
+  )
 
   return (
     <div>
       <BackBtn to={"/dashboard"} />
       <div className="py-4">
-        <h1 className="page-title">Create</h1>
+        <h1 className="page-title">{pageTitle}</h1>
         <form onSubmit={handleCreateEvent} className="flex flex-col gap-6 pt-8">
           {inputs.map((input, index) => {
             return <Input {...input} key={index} />;
@@ -58,7 +69,7 @@ function Create() {
               </button>
             </div>
           )}
-          <Button type="submit" loading={signingin} text={"Create Event"} />
+          <Button type="submit" loading={signingin} text={pageTitle} />
         </form>
       </div>
     </div>
