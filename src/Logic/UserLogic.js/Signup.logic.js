@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Client, Account, ID } from "appwrite";
+import { Client, Account, ID, Databases } from "appwrite";
 import client from "../../appwrite.config.js";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { toast } from "react-hot-toast";
@@ -106,10 +106,21 @@ function SignupLogic() {
     console.log("Signing you up", name, email, password);
 
     const account = new Account(client);
-
+    const database = new Databases(client);
     try {
       const response = await account.create(ID.unique(), email, password, name);
       console.log(response);
+      const addUserToDBResponse = await database.createDocument(
+        process.env.REACT_APP_DATABASE_ID,
+        process.env.REACT_APP_USERS_COLLECTION_ID,
+        ID.unique(),
+        {
+          name,
+          email,
+          userId: response.$id,
+        }
+      )
+      console.log(addUserToDBResponse);
       const loggedInResponse = await account.createEmailSession(
         email,
         password
