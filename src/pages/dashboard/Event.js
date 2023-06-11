@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import GetEventLogic from "../../Logic/EventsLogic/getEvents";
 import { Link } from "react-router-dom";
-import { MdComputer, MdDelete, MdEdit, MdInsertInvitation } from "react-icons/md";
+import {
+  MdComputer,
+  MdDelete,
+  MdEdit,
+  MdInsertInvitation,
+  MdOutlineCountertops,
+} from "react-icons/md";
 import { ColorExtractor } from "react-color-extractor";
 
 import CreateMembershipLogic from "../../Logic/Membership/CreateMembership.logic";
@@ -10,6 +16,7 @@ import {
   IoClose,
   IoCopy,
   IoLocation,
+  IoPersonOutline,
   IoSearch,
   IoWalletOutline,
 } from "react-icons/io5";
@@ -155,12 +162,30 @@ function Event() {
   };
 
   useEffect(() => {
-    client.subscribe("teams", (response) => {
-      console.log('Team RT: ', response);
-    });
-  })
+      console.log("Team ID: ", events?.teamId, "SUBSCRIBING TO TEAM");
+      const unsubscribe = client.subscribe(
+        'teams',
+        (response) => {
+          console.log("Team RT: ", response);
+        }
+      );
+      return () => unsubscribe();
+  });
 
-  const { createMembership } = CreateMembershipLogic();
+  const { createMembership, teamMembers, memberCount } = CreateMembershipLogic(
+    events?.teamId
+  );
+
+  const checkMembership = (userId) => {
+    const member = teamMembers?.find((member) => member.userId === userId);
+    if (member) {
+      if (member.joined) return "Joined";
+      return "Pending";
+    }
+    return "Invite";
+  };
+
+  console.log(teamMembers, memberCount);
 
   if (loading) return <Loading />;
 
@@ -177,7 +202,9 @@ function Event() {
       >
         <section
           className={`py-4 ${
-            showUsers ? "md:col-span-2 lg:col-span-4" : "md:col-span-4 lg:col-span-5"
+            showUsers
+              ? "md:col-span-3 lg:col-span-4"
+              : "md:col-span-4 lg:col-span-5"
           } grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 transition-all`}
         >
           <div className="relative h-full  lg:col-span-2">
@@ -264,6 +291,12 @@ function Event() {
                 <IoWalletOutline />{" "}
                 {events?.price > 0 ? `Rs. ${events?.price}` : "Free"}
               </h2>
+              <h2 className="text-lg inline-flex items-center gap-2">
+                <IoPersonOutline />{" "}
+                {memberCount > 0
+                  ? `${memberCount - 1} Member(s)`
+                  : "No members"}
+              </h2>
             </div>
           </div>
           <div
@@ -344,7 +377,7 @@ function Event() {
                       }}
                       className="sidebar-link focus:primary-btn"
                     >
-                      Invite
+                      {checkMembership(u.userId)}
                     </button>
                   </div>
                 ))}
