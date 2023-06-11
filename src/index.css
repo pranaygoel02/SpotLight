@@ -37,8 +37,8 @@ a:hover {
   width: 0.4rem;
 }
 
+
 ::-webkit-scrollbar-thumb {
-  @apply bg-secondary;
   border-radius: 10px;
 }
 

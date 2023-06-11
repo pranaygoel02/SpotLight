@@ -9,6 +9,7 @@ function Sidebar() {
             Logo
         </Link>
         <Link className='sidebar-link' to=''>Home</Link>
+        <NavLink className='sidebar-link' to='events?filter=total'>Events</NavLink>
         <NavLink className='sidebar-link' to='account'>Account</NavLink>
         <NavLink className='sidebar-link' to='scrum'>Scrum</NavLink>
     </div>
