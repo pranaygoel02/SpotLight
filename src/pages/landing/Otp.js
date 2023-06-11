@@ -16,7 +16,7 @@ function Otp() {
     <form onSubmit={updatePhoneVerificationStatus} className='w-full'>
         {
             inputs.map((input, index) => (
-                <Input {...input}/>
+                <Input {...input} show={true}/>
             ))
         }
         <Button loading={signingin} type={'submit'} text='Update Phone Number' />

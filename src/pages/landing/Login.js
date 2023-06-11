@@ -14,7 +14,7 @@ function Login() {
     <form onSubmit={loginUser} className='w-full'>
         {
             inputs.map((input, index) => (
-                <Input {...input}/>
+                <Input {...input} show={true}/>
             ))
         }
         <Button loading={signingin} type={'submit'} text='Sign in' />

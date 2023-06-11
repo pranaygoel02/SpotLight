@@ -15,7 +15,7 @@ function Signup() {
     <form onSubmit={signUpUser} className='w-full'>
         {
             inputs.map((input, index) => (
-                <Input {...input}/>
+                <Input {...input} show={true}/>
             ))
         }
         <Button loading={signingin} type={'submit'} text='Sign up' />
