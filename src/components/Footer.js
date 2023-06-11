@@ -27,7 +27,7 @@ function Footer() {
         </div>
         <div className='flex flex-col md:flex-row gap-2 w-full py-4 lg:py-0 lg:items-center font-manrope'>
             <h3 className=' font-bold capitalize text-2xl' style={{flexBasis:'25%'}}>Sign up for newsletter</h3>
-            <form className='w-full flex-1 flex rounded-full overflow-hidden border'>
+            <form className='w-full flex-1 flex flex-row rounded-full overflow-hidden border'>
                 <input type='email' placeholder='Enter your email' className='w-full p-2 pl-4 bg-transparent font-light focus:outline-none'/>
                 <button type='submit' className='bg-neutral-300 text-black text-b px-4 text-sm rounded-full'>Submit</button>
             </form>
