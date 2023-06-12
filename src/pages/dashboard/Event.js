@@ -338,7 +338,7 @@ function Event() {
                 {(filteredUsers ?? users)?.map((u) => (
                   <div
                     key={u.$id}
-                    className="w-full px-3 rounded-[18px] border-b border-neutral-200  flex items-center justify-between"
+                    className="w-full px-3 rounded-[18px] border-b border-neutral-200  flex items-center justify-between gap-2"
                   >
                     <p
                       className="font-bold p-2 rounded-full flex aspect-square text-center items-center justify-center w-10 outline outline-1 outline-neutral-300"
@@ -351,9 +351,12 @@ function Event() {
                         ]?.join(",")})`,
                       }}
                     >
-                      {u.name.charAt(0)}
+                      <span>{u.name.charAt(0)}</span>
                     </p>
+                    <div className="mr-auto">
                     <p className="text-sm text-left">{u.name}</p>
+                    <p className="text-xs text-neutral-500 text-left">{u.email}</p>
+                    </div>
                     <button
                       onClick={async (e) => {
                         e.preventDefault();

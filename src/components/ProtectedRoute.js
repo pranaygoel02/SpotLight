@@ -13,7 +13,8 @@ function ProtectedRoute({children}) {
   
   useEffect(() => {
     const token = localStorage.getItem('token') 
-    if (!token && pathname.includes('dashboard')) {
+    const appwriteCookieFallback = localStorage.getItem('cookieFallback')
+    if ((!token || !appwriteCookieFallback) && pathname.includes('dashboard')) {
       navigate('/')
     }
     else if(token && (pathname.includes('login') || pathname.includes('signup'))) {
