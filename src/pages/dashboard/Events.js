@@ -57,7 +57,7 @@ function Events() {
                   event?.title
                     ?.toLowerCase()
                     .includes(e.target.value?.toLowerCase() ?? "") &&
-                  (event.medium === filter || event.privacy === filter)
+                  (filter === 'total' ?  true : (event.medium === filter || event.privacy === filter))
               )
             );
           }}
