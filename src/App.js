@@ -7,18 +7,17 @@ import Signup from "./pages/landing/Signup";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Account from "./pages/dashboard/Account";
-import Scrum from "./pages/dashboard/Scrum";
 import AuthLayout from "./layouts/AuthLayout";
 import { Toaster } from "react-hot-toast";
 import Phone from "./pages/landing/Phone";
 import Otp from "./pages/landing/Otp";
 import ProtectedRoute from "./components/ProtectedRoute";
-import ErrorBoundary from "./components/ErrorBoundary";
 import Error from "./pages/Error";
 import Create from "./pages/dashboard/Create";
 import Events from "./pages/dashboard/Events";
 import Event from "./pages/dashboard/Event";
 import AcceptInvite from "./pages/AcceptInvite";
+import Invites from "./pages/dashboard/Invites";
 
 function App() {
   return (
@@ -41,7 +40,7 @@ function App() {
           <Route path="events" element={<Events />} />
           <Route path="event/:id" element={<Event />} />
           <Route path="account" element={<Account />} />
-          <Route path="scrum" element={<Scrum />} />
+          <Route path="invities" element={<Invites />} />
         </Route>
         <Route path="/accept-invite/:eventId" element={<AcceptInvite />} />
       </Routes>

@@ -257,7 +257,7 @@ function CreateEventLogic() {
           startDate,
           endDate,
           category,
-          maxParticipants: maxParticipants ?? 0,
+          maxParticipants: String(maxParticipants).length === 0 ? 0 : maxParticipants,
           location:
             medium === "online"
               ? []
@@ -270,7 +270,7 @@ function CreateEventLogic() {
           createdBy: token.userId,
           image: filePreviewUrl,
           imageId: filePreviewUrl ? uploadedFile?.$id : fetchedDoc.imageId,
-          price: price ?? 0,
+          price: String(price).length === 0 ? 0 : price,
         };
         const updatedValues = id ? getUpdatedValues(value) : value;
         console.log(updatedValues);
@@ -296,6 +296,12 @@ function CreateEventLogic() {
               { ...value, teamId }
             );
         console.log(response);
+        if(title !== fetchedDoc?.title) {
+          const teamNameUpdate = await teams.updateName(teamId, title);
+          console.log(teamNameUpdate);
+        }
+        const updateTeamPreferences = await teams.updatePrefs( teamId, {...fetchedDoc, ...response } )
+        console.log(updateTeamPreferences);
         toast.success(`Event ${id ? "updated" : "created"} successfully`);
         navigate(-1);
       } catch (error) {
