@@ -10,7 +10,9 @@ function Input({
   rightIcon,
   options,
   show,
-  required
+  required,
+  defaultValue,
+  disabled
 }) {
   return ( show &&
     <div className="flex flex-col">
@@ -38,7 +40,9 @@ function Input({
             <textarea
               onChange={(e) => {
                 e.preventDefault();
-                cb((prev) => e.target.value);
+                if(cb) {
+                  cb((prev) => e.target.value);
+                }
               }}
               value={value}
               placeholder={placeholder}
@@ -46,7 +50,9 @@ function Input({
             />
           ) : 
           (<input
+            disabled={disabled}
             min={0}
+            defaultValue={defaultValue}
             type={type}
             onChange={(e) => {
               e.preventDefault();
@@ -54,7 +60,7 @@ function Input({
             }}
             value={value}
             placeholder={placeholder}
-            className="p-2 w-full bg-transparent focus-within:outline-none focus-within:border-none"
+            className="p-2 w-full bg-transparent focus-within:outline-none focus-within:border-none disabled:text-neutral-500"
           />)}
           {rightIcon}
         </div>

@@ -17,12 +17,12 @@ function Invites() {
           Create
         </Link>
       </div>
-      {loading && <Loading />}
+      {loading && <div className="flex-1"><Loading /></div>}
       {error && <p>{error}</p>}
       {teams && (
         <div className="flex w-full flex-col gap-4 py-6 group">
           {teams.map((team) => (
-            <div key={team?.$id} className="flex py-4 justify-between border-y border-neutral-300 group items-center">
+            <div key={team?.$id} className="flex py-4 justify-between border-y border-neutral-300 group gap-2 items-center">
               <h3 className="font-semibold">{team.name}</h3>
               <button className="sidebar-link ml-auto flex gap-2 items-center text-neutral-500 my-0">
                 <IoPeopleOutline />

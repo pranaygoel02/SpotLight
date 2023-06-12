@@ -18,6 +18,7 @@ import Events from "./pages/dashboard/Events";
 import Event from "./pages/dashboard/Event";
 import AcceptInvite from "./pages/AcceptInvite";
 import Invites from "./pages/dashboard/Invites";
+import VeirfyEmail from "./pages/VerifyEmail";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           <Route path="invities" element={<Invites />} />
         </Route>
         <Route path="/accept-invite/:eventId" element={<AcceptInvite />} />
+        <Route path='/verify-email' element={<VeirfyEmail/>} />
       </Routes>
     </Router>
     </>
