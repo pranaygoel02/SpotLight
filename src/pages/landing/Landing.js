@@ -14,9 +14,20 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import { IoArrowBack, IoArrowForward, IoCreateOutline, IoPeople, IoPeopleOutline, IoTicketOutline } from "react-icons/io5";
+import {
+  IoArrowBack,
+  IoArrowDownCircleOutline,
+  IoArrowForward,
+  IoCreateOutline,
+  IoNotificationsOutline,
+  IoPeople,
+  IoPeopleOutline,
+  IoTicketOutline,
+} from "react-icons/io5";
 import { MdManageHistory, MdOutlinePrivacyTip, MdRsvp } from "react-icons/md";
-import { RiSteamLine } from "react-icons/ri";
+import { RiMouseLine, RiSteamLine } from "react-icons/ri";
+import Hero2 from "../../assets/images/3187910.jpg";
+import Security from "../../assets/images/security.jpg";
 
 const data = [
   {
@@ -26,16 +37,22 @@ const data = [
     icon: <IoCreateOutline />,
   },
   {
-    title: "Flexible Event Privacy",
+    title: "Realtime Notifications",
     description:
-      "Take control over event visibility with our private and public event options. Host private gatherings with exclusive access for selected participants or organize public events to reach a wider audience. Customize privacy settings to suit the unique needs of each event.",
-    icon: <MdOutlinePrivacyTip />,
+      "Stay updated on event activities with our realtime notification feature. Receive notifications on event updates, attendee responses, and more. Never miss out on important event details with our notification feature.",
+    icon: <IoNotificationsOutline />,
   },
   {
     title: "Seamless User Invitations",
     description:
       "Invite participants effortlessly by sending invitation links directly through our app. Share invitation links via email, messaging apps, or social media platforms. Ensure a smooth registration process and track attendee responses for effective event management.",
     icon: <IoTicketOutline />,
+  },
+  {
+    title: "Flexible Event Privacy",
+    description:
+      "Take control over event visibility with our private and public event options. Host private gatherings with exclusive access for selected participants or organize public events to reach a wider audience. Customize privacy settings to suit the unique needs of each event.",
+    icon: <MdOutlinePrivacyTip />,
   },
   {
     title: "Easy Attendee Management",
@@ -45,128 +62,49 @@ const data = [
   },
 ];
 
-const data2 = [
-  {
-    num: "300+",
-    title: "Lorem Ipsum",
-  },
-  {
-    num: "300+",
-    title: "Lorem Ipsum",
-  },
-  {
-    num: "300+",
-    title: "Lorem Ipsum",
-  },
-  {
-    num: "300+",
-    title: "Lorem Ipsum",
-  },
-];
-
-const testimonialData = [
-  {
-    name: "John Doe",
-    title: "CEO",
-    comment:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    photo: "https://i.pravatar.cc/300",
-  },
-  {
-    name: "John Doe",
-    title: "CEO",
-    comment:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    photo: "https://i.pravatar.cc/300",
-  },
-  {
-    name: "John Doe",
-    title: "CEO",
-    comment:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    photo: "https://i.pravatar.cc/300",
-  },
-  {
-    name: "John Doe",
-    title: "CEO",
-    comment:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    photo: "https://i.pravatar.cc/300",
-  },
-  {
-    name: "John Doe",
-    title: "CEO",
-    comment:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    photo: "https://i.pravatar.cc/300",
-  },
-  {
-    name: "John Doe",
-    title: "CEO",
-    comment:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    photo: "https://i.pravatar.cc/300",
-  },
-  {
-    name: "John Doe",
-    title: "CEO",
-    comment:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    photo: "https://i.pravatar.cc/300",
-  },
-  {
-    name: "John Doe",
-    title: "CEO",
-    comment:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    photo: "https://i.pravatar.cc/300",
-  },
-];
-
 function Landing() {
   const swiper = useSwiper();
   const swiperRef = useRef(null);
 
+  const token = JSON.parse(localStorage.getItem("token"));
+
   return (
     <div className="flex-1 bg-white font-poppins select-none">
       <div className="bg-secondary">
-        <section className="flex flex-col text-center w-full items-center py-8 lg:py-16 justify-center gap-8 md:gap-0 container min-h-[83vh] md:min-h-[89vh] relative">
-          {/* <img className="absolute w-full h-full object-cover z-0 mix-blend-multiply opacity-50" src={Hero}/> */}
+        <section className="flex flex-col text-center w-full items-center py-8 lg:py-16 justify-center gap-8 md:gap-0 container min-h-[75vh] relative">
           <div
             className="flex flex-col gap-4 items-center justify-center z-10"
             style={{ flexBasis: "50%" }}
           >
-            <h1 className="text-4xl lg:text-6xl text-slate-100 font-bold leading-relaxed lg:leading-normal drop-shadow-xl">
-              Manage and plan events like drinking water
+            <h1 className=" text-2xl md:text-4xl lg:text-6xl text-slate-100 font-bold leading-relaxed lg:leading-normal drop-shadow-2xl">
+              Spotlight Your Creativity
+              <br />
+              Curate Unforgettable Events
             </h1>
-            <p className="  md:max-w-[90%] py-4 text-slate-400">
-              Create and manage events with ease. Lorem ipsum dolor sit amet,
-              consectetur adipiscing elit.
+            <p className=" md:max-w-[90%] py-4 text-slate-400">
+              RSVP and Management Made Effortless for Creators
             </p>
-            <Link
-              to={"/"}
-              className="bg-gradient-to-r from-accent to-accent rounded-full p-4 text-white text-center"
-            >
-              Get Started
-            </Link>
+            <div className="inline-flex items-center gap-2">
+              <Link
+                to={token ? "/dashboard" : "/auth/signup"}
+                className="bg-gradient-to-b shadow-xl focus:ring-accent from-accent to-accent/90 rounded-full p-4 text-white text-center"
+              >
+                {token ? "Go to Dashboard" : "Get Started"}
+              </Link>
+              <Link
+                to={"/explore"}
+                className="bg-gradient-to-r shadow-xl from-primary to-primary/90 rounded-full p-4 text-white text-center"
+              >
+                Explore Events
+              </Link>
+            </div>
           </div>
-          <div className=" w-full relative">
-            {/* <img
-                draggable={false}
-                className="m-auto p-4 md:p-6 mix-blend-lighten z-10 w-full"
-                src={Hero}
-              /> */}
-          </div>
+          <div className=" w-full relative"></div>
         </section>
       </div>
       <section className="flex flex-col-reverse  lg:flex-row w-full py-8 md:py-16 justify-between gap-8 md:gap-0 container">
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 gap-4"
-          style={{ flexBasis: "50%" }}
-        >
-          {/* {data.map((item) => (
-            <Card {...item} />
-          ))} */}
+        <div className="md:pt-16 " style={{ flexBasis: "50%" }}>
+          <img className="w-full" src={Hero2} />
         </div>
         <div
           className="flex flex-col gap-4 items-start justify-evenly text-left py-8 lg:pl-16"
@@ -176,21 +114,21 @@ function Landing() {
             <hr className="w-20 h-1 bg-accent"></hr>
           </p>
           <h1 className="text-3xl md:text-5xl text-primary font-semibold md:leading-normal">
-            Streamline Your Event Planning
+            Unlock Your Creative Potential
           </h1>
           <hr className="w-full border border-neutral-200"></hr>
           <p className="text-sm leading-[1.4rem] md:max-w-[90%] py-4 text-neutral-500 text-justify">
-            Say goodbye to the chaos of event planning. Our web app provides you
-            with a centralized platform to manage all aspects of your events.
-            From initial brainstorming to final execution, our intuitive
-            interface makes it easy to stay organized and collaborate seamlessly
-            with your team.
+            Our app empowers individual contributors and artists like you to
+            unleash your creativity and organize remarkable events. Whether
+            you're planning a solo exhibition, a live performance, or a
+            collaborative workshop, our platform provides the tools and features
+            you need to make your events a resounding success.
           </p>
           <Link
-            to={"/"}
+            to={token ? "Go to Dashboard" : "/auth/signup"}
             className="bg-accent rounded-full p-4 text-white text-center"
           >
-            Go to Dashboard
+            {token ? "Go to Dashboard" : "Get Started"}
           </Link>
         </div>
       </section>
@@ -202,17 +140,17 @@ function Landing() {
                 <div className="w-20 h-1 bg-accent"></div> Secure
               </p>
               <h1 className="text-3xl md:text-5xl text-white font-semibold md:leading-normal">
-                Security and Reliability
+                Seamless Event Planning and Organization
               </h1>
             </div>
           </div>
           <p className="flex-[80%] w-full text-sm leading-[1.4rem] md:max-w-[90%] py-4 text-slate-400 text-justify">
-            Rest assured that your event data is safe and secure with our web
-            app. We prioritize data protection and employ industry-standard
-            security measures to safeguard your information. Our reliable
-            infrastructure ensures that your event management process remains
-            uninterrupted, allowing you to focus on what matters most – creating
-            exceptional events.
+            Say goodbye to the hassles of event planning. Our user-friendly
+            interface simplifies the process, allowing you to focus on your
+            artistic endeavors. Create and manage events effortlessly, from
+            setting dates and locations to providing event descriptions and
+            ticketing options. Streamline your planning process and bring your
+            vision to reality.
           </p>
         </section>
         <div className="flex flex-row gap-4 items-center justify-between container">
@@ -266,29 +204,9 @@ function Landing() {
           ))}
         </Swiper>
       </div>
-      {/* <div className="bg-secondary py-20 ">
-        <section className="container flex flex-col lg:flex-row gap-8 text-white justify-around items-center">
-          {data2.map((item, index) => (
-            <>
-              <div className="text-center flex flex-col gap-4 hover:text-accent">
-                <h4 className="text-5xl font-semibold">{item.num}</h4>
-                <span>{item.title}</span>
-              </div>
-              {index < data2.length - 1 && (
-                <hr className="w-full h-[1px] lg:w-[1px] lg:h-20 bg-neutral-100 opacity-30"></hr>
-              )}
-            </>
-          ))}
-        </section>
-      </div> */}
       <section className="flex flex-col-reverse lg:flex-row-reverse w-full py-8 md:py-16 justify-between gap-8 md:gap-0 container">
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 gap-4"
-          style={{ flexBasis: "50%" }}
-        >
-          {/* {data.map((item) => (
-            <Card {...item} />
-          ))} */}
+        <div className="" style={{ flexBasis: "50%" }}>
+          <img className="w-full" src={Security} />
         </div>
         <div
           className="flex flex-col gap-4 items-start justify-evenly text-left py-8 lg:pr-16"
@@ -298,60 +216,25 @@ function Landing() {
             <hr className="w-20 h-1 bg-accent"></hr> Registrations Made Easy
           </p>
           <h1 className="text-3xl md:text-5xl text-primary font-semibold md:leading-normal">
-            Effortless Event Registration
+            Security and Reliability
           </h1>
           <hr className="w-full border border-neutral-200"></hr>
           <p className="text-sm leading-[1.4rem] md:max-w-[90%] py-4 text-neutral-500 text-justify">
-            With our Event Management Web App, event registration becomes a
-            breeze. Invite attendees with just a click, monitor registrations,
-            send out automated confirmations, and track attendance all from one
-            convenient location.
+            Rest assured that your event data is safe and secure with our web
+            app. We prioritize data protection and employ industry-standard
+            security measures to safeguard your information. Our reliable
+            infrastructure ensures that your event management process remains
+            uninterrupted, allowing you to focus on what matters most – creating
+            exceptional events.
           </p>
           <Link
-            to={"/"}
+            to={token ? "/dashboard" : "/auth/signup"}
             className="bg-gradient-to-r from-primary to-primary rounded-full px-6 p-4 text-white text-center"
           >
-            Get Started
+            {token ? 'Go to Dashboard' : 'Get Started'}
           </Link>
         </div>
       </section>
-      
-      {/* <section className="container py-16">
-        <h2 className="font-bold text-3xl md:text-4xl lg:text-6xl leading-normal text-primary testimonial-title">
-          Beloved by so many people worldwide
-        </h2>
-        <Swiper
-          className="w-full testimonial-slider"
-          modules={[Pagination, Autoplay]}
-          loop={true}
-          autoplay={{
-            delay: 5000,
-            disableOnInteraction: false,
-          }}
-          pagination={{ clickable: true }}
-          breakpoints={{
-            640: {
-              slidesPerView: 1,
-              spaceBetween: 50,
-            },
-            820: {
-              slidesPerView: 2,
-            },
-            960: {
-              slidesPerView: 3,
-            },
-            1024: {
-              slidesPerView: 3,
-            },
-          }}
-        >
-          {testimonialData.map((item) => (
-            <SwiperSlide className="w-full">
-              <Testimonial {...item} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </section> */}
     </div>
   );
 }
