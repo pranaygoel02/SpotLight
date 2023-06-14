@@ -27,6 +27,8 @@ function CreateEventLogic() {
   const [longitude, setLongitude] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [duration, setDuration] = useState(null);
+  const [language, setLanguage] = useState(null);
   const [maxParticipants, setMaxParticipants] = useState(null);
   const [price, setPrice] = useState(null);
   const [category, setCategory] = useState("");
@@ -74,6 +76,8 @@ function CreateEventLogic() {
         privacy,
         image,
         imageId,
+        duration,
+        language,
       } = response;
       setFetchedDoc((prev) => response);
       setTitle((prev) => title);
@@ -81,8 +85,10 @@ function CreateEventLogic() {
       setLocation((prev) => location[0]);
       setLatitude((prev) => location[1]);
       setLongitude((prev) => location[2]);
-      setStartDate((prev) => startDate.split("+")[0]);
-      setEndDate((prev) => endDate.split("+")[0]);
+      setStartDate((prev) => startDate?.split("+")[0]);
+      setEndDate((prev) => endDate?.split("+")[0]);
+      setDuration((prev) => duration);
+      setLanguage((prev) => language);
       setMaxParticipants((prev) => maxParticipants);
       setPrice((prev) => price);
       setCategory((prev) => category);
@@ -107,49 +113,55 @@ function CreateEventLogic() {
 
   const getUpdatedValues = (value) => {
     const updatedObj = {};
-    if (value.title !== fetchedDoc.title) {
+    if (value.title !== fetchedDoc?.title) {
       updatedObj.title = title;
     }
-    if (value.description !== fetchedDoc.description) {
+    if (value.description !== fetchedDoc?.description) {
       updatedObj.description = description;
     }
     console.log(
       new Date(value.startDate).toUTCString() ===
-        new Date(fetchedDoc.startDate.split("+")[0]).toUTCString()
+        new Date(fetchedDoc?.startDate?.split("+")[0]).toUTCString()
     );
     if (
       new Date(value.startDate).toUTCString() !==
-      new Date(fetchedDoc.startDate.split("+")[0]).toUTCString()
+      new Date(fetchedDoc?.startDate?.split("+")[0]).toUTCString()
     ) {
-      updatedObj.startDate = startDate;
+      updatedObj.startDate = startDate.length > 0 ? startDate : null;
     }
     console.log(
-      new Date(value.endDate).toUTCString() ===
-        new Date(fetchedDoc.endDate.split("+")[0]).toUTCString()
+      new Date(value.endDate).toUTCString() !==
+        new Date(fetchedDoc?.endDate?.split("+")[0]).toUTCString(), endDate
     );
     if (
       new Date(value.endDate).toUTCString() !==
-      new Date(fetchedDoc.endDate.split("+")[0]).toUTCString()
+      new Date(fetchedDoc?.endDate?.split("+")[0]).toUTCString()
     ) {
-      updatedObj.endDate = endDate;
+      updatedObj.endDate = endDate?.length > 0 ? endDate : null;
     }
-    if (value.maxParticipants !== fetchedDoc.maxParticipants) {
+    if (value?.maxParticipants !== fetchedDoc?.maxParticipants) {
       updatedObj.maxParticipants = maxParticipants;
     }
-    if (value.price !== fetchedDoc.price) {
+    if(value?.duration !== fetchedDoc?.duration) {
+      updatedObj.duration = duration;
+    }
+    if(value?.language !== fetchedDoc?.language) {
+      updatedObj.language = language;
+    }
+    if (value.price !== fetchedDoc?.price) {
       updatedObj.price = price;
     }
-    if (value.category !== fetchedDoc.category) {
+    if (value.category !== fetchedDoc?.category) {
       updatedObj.category = category;
     }
-    if (value.privacy !== fetchedDoc.privacy) {
+    if (value.privacy !== fetchedDoc?.privacy) {
       updatedObj.privacy = privacy;
     }
-    if (value.imageId !== fetchedDoc.imageId) {
+    if (value.imageId !== fetchedDoc?.imageId) {
       updatedObj.imageId = value.imageId;
       updatedObj.image = value.image;
     }
-    if (value.medium !== fetchedDoc.medium) {
+    if (value.medium !== fetchedDoc?.medium) {
       updatedObj.medium = medium;
     }
     updatedObj.location = value.location;
@@ -158,7 +170,7 @@ function CreateEventLogic() {
   };
 
   const handleCreateEvent = async (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     const token = JSON.parse(localStorage.getItem("token"));
     console.log(token);
     setSigningin((prev) => true);
@@ -176,9 +188,9 @@ function CreateEventLogic() {
       if (!startDate) {
         throw new Error("Please provide a start date for your event.");
       }
-      if (!endDate) {
-        throw new Error("Please provide an end date for your event.");
-      }
+      // if (!endDate) {
+      //   throw new Error("Please provide an end date for your event.");
+      // }
       if (!category) {
         throw new Error("Please provide a category for your event.");
       }
@@ -225,7 +237,7 @@ function CreateEventLogic() {
           if (fetchedDoc?.imageId) {
             const deletedFile = await storage.deleteFile(
               process.env.REACT_APP_IMAGES_BUCKET_ID,
-              fetchedDoc.imageId
+              fetchedDoc?.imageId
             );
             console.log(deletedFile);
           }
@@ -243,7 +255,7 @@ function CreateEventLogic() {
         } else if (image === null) {
           const deletedFile = await storage.deleteFile(
             process.env.REACT_APP_IMAGES_BUCKET_ID,
-            fetchedDoc.imageId
+            fetchedDoc?.imageId
           );
           console.log(deletedFile);
           filePreviewUrl = null;
@@ -269,7 +281,7 @@ function CreateEventLogic() {
           privacy,
           createdBy: token.userId,
           image: filePreviewUrl,
-          imageId: filePreviewUrl ? uploadedFile?.$id : fetchedDoc.imageId,
+          imageId: filePreviewUrl ? uploadedFile?.$id : fetchedDoc?.imageId,
           price: String(price).length === 0 ? 0 : price,
         };
         const updatedValues = id ? getUpdatedValues(value) : value;
@@ -300,8 +312,8 @@ function CreateEventLogic() {
           const teamNameUpdate = await teams.updateName(teamId, title);
           console.log(teamNameUpdate);
         }
-        const updateTeamPreferences = await teams.updatePrefs( teamId, {...fetchedDoc, ...response } )
-        console.log(updateTeamPreferences);
+        // const updateTeamPreferences = await teams.updatePrefs( teamId, {...fetchedDoc?, ...response } )
+        // console.log(updateTeamPreferences);
         toast.success(`Event ${id ? "updated" : "created"} successfully`);
         navigate(-1);
       } catch (error) {
@@ -387,8 +399,23 @@ function CreateEventLogic() {
       placeholder: "Please provide an end date for your event.",
       cb: setEndDate,
       show: true,
-      required: true,
       type: "datetime-local",
+    },
+    {
+      label: "Duration",
+      value: duration,
+      placeholder: "Please provide a duration for your event. (hh:mm)",
+      cb: setDuration,
+      show: true,
+      type: "string",
+    },
+    {
+      label: "Language",
+      value: language,
+      placeholder: "Please provide a language for your event.",
+      cb: setLanguage,
+      show: true,
+      type: "string",
     },
     {
       label: "Max Participants",
@@ -467,7 +494,7 @@ function CreateEventLogic() {
   ];
 
   const removeImage = (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     setImagePreview((prev) => null);
     setImage((prev) => null);
   };

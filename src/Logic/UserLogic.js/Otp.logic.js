@@ -28,7 +28,7 @@ function OtpLogic() {
   ];
 
   useEffect(() => {
-    setTimeLeft(prev => (new Date(expire.split(' ').join('+')).getTime() - new Date().getTime()));
+    setTimeLeft(prev => (new Date(expire?.split(' ').join('+')).getTime() - new Date().getTime()));
     setTimeString((prev) => {
       const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
@@ -53,7 +53,7 @@ function OtpLogic() {
   }, [timeLeft]);
 
   const updatePhoneVerificationStatus = async (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     setSigningin((prev) => true);
     setValidateMessage((prev) => null);
     console.log("Phone ", phone);
