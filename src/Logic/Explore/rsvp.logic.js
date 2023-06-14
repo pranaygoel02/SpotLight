@@ -15,10 +15,8 @@ export default function RsvpLogic(event) {
   const { sendNotification } = useNotifications();
 
   const checkUserIsOwner = () => {
-    console.log("CHECKING USER IS OWNER", event.createdBy, spotlightUser.$id);
     if (token && cookieFallback && spotlightUser) {
-      if (event?.createdBy === spotlightUser.$id) {
-        console.log("USER IS OWNER");
+      if (event?.createdBy === spotlightUser?.$id) {
         return true;
       }
     }
