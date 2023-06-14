@@ -99,11 +99,12 @@ function AcceptInvite() {
     setAccepting((prev) => true);
     try {
       const teams = new Teams(client);
+      console.log('Taam Id >>>>', teamId, membershipId);
       const res = await teams.deleteMembership(teamId, membershipId);
       console.log(res);
       toast.success("Invitation rejected successfully!");
       await sendNotification({
-        message: `${user?.name ?? user?.email ?? `User with ID ${userId}`} rejected your invitation to ${event?.title}!`,
+        message: `${user?.name ?? user?.userName ?? user?.email ?? `User with ID ${userId}`} rejected your invitation to ${event?.title}!`,
         userId: event?.createdBy,
         fromUserId: userId,
         fromUserName: user?.name
