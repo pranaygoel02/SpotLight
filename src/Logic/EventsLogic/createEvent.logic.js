@@ -43,6 +43,7 @@ function CreateEventLogic() {
   const [fetchedDoc, setFetchedDoc] = useState(null);
   const [fetchingDoc, setFetchingDoc] = useState(false);
   const [imageId, setImageId] = useState(null);
+  const [tnc, setTnc] = useState(null);
 
   const handleImage = (e) => {
     if (e.target.files[0]) {
@@ -78,6 +79,7 @@ function CreateEventLogic() {
         imageId,
         duration,
         language,
+        tnc
       } = response;
       setFetchedDoc((prev) => response);
       setTitle((prev) => title);
@@ -100,6 +102,7 @@ function CreateEventLogic() {
       setImage((prev) => image);
       setImagePreview((prev) => image);
       setImageId((prev) => imageId);
+      setTnc((prev) => tnc);
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -115,6 +118,9 @@ function CreateEventLogic() {
     const updatedObj = {};
     if (value.title !== fetchedDoc?.title) {
       updatedObj.title = title;
+    }
+    if (value.tnc !== fetchedDoc?.tnc) {
+      updatedObj.tnc = tnc;
     }
     if (value.description !== fetchedDoc?.description) {
       updatedObj.description = description;
@@ -285,6 +291,7 @@ function CreateEventLogic() {
           image: filePreviewUrl,
           imageId: filePreviewUrl ? uploadedFile?.$id : fetchedDoc?.imageId,
           price: String(price).length === 0 ? 0 : price,
+          tnc
         };
         const updatedValues = id ? getUpdatedValues(value) : value;
         console.log(updatedValues);
@@ -444,6 +451,15 @@ function CreateEventLogic() {
       show: true,
       options: categories,
       required: true,
+    },
+    {
+      label: "Terms and Conditions",
+      value: tnc,
+      placeholder: "Please provide terms and conditions for your event.",
+      cb: setTnc,
+      multiline: true,
+      show: true,
+      type: "textarea",
     },
     {
       label: "Location Name",
