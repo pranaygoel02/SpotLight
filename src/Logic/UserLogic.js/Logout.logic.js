@@ -9,7 +9,7 @@ function LogoutLogic() {
     const navigate = useNavigate();
 
     const logout = async (e) => {
-    e.preventDefault();
+    e?.preventDefault();
 
     const account = new Account(client);
 

@@ -47,7 +47,7 @@ function SignupLogic() {
       rightIcon: (
         <button
           onClick={(e) => {
-            e.preventDefault();
+            e?.preventDefault();
             setShowPass((prev) => !prev);
           }}
         >
@@ -70,7 +70,7 @@ function SignupLogic() {
       rightIcon: (
         <button
           onClick={(e) => {
-            e.preventDefault();
+            e?.preventDefault();
             setShowCPass((prev) => !prev);
           }}
         >
@@ -85,12 +85,12 @@ function SignupLogic() {
   ];
 
   const navigateToPhone = (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     navigate("/auth/phone")
   }
 
   const signUpUser = async (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     if (!name || !email || !password || !CPassword) {
       toast.error("Please fill all fields");
       setValidateMessage((prev) => "Please fill all fields");

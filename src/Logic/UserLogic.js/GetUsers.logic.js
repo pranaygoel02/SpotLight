@@ -9,8 +9,7 @@ function GetUsersLogic() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [showUsers, setShowUsers] = useState(null)
-    const [filteredUsers, setFilteredUsers] = useState(null)
-
+    
     const toggleShowUsers = useCallback(() => {
         setShowUsers(prev => !prev)
     }, [])
@@ -38,14 +37,6 @@ function GetUsersLogic() {
         }
     }, [])
 
-    const filterUsers = useCallback( (e) => {
-        const value = e.target.value.toLowerCase();
-        const filtered = users.filter(user => {
-            return user.name.toLowerCase().includes(value || '') || user.email.toLowerCase().includes(value || '')
-        })
-        setFilteredUsers(prev => filtered)
-    }, [users])
-
     useEffect(() => {
         getUsers()
     }, [getUsers])
@@ -55,9 +46,7 @@ function GetUsersLogic() {
         showUsers,
         loading,
         error,
-        toggleShowUsers,
-        filterUsers,
-        filteredUsers
+        toggleShowUsers
     }
 }
 

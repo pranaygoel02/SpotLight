@@ -34,7 +34,7 @@ function LoginLogic() {
       rightIcon: (
         <button
           onClick={(e) => {
-            e.preventDefault();
+            e?.preventDefault();
             setShowPass((prev) => !prev);
           }}
         >
@@ -49,7 +49,7 @@ function LoginLogic() {
   ];
 
   const loginUser = async (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     setSigningin((prev) => true);
     setValidateMessage((prev) => null);
     console.log("Signing you up", email, password);
@@ -81,7 +81,7 @@ function LoginLogic() {
         const sendOTPResponse = await account.createPhoneVerification();
         console.log(sendOTPResponse);
         toast.success("OTP sent to your phone.");
-        navigate("/splash/otp", {
+        navigate("/auth/otp", {
           state: {
             ...sendOTPResponse,
             email,

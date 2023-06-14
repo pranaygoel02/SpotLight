@@ -55,7 +55,7 @@ function PhoneLogic() {
   ];
 
   const updatePhoneNumber = async (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     setSigningin((prev) => true);
     setValidateMessage((prev) => null);
     console.log("Phone ", phone);
