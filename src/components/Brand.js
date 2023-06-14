@@ -9,11 +9,11 @@ function Brand({ size, color }) {
   return (
     <Link
       title="Home"
-      className={`font-extrabold gap-2 capitalize inline-flex text-xl items-center ${color} text-${size}xl ${pathname.includes('dashboard') && 'text-primary'} font-poppins`}
+      className={`font-extrabold gap-2 capitalize inline-flex text-xl items-center ${(pathname.includes('dashboard') || pathname.includes('auth')) && 'text-primary'} font-poppins`}
       to={"/"}
     >
-      <img className="w-8" src={pathname.includes('dashboard') ? Logo2 : Logo} />
-      <span className={pathname.includes('dashboard') ? 'hidden' : 'block'}>SpotLight</span>
+      <img className={size ?? "w-8"} src={(pathname.includes('dashboard') || pathname.includes('auth')) ? Logo2 : Logo} />
+      <span className={(pathname.includes('dashboard') || pathname.includes('auth')) ? 'hidden' : 'block'}>SpotLight</span>
     </Link>
   );
 }

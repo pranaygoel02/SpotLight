@@ -16,7 +16,7 @@ function Input({
 }) {
   return ( show &&
     <div className="flex flex-col">
-      {label && <label className="text-sm text-neutral-500">{label}{required && <span className="text-red-600">*</span>}</label>}
+      {label && <label className="text-sm mb-2 text-neutral-500">{label}{required && <span className="text-red-600">*</span>}</label>}
       {options ? (
         <div className="inline-flex gap-2 flex-wrap" >
           {options?.map((option, index) => {
@@ -34,7 +34,7 @@ function Input({
           })}
         </div>
       ) : (
-        <div className="p-2 border-b border-neutral-300 focus-within:border-black bg-transparent w-full inline-flex font-poppins">
+        <div className={`p-2 px-1 ${leftIcon && 'pl-2'} ${rightIcon && 'pr-2'} border border-neutral-300 focus-within:border-neutral-400 bg-transparent w-full inline-flex rounded-[18px] font-poppins`}>
           {leftIcon}
           {type === "textarea" ? (
             <textarea

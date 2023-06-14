@@ -3,6 +3,7 @@ import { IoAdd } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import NotFoundEvent from '../../assets/images/eventNotFound.svg'
 import GetEventLogic from "../../Logic/EventsLogic/getEvents";
+import Loading from "../../components/Loading";
 
 function Dashboard() {
   const [date, setDate] = useState(new Date());
@@ -42,7 +43,7 @@ function Dashboard() {
       </div>
       <div className="py-8">
         {loading && (
-          <div className="w-full h-40 rounded-[18px] bg-neutral-200 outline outline-1 outline-neutral-200 animate-pulse"></div>
+          <Loading />
         )}
         {error && <p>{error}</p>}
         {!loading && eventCount === 0 && 

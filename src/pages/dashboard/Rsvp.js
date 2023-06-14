@@ -131,7 +131,7 @@ function Rsvps() {
           ))}
         </div>
       ) : (
-        <p>You don't have any invites yet</p>
+        <p className="text-neutral-500">You don't have any pending RSVPs yet</p>
       )}
       {eventId && (
         <UserList
