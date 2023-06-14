@@ -67,7 +67,7 @@ function OtpLogic() {
       );
       console.log(sendOTPResponse);
       toast.success("OTP verified successfully.");
-      navigate("/dashboard", { replace: true });
+      navigate("/", { replace: true });
     } catch (error) {
       console.log(error, error.message);
       setValidateMessage((prev) => error.message);

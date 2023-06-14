@@ -188,9 +188,11 @@ function CreateEventLogic() {
       if (!startDate) {
         throw new Error("Please provide a start date for your event.");
       }
-      // if (!endDate) {
-      //   throw new Error("Please provide an end date for your event.");
-      // }
+      if (endDate) {
+        if (new Date(endDate) < new Date(startDate)) {
+          throw new Error("End date cannot be before start date.");
+        }
+      }
       if (!category) {
         throw new Error("Please provide a category for your event.");
       }
@@ -418,7 +420,7 @@ function CreateEventLogic() {
       type: "string",
     },
     {
-      label: "Max Participants",
+      label: "Max Participants (i.e. RSVPs)",
       value: maxParticipants,
       placeholder:
         "Please provide a maximum number of participants for your event.",
