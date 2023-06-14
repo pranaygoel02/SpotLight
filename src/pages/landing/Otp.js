@@ -19,7 +19,7 @@ function Otp() {
                 <Input {...input} show={true}/>
             ))
         }
-        <Button loading={signingin} type={'submit'} text='Update Phone Number' />
+        <Button loading={signingin} type={'submit'} text='Verify OTP' />
     </form>
     <p className='text-center font-bold text-base'>Time Left: {timeString}</p>
     {timeLeft <= 0 && <p className='text-center py-4'>Didn't receive the code? <button onClick={resendCode} className='text-blue-500'>Resend</button></p>}

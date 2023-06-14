@@ -19,6 +19,10 @@ import Event from "./pages/dashboard/Event";
 import AcceptInvite from "./pages/AcceptInvite";
 import Invites from "./pages/dashboard/Invites";
 import VeirfyEmail from "./pages/VerifyEmail";
+import Landing from './pages/landing/Landing'
+import Explore from "./pages/landing/Explore";
+import EventPage from "./pages/landing/EventPage";
+import Ticket from "./components/Ticket";
 
 function App() {
   return (
@@ -26,8 +30,11 @@ function App() {
     <Toaster position="top-center" reverseOrder={false} />
     <Router>
       <Routes>
+        <Route path="/ticket" element={<Ticket />} />
         <Route path="/" element={<ProtectedRoute><LandingLayout /></ProtectedRoute>}>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="explore" element={<Explore />} />
+          <Route path='event/:id' element={<EventPage/>} />
           <Route path="auth" element={<AuthLayout />}>
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />

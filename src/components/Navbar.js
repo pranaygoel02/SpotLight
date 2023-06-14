@@ -7,42 +7,45 @@ import LogoutLogic from "../Logic/UserLogic.js/Logout.logic";
 function Navbar() {
   const [toggleMenu, setToggleMenu] = useState(false);
 
-  
-
   const [navData, setNavData] = useState([]);
 
   let token = localStorage.getItem("token");
 
   useEffect(() => {
-  console.log(token);
-   setNavData((prev) => [
-        {
-          title: "Dashboard",
-          link: "/dashboard",
-          show: token ? true : false,
-        },
-        {
-          title: "Login",
-          link: "/auth/login",
-          show: token ? false : true,
-        },
-        {
-          title: "Signup",
-          link: "/auth/signup",
-          show: token ? false : true,
-        },
-      ]);
+    console.log(token);
+    setNavData((prev) => [
+      {
+        title: "Explore",
+        link: "/explore",
+        show: true,
+      },
+      {
+        title: "Dashboard",
+        link: "/dashboard",
+        show: token ? true : false,
+      },
+      {
+        title: "Login",
+        link: "/auth/login",
+        show: token ? false : true,
+      },
+      {
+        title: "Signup",
+        link: "/auth/signup",
+        show: token ? false : true,
+      },
+    ]);
   }, [token]);
 
   const { logout } = LogoutLogic();
 
   return (
-    <div className="app">
-      <nav className=" text-black">
+    <div className="app ">
+      <nav className=" text-white w-full bg-secondary text-sm">
         <div className="container">
           <div className="flex mx-auto justify-between ">
             {/* Primary menu and logo */}
-            <div className="flex items-center justify-between w-full gap-16 my-8">
+            <div className="flex items-center justify-between w-full gap-16 my-8 font-poppins">
               {/* logo */}
               <div>
                 <a href="/" className="flex gap-1 font-bold items-center ">
@@ -81,7 +84,7 @@ function Navbar() {
         </div>
         {/* mobile navigation */}
         <div
-          className={`fixed z-40 w-full bg-white overflow-hidden flex flex-col lg:hidden gap-12  origin-top duration-700 ${
+          className={`fixed z-40 w-full bg-secondary overflow-hidden flex flex-col lg:hidden gap-12  origin-top duration-700 font-poppins ${
             !toggleMenu ? "h-0" : "h-full"
           }`}
         >
@@ -100,7 +103,11 @@ function Navbar() {
                     </NavLink>
                   )
               )}
-              {token && <button onClick={logout}>Logout</button>}
+              {token && (
+                <button className="logout-btn" onClick={logout}>
+                  Logout
+                </button>
+              )}
             </div>
           </div>
         </div>

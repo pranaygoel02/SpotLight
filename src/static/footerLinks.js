@@ -1,21 +1,19 @@
-import InstagramIcon from '@mui/icons-material/Instagram';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
+import { RiGithubFill, RiInstagramFill, RiTwitterFill } from 'react-icons/ri';
 
 export const footerLinks = [
     {
         title: 'Instagram',
-        icon: <InstagramIcon/>,
-        link: '/'
+        icon: <RiInstagramFill/>,
+        link: 'https://instagram.com/pranay_goel__'
     },
     {
-        title: 'Facebook',
-        icon: <FacebookRoundedIcon/>,
-        link: '/'
+        title: 'Github',
+        icon: <RiGithubFill/>,
+        link: 'https://github.com/pranaygoel02'
     },
     {
         title: 'Twitter',
-        icon: <TwitterIcon/>,
-        link: '/'
+        icon: <RiTwitterFill/>,
+        link: 'https://twitter.com/pranay_goel__'
     },
 ]
