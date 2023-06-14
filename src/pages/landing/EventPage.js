@@ -2,16 +2,12 @@ import React from "react";
 import GetEventLogic from "../../Logic/EventsLogic/getEvents";
 import Loading from "../../components/Loading";
 import {
-  MdCategory,
   MdComputer,
-  MdCurrencyRupee,
-  MdRsvp,
+  MdCurrencyRupee
 } from "react-icons/md";
 import {
   IoBookmarkOutline,
-  IoCalendar,
   IoCalendarClearOutline,
-  IoLocation,
   IoLocationOutline,
   IoWalletOutline,
 } from "react-icons/io5";

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import GetEventLogic from "../../Logic/EventsLogic/getEvents";
 import EventCard from "../../components/EventCard";
-import { Link } from "react-router-dom";
-import { IoAdd } from "react-icons/io5";
 import Loading from "../../components/Loading";
 
 function Events() {

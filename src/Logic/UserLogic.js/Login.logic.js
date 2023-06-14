@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import client from "../../appwrite.config";
 import { Account } from "appwrite";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";

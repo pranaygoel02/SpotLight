@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import client from "../../appwrite.config";
-import { Databases, Storage, ID, Query } from "appwrite";
+import { Databases, Query } from "appwrite";
 import { useSearchParams, useParams } from "react-router-dom";
 
 function GetExporeLogic() {

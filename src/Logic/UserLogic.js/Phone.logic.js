@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-
-import { Client, Account, ID, Locale } from "appwrite";
+import { useEffect, useState } from "react"
+import { Account, Locale } from "appwrite";
 import client from "../../appwrite.config.js";
 import { toast } from "react-hot-toast";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";

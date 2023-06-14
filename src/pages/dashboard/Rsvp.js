@@ -1,25 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useCallback, useEffect, useState } from "react";
 import Loading from "../../components/Loading";
-import {
-  IoAdd,
-  IoPeopleOutline,
-  IoPersonAdd,
-  IoPersonAddOutline,
-  IoPersonOutline,
-  IoPersonRemoveOutline,
-  IoRemove,
-} from "react-icons/io5";
-import GetMembershipLogic from "../../Logic/Membership/GetMembership.logic";
-import { RiDeleteBackLine } from "react-icons/ri";
 import UserList from "../../components/UserList";
 import client from "../../appwrite.config";
-import { Databases, Query, Teams } from "appwrite";
-import GetEventLogic from "../../Logic/EventsLogic/getEvents";
+import { Databases, Query } from "appwrite";
 import {
   MdOutlinePersonAdd,
   MdOutlinePersonRemove,
-  MdOutlinePersonRemoveAlt1,
   MdPeopleOutline,
 } from "react-icons/md";
 

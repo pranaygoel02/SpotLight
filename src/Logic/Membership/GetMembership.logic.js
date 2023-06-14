@@ -1,7 +1,6 @@
 import {useState, useEffect, useCallback } from 'react'
 import client from '../../appwrite.config.js'
-import { Teams, Databases } from 'appwrite' 
-import { toast } from 'react-hot-toast'
+import { Teams } from 'appwrite' 
 
 function GetMembershipLogic() {
 

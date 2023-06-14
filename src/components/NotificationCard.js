@@ -1,7 +1,6 @@
 import React from 'react'
 import Avatar from './Avatar'
 import { Link } from 'react-router-dom'
-import moment from 'moment'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 

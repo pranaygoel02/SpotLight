@@ -1,12 +1,10 @@
 import React from "react";
-import { IoArrowBack, IoClose } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { IoClose } from "react-icons/io5";
 import BackBtn from "../../components/BackBtn";
 import CreateEventLogic from "../../Logic/EventsLogic/createEvent.logic";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { MdUpload } from "react-icons/md";
-import { RiLoaderFill, RiShieldCrossFill } from "react-icons/ri";
 import Loading from "../../components/Loading";
 
 function Create() {

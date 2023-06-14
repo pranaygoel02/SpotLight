@@ -1,6 +1,5 @@
 import React from 'react'
 import { AiOutlineLoading } from 'react-icons/ai'
-import { RiLoaderFill } from 'react-icons/ri'
 
 function Loading({text}) {
   return (

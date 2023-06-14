@@ -1,14 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  IoArrowBack,
   IoCalendarClearOutline,
-  IoHome,
   IoHomeOutline,
-  IoLogOut,
   IoLogOutOutline,
-  IoNotifications,
   IoNotificationsOutline,
-  IoPeople,
   IoPeopleOutline,
   IoPersonOutline,
   IoTicketOutline,
@@ -17,7 +12,6 @@ import { Link, NavLink } from "react-router-dom";
 import LogoutLogic from "../Logic/UserLogic.js/Logout.logic";
 import client from "../appwrite.config";
 import { Account } from "appwrite";
-import { MdEventBusy, MdRsvp } from "react-icons/md";
 import { useNotifications } from "../context/notificationContext";
 import Brand from "./Brand";
 
@@ -45,9 +39,6 @@ function Sidebar() {
 
   return (
     <div className="flex flex-col p-4 border-r border-neutral-200 gap-2 ">
-      {/* <Link className="sidebar-link" to="/">
-        Logo
-      </Link> */}
       <div className="sidebar-link hover:bg-transparent hover:shadow-none w-max">
         <Brand />
       </div>

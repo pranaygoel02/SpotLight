@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Client, Account, ID, Databases } from "appwrite";
+import { Account, ID, Databases } from "appwrite";
 import client from "../../appwrite.config.js";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { toast } from "react-hot-toast";

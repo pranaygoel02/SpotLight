@@ -1,7 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import BackBtn from "../../components/BackBtn";
+import React, { useEffect, useState } from "react";
 import Avatar from "../../components/Avatar";
-import Loading from "../../components/Loading";
 import Input from "../../components/Input";
 import { MdVerified } from "react-icons/md";
 import client from "../../appwrite.config";
