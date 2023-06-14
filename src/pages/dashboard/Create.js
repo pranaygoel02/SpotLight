@@ -49,7 +49,7 @@ function Create() {
           />
           <button
             onClick={(e) => {
-              e.preventDefault();
+              e?.preventDefault();
               fileRef.current.click();
             }}
             className="primary-btn self-start"

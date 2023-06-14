@@ -50,7 +50,7 @@ function Events() {
       <div className="w-full px-6 my-4 rounded-[18px] bg-neutral-200 outline outline-1 outline-neutral-200 flex items-center justify-between">
         <input
           onChange={(e) => {
-            e.preventDefault();
+            e?.preventDefault();
             setFilteredEvents((prev) =>
               events?.filter(
                 (event) =>
@@ -68,7 +68,7 @@ function Events() {
         <select
           defaultValue={filter}
           onChange={(e) => {
-            e.preventDefault();
+            e?.preventDefault();
             setSearchParams({ filter: e.target.value });
           }}
           className="w-max bg-transparent py-4 pl-4 outline-none border-l border-neutral-300"
@@ -85,7 +85,7 @@ function Events() {
       ) : (
         <div>
           {error && <p>{error}</p>}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid lg:grid-cols-2 gap-4">
             {!loading && filteredEvents?.length > 0 ? (
               filteredEvents?.map((event, index) => (
                 <EventCard key={index} event={event} />
