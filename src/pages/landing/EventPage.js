@@ -20,9 +20,9 @@ import { useLocation } from "react-router-dom";
 import RsvpLogic from "../../Logic/Explore/rsvp.logic";
 
 function EventPage() {
-  
   const { loading, error, events, id } = GetEventLogic();
-  const { token, cookieFallback, handleRSVP, checkUserIsOwner, adding } = RsvpLogic(events);
+  const { token, cookieFallback, handleRSVP, checkUserIsOwner, adding } =
+    RsvpLogic(events);
   console.log(events);
 
   const { pathname } = useLocation();
@@ -44,6 +44,7 @@ function EventPage() {
     location,
     image,
     meet,
+    tnc,
   } = events;
 
   const start = startDate ? new Date(startDate?.split("+")[0]) : null;
@@ -54,7 +55,11 @@ function EventPage() {
   const endTime = end?.toTimeString()?.slice(0, 5);
 
   const RSVPBtn = () => (
-    <button disabled={adding} onClick={handleRSVP} className="primary-btn disabled:opacity-60">
+    <button
+      disabled={adding}
+      onClick={handleRSVP}
+      className="primary-btn disabled:opacity-60"
+    >
       {price <= 0 ? "RSVP" : "BUY NOW"}
     </button>
   );
@@ -112,7 +117,7 @@ function EventPage() {
                   )}
                 </h2>
 
-               <RSVPBtn />
+                <RSVPBtn />
               </div>
             </div>
             <div className="inline-flex w-full items-center gap-2">
@@ -143,6 +148,18 @@ function EventPage() {
           <div className="display-linebreak text-neutral-800 text-sm font-grostek">
             {description}
           </div>
+          {tnc && (
+            <>
+              <h2 className="font-semibold py-2 border-b border-neutral-300 text-lg">
+                Terms and Conditions
+              </h2>
+              <ul className="display-linebreak text-neutral-800 text-sm font-grostek list-disc">
+                {tnc?.split("\n")?.map(t => (
+                  <li>{t}</li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
         <div className="col-span-2 hidden md:block w-full space-y-4">
           <div className="rounded-lg flex flex-col gap-4 outline w-full  outline-1 outline-neutral-300 p-6">
