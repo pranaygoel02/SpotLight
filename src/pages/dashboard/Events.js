@@ -84,7 +84,7 @@ function Events() {
                 <EventCard key={index} event={event} />
               ))
             ) : (
-              <p>No events found</p>
+              <p className="text-neutral-500">No events found</p>
             )}
           </div>
         </div>

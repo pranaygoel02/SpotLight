@@ -18,7 +18,7 @@ function Signup() {
                 <Input {...input} show={true}/>
             ))
         }
-        <Button loading={signingin} type={'submit'} text='Sign up' />
+        <Button loading={signingin} type={'submit'} text='Sign up' style={'my-2'} />
     </form>
   )
 }

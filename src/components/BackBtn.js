@@ -9,10 +9,10 @@ function BackBtn({to}) {
       className="flex gap-1 font-bold items-center group  w-max rounded-[18px] transition-all duration-500"
     >
       <MdOutlineArrowBack
-        className="bg-white rounded-full group-hover:bg-white group-hover:p-1 group-hover:text-black"
+        className=" rounded-full  group-hover:p-1 group-hover:text-black"
         size={24}
       />
-      <p className="text-white relative text-transparent group-hover:text-black translate-x-16 group-hover:translate-x-0 group-hover:block transition-all">
+      <p className="text-gray-100 relative text-transparent group-hover:text-black translate-x-16 group-hover:translate-x-0 group-hover:block transition-all">
         Go back
       </p>
     </Link>
