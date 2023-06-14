@@ -1,11 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import client from "../../appwrite.config";
 import { Databases, Storage, ID, Query } from "appwrite";
-import { useSearchParams, useParams } from "react-router-dom";
+import { useSearchParams, useParams, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 function GetEventLogic() {
     const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
     const { id } = useParams();
+    const {pathname} = useLocation();
     const filter = searchParams.get("filter");
     const [events, setEvents] = useState(null)
     const [eventCount, setEventCount] = useState(null)
@@ -65,15 +68,20 @@ function GetEventLogic() {
                 process.env.REACT_APP_DATABASE_ID,
                 process.env.REACT_APP_EVENTS_COLLECTION_ID,
                 id,
-                [
+                pathname.includes('dashboard') ? [
                     Query.equal('createdBy', JSON.parse(localStorage.getItem('token')).userId)
+                ] : [
+                    Query.equal('privacy', 'public')
                 ]
             );
             console.log(response);
+            if(!pathname.includes('dashboard') && response.privacy === 'private') throw new Error('This event is private')
             setEvents(prev => response);
         }
         catch(err) {
             setError(prev => err.message)
+            toast.error(err.message)
+            navigate(-1)
         }
         finally {
             setLoading(prev => false)
