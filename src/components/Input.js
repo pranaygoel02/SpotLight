@@ -24,7 +24,7 @@ function Input({
               <button
                 className={`p-2 ${(option.value ?? option.label) === value ? "primary-btn" : "sidebar-link"}`}
                 onClick={(e) => {
-                  e.preventDefault();
+                  e?.preventDefault();
                   cb((prev) => (option.value ?? option.label));
                 }}
               >
@@ -39,7 +39,7 @@ function Input({
           {type === "textarea" ? (
             <textarea
               onChange={(e) => {
-                e.preventDefault();
+                e?.preventDefault();
                 if(cb) {
                   cb((prev) => e.target.value);
                 }
@@ -55,7 +55,7 @@ function Input({
             defaultValue={defaultValue}
             type={type}
             onChange={(e) => {
-              e.preventDefault();
+              e?.preventDefault();
               cb((prev) => e.target.value)
             }}
             value={value}

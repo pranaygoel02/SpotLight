@@ -37,17 +37,17 @@ const EventCard = ({
           </div>
         </div>
       </div>
-      <div className="flex flex-row justify-between items-start gap-4 p-2">
-        <div className="flex flex-col items-start max-w-[80%]">
+      <div className="flex flex-col md:flex-row justify-between items-start gap-4 p-2">
+        <div className="flex flex-col items-start md:max-w-[75%] lg:max-w-[78%] xl:max-w-[80%]">
           <p className="text-xl font-bold">{title}</p>
           <p className="text-xs text-neutral-600 line-clamp-5 pt-2">{description}</p>
         </div>
-        <div className="flex flex-col gap-2 items-end h-full justify-evenly">
-          <p>{new Date(startDate.split('+')[0]).toTimeString().slice(0,5)}</p>
-          <p className="text-xs text-neutral-600">{new Date(startDate.split('+')[0]).toDateString().slice(4)}</p>
-          <hr className="w-full"></hr>
-          <p>{new Date(endDate.split('+')[0]).toTimeString().slice(0,5)}</p>
-          <p className="text-xs text-neutral-600">{new Date(endDate.split('+')[0]).toDateString().slice(4)}</p>
+        <div className="flex md:flex-col gap-2  items-center md:items-end h-full justify-evenly">
+          <p>{new Date(startDate?.split('+')[0]).toTimeString().slice(0,5)}</p>
+          <p className="text-xs text-neutral-600">{new Date(startDate?.split('+')[0]).toDateString().slice(4)}</p>
+          <hr className="w-[1px] h-full md:w-full md:h-[1px]"></hr>
+          <p>{new Date(endDate?.split('+')[0]).toTimeString().slice(0,5)}</p>
+          <p className="text-xs text-neutral-600">{new Date(endDate?.split('+')[0]).toDateString().slice(4)}</p>
         </div>
       </div>
     </Link>
