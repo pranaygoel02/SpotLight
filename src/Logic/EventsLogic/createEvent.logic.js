@@ -30,7 +30,6 @@ function CreateEventLogic() {
   const [duration, setDuration] = useState(null);
   const [language, setLanguage] = useState(null);
   const [maxParticipants, setMaxParticipants] = useState(null);
-  const [price, setPrice] = useState(null);
   const [category, setCategory] = useState("");
   const [medium, setMedium] = useState("offline");
   const [meetLink, setMeetLink] = useState("");
@@ -70,7 +69,6 @@ function CreateEventLogic() {
         startDate,
         endDate,
         maxParticipants,
-        price,
         category,
         medium,
         meet,
@@ -92,7 +90,6 @@ function CreateEventLogic() {
       setDuration((prev) => duration);
       setLanguage((prev) => language);
       setMaxParticipants((prev) => maxParticipants);
-      setPrice((prev) => price);
       setCategory((prev) => category);
       setMedium((prev) => medium);
       setMeetLink((prev) => meet[0]);
@@ -153,9 +150,6 @@ function CreateEventLogic() {
     }
     if(value?.language !== fetchedDoc?.language) {
       updatedObj.language = language;
-    }
-    if (value.price !== fetchedDoc?.price) {
-      updatedObj.price = price;
     }
     if (value.category !== fetchedDoc?.category) {
       updatedObj.category = category;
@@ -234,7 +228,6 @@ function CreateEventLogic() {
         category,
         location: [String(location), String(latitude), String(longitude)],
         meet: [String(meetLink), String(meetId), String(meetPassword)],
-        price,
         createdBy: token.userId,
         image: image,
       });
@@ -290,7 +283,6 @@ function CreateEventLogic() {
           createdBy: token.userId,
           image: filePreviewUrl,
           imageId: filePreviewUrl ? uploadedFile?.$id : fetchedDoc?.imageId,
-          price: String(price).length === 0 ? 0 : price,
           tnc
         };
         const updatedValues = id ? getUpdatedValues(value) : value;
@@ -432,14 +424,6 @@ function CreateEventLogic() {
       placeholder:
         "Please provide a maximum number of participants for your event.",
       cb: setMaxParticipants,
-      type: "number",
-      show: true,
-    },
-    {
-      label: "Price",
-      value: price,
-      placeholder: "Leave blank if it's a free event. (in INR))",
-      cb: setPrice,
       type: "number",
       show: true,
     },
