@@ -107,6 +107,7 @@ body,
   }
 }
 
+
 @media screen and (max-width: 640px) {
   .swiper {
     padding-inline: 1rem !important;
