@@ -16,6 +16,7 @@ import {
   IoClose,
   IoCopy,
   IoLocation,
+  IoPeopleOutline,
   IoPersonOutline,
   IoSearch,
   IoWalletOutline,
@@ -26,6 +27,31 @@ import client from "../../appwrite.config";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading";
 import GetUsersLogic from "../../Logic/UserLogic.js/GetUsers.logic";
+import UserList from "../../components/UserList";
+
+function calculateLightness(rgb) {
+  const r = rgb[0] / 255;
+  const g = rgb[1] / 255;
+  const b = rgb[2] / 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+
+  return (max + min) / 2;
+}
+
+function compareLightness(color1, color2) {
+  const lightness1 = calculateLightness(color1);
+  const lightness2 = calculateLightness(color2);
+
+  if (lightness1 < lightness2) {
+    return 1;
+  } else if (lightness1 > lightness2) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
 
 function Event() {
   const { loading, error, events, id } = GetEventLogic();
@@ -36,35 +62,9 @@ function Event() {
     toggleShowUsers,
     showUsers,
     loading: fetchingUsers,
-    filterUsers,
-    filteredUsers,
   } = GetUsersLogic();
 
   const [colors, setColors] = useState([]);
-
-  function calculateLightness(rgb) {
-    const r = rgb[0] / 255;
-    const g = rgb[1] / 255;
-    const b = rgb[2] / 255;
-
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
-
-    return (max + min) / 2;
-  }
-
-  function compareLightness(color1, color2) {
-    const lightness1 = calculateLightness(color1);
-    const lightness2 = calculateLightness(color2);
-
-    if (lightness1 < lightness2) {
-      return 1;
-    } else if (lightness1 > lightness2) {
-      return -1;
-    } else {
-      return 0;
-    }
-  }
 
   console.log(colors);
 
@@ -89,36 +89,13 @@ function Event() {
   };
 
   const copyTeamId = (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     navigator.clipboard.writeText(events?.teamId);
     toast.success("Invitation ID copied to clipboard");
   };
 
   const deleteEventToast = (e) => {
-    e.preventDefault();
-    //   title: "Delete Event?",
-    //   description: "Are you sure you want to delete this event?",
-    //   status: "warning",
-    //   duration: 9000,
-    //   isClosable: true,
-    //   position: "top",
-    //   render: () => (
-    //     <div className="p-4 rounded-[18px] bg-neutral-200 text-neutral-700">
-    //       <div className="flex justify-between items-center">
-    //         <p>Are you sure you want to delete this event?</p>
-    //         <button
-    //           onClick={() => {
-    //             deleteEvent();
-    //             toast.close();
-    //           }}
-    //           className="primary-btn"
-    //         >
-    //           Delete
-    //         </button>
-    //       </div>
-    //     </div>
-    //   ),
-    // });
+    e?.preventDefault();
     toast.custom((t) => (
       <div
         className={`${
@@ -149,7 +126,7 @@ function Event() {
           </button>
           <button
             onClick={async (e) => {
-              e.preventDefault();
+              e?.preventDefault();
               toast.dismiss(t.id);
             }}
             className="w-full border border-transparent rounded-none border-t border-neutral-300 p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:bg-indigo-500 hover:text-white focus:outline-none"
@@ -162,15 +139,12 @@ function Event() {
   };
 
   useEffect(() => {
-      console.log("Team ID: ", events?.teamId, "SUBSCRIBING TO TEAM");
-      const unsubscribe = client.subscribe(
-        'teams',
-        (response) => {
-          console.log("Team RT: ", response);
-        }
-      );
-      return () => unsubscribe();
-  });
+    console.log("Team ID: ", events?.teamId, "SUBSCRIBING TO TEAM");
+    const unsubscribe = client.subscribe(`teams.${events?.teamId}`, (response) => {
+      console.log("Team RT: ", response.payload);
+    });
+    return () => unsubscribe();
+  },[]);
 
   const { createMembership, teamMembers, memberCount } = CreateMembershipLogic(
     events?.teamId
@@ -211,7 +185,9 @@ function Event() {
             <div className="absolute top-4 left-4 inline-flex gap-2 flex-wrap">
               <Link
                 to={`/dashboard/create?id=${events?.$id}`}
-                className="shadow-md primary-btn group overflow-hidden transition-all"
+                className="shadow-md primary-btn group overflow-hidden transition-all" style={{
+                  background: `rgb(${colors[4]?.join(',')})`
+                }}
               >
                 <MdEdit />
                 <p className="transition-all translate-x-[0px] hidden lg:block group-hover:translate-x-0">
@@ -220,7 +196,9 @@ function Event() {
               </Link>
               <button
                 onClick={deleteEventToast}
-                className="shadow-md primary-btn group overflow-hidden transition-all"
+                className="shadow-md primary-btn group overflow-hidden transition-all" style={{
+                  background: `rgb(${colors[4]?.join(',')})`
+                }}
               >
                 <MdDelete />
                 <p className="transition-all translate-x-[0px]  hidden lg:block group-hover:translate-x-0">
@@ -229,7 +207,9 @@ function Event() {
               </button>
               <button
                 onClick={copyTeamId}
-                className="shadow-md primary-btn group overflow-hidden transition-all"
+                className="shadow-md primary-btn group overflow-hidden transition-all" style={{
+                  background: `rgb(${colors[4]?.join(',')})`
+                }}
               >
                 <IoCopy />
                 <p className="transition-all translate-x-[0px] hidden lg:block  group-hover:translate-x-0">
@@ -238,7 +218,9 @@ function Event() {
               </button>
               <button
                 onClick={toggleShowUsers}
-                className="shadow-md primary-btn group overflow-hidden transition-all"
+                className="shadow-md primary-btn group overflow-hidden transition-all" style={{
+                  background: `rgb(${colors[4]?.join(',')})`
+                }}
               >
                 <MdInsertInvitation />
                 <p className="transition-all translate-x-[0px] hidden lg:block group-hover:translate-x-0">
@@ -249,7 +231,7 @@ function Event() {
             <ColorExtractor
               rgb
               getColors={(colors) =>
-                setColors((prev) => colors.sort(compareLightness))
+                setColors((prev) => colors?.sort(compareLightness))
               }
             >
               <img
@@ -277,7 +259,7 @@ function Event() {
                     className="w-full h-max outline outline-1 outline-neutral-300 shadow-md rounded-[18px]"
                     src={`https://maps.google.com/maps?q=${events.location[1]},${events.location[2]}&hl=en&output=embed`}
                   ></iframe>
-                  <h2 className="text-base inline-block">
+                  <h2 className="text-base inline-flex items-center gap-2">
                     <IoLocation /> {events?.location[0]}
                   </h2>
                 </>
@@ -291,11 +273,20 @@ function Event() {
                 <IoWalletOutline />{" "}
                 {events?.price > 0 ? `Rs. ${events?.price}` : "Free"}
               </h2>
-              <h2 className="text-lg inline-flex items-center gap-2">
+              <h2
+                onClick={toggleShowUsers}
+                className="text-lg inline-flex items-center gap-2 cursor-pointer"
+              >
                 <IoPersonOutline />{" "}
-                {memberCount > 0
+                {memberCount - 1 > 0
                   ? `${memberCount - 1} Member(s)`
                   : "No members"}
+              </h2>
+              <h2 className="text-lg inline-flex items-center gap-2 cursor-pointer">
+                <IoPeopleOutline />{" "}
+                {events?.maxParticipants > 0
+                  ? `Max Limit of ${events.maxParticipants} members`
+                  : "No max participation limit"}
               </h2>
             </div>
           </div>
@@ -306,87 +297,22 @@ function Event() {
             }}
           >
             <h2 className="text-3xl font-bold">{events?.title}</h2>
-            <p className="text-sm text-neutral-600 py-4">
+            <pre className="display-linebreak text-sm text-neutral-600 py-4">
               {events?.description}
-            </p>
+            </pre>
           </div>
         </section>
         {showUsers && (
-          <div className="flex flex-col h-full gap-2 p-4 border-l border-neutral-300 bg-gray-100 shadow lg:shadow-none fixed top-0 right-0 overflow-auto">
-            <button
-              onClick={toggleShowUsers}
-              className="absolute top-6 right-4 z-10"
-            >
-              <IoClose />
-            </button>
-            <div className="w-full space-y-4">
-              <p className="page-title">Search Users</p>
-              <div className="w-full px-3 rounded-[18px] bg-neutral-200 outline outline-1 outline-neutral-200 flex items-center justify-between">
-                <input
-                  onChange={filterUsers}
-                  type="text"
-                  placeholder="Search name or email"
-                  className="w-full bg-transparent py-2 outline-none"
-                />
-                <IoSearch />
-              </div>
-            </div>
-            {fetchingUsers ? (
-              <Loading />
-            ) : (
-              <div className="flex flex-col gap-2 overflow-auto">
-                {(filteredUsers ?? users)?.map((u) => (
-                  <div
-                    key={u.$id}
-                    className="w-full px-3 rounded-[18px] border-b border-neutral-200  flex items-center justify-between gap-2"
-                  >
-                    <p
-                      className="font-bold p-2 rounded-full flex aspect-square text-center items-center justify-center w-10 outline outline-1 outline-neutral-300"
-                      style={{
-                        backgroundColor: `rgb(${colors[
-                          Math.floor(Math.random() * 5) + 3
-                        ]?.join(",")})`,
-                        color: `rgb(${colors[
-                          Math.floor(Math.random() * 2) + 1
-                        ]?.join(",")})`,
-                      }}
-                    >
-                      <span>{u.name.charAt(0)}</span>
-                    </p>
-                    <div className="mr-auto">
-                    <p className="text-sm text-left">{u.name}</p>
-                    <p className="text-xs text-neutral-500 text-left">{u.email}</p>
-                    </div>
-                    <button
-                      onClick={async (e) => {
-                        e.preventDefault();
-                        try {
-                          const res = await createMembership({
-                            eventId: id,
-                            teamId: events?.teamId,
-                            userId: u.userId,
-                            name: u.name,
-                            email: u.email,
-                          });
-                          console.log(res);
-                          toast.success(
-                            `${u.name} has been invited to the event`
-                          );
-                        } catch (err) {
-                          console.log(err);
-                          toast.error(err.message);
-                        } finally {
-                        }
-                      }}
-                      className="sidebar-link focus:primary-btn"
-                    >
-                      {checkMembership(u.userId)}
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <UserList
+            toggleShowUsers={toggleShowUsers}
+            users={users}
+            fetchingUsers={fetchingUsers}
+            createMembership={createMembership}
+            id={id}
+            events={events}
+            checkMembership={checkMembership}
+            colors={colors}
+          />
         )}
       </div>
     )
