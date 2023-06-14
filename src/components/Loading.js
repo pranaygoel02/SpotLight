@@ -1,11 +1,12 @@
 import React from 'react'
+import { AiOutlineLoading } from 'react-icons/ai'
 import { RiLoaderFill } from 'react-icons/ri'
 
 function Loading({text}) {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
-      <RiLoaderFill className="text-5xl animate-spin"/>
-      <p className="text-xl">{text || 'Loading Data'}</p>
+    <div className="w-full h-full flex flex-col items-center justify-center min-h-[80vh]">
+      <AiOutlineLoading className="text-4xl animate-spin text-primary"/>
+      <p className="text-xl">{text}</p>
     </div>
   )
 }
