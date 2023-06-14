@@ -67,7 +67,7 @@ export default function NotificationProvider({ children }) {
             if(res.payload?.userId !== JSON.parse(localStorage.getItem('spotlight-user'))?.$id) return;
             setNotifications(prev => uniqueArray([res.payload, ...prev]));
             if(!show) {
-                setUnreadNotifications(prev =>  prev + 1);
+                setUnreadNotifications(prev => uniqueArray([res.payload]).length);
             }
             const audio = new Audio(NotificationSound);
             audio.play();

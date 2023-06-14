@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import { MdHandshake, MdPeople } from "react-icons/md";
 import { useNotifications } from "../context/notificationContext";
+import RsvpLogic from "../Logic/Explore/rsvp.logic";
 
 function UserList({
   toggleShowUsers,
@@ -21,7 +22,12 @@ function UserList({
   const [filteredUsers, setFilteredUsers] = useState(null);
   const { pathname } = useLocation();
 
+  console.log("====================================");
+  console.log(users);
+  console.log("====================================");
+
   const { sendNotification } = useNotifications();
+  const {approveRsvp, rejectRsvp} = RsvpLogic();
 
   colors = colors ?? [
     [255, 107, 107],
@@ -48,7 +54,7 @@ function UserList({
         return (
           (user?.name ?? user?.userName).toLowerCase().includes(value || "") ||
           (user.email ?? user?.userEmail).toLowerCase().includes(value || "") ||
-          (user?.roles).join(",").includes(value || "")
+          (user?.roles)?.join(",").includes(value || "")
         );
       });
       setFilteredUsers((prev) => filtered);
@@ -149,7 +155,7 @@ function UserList({
         <div className="flex flex-col gap-2 overflow-auto h-full">
           {(filteredUsers ?? users)?.map((u) => (
             <div
-              key={u.$id}
+              key={u.$id ?? u?.userId}
               className="w-full px-3 pb-2 border-b border-neutral-200  flex items-center justify-between gap-2"
             >
               <p
@@ -199,7 +205,7 @@ function UserList({
                 <button
                   disabled={checkUserIsOwner(u?.userId)}
                   style={{
-                    display: checkUserIsOwner(u?.userId) ? "none" : "block",
+                    display: (checkUserIsOwner(u?.userId) || pathname.includes('rsvp')) ? "none" : "block",
                   }}
                   onClick={async (e) => {
                     e?.preventDefault();
@@ -312,6 +318,31 @@ function UserList({
                         <> {u.joined ? "Delete" : "Pending"}</>
                       )}
                 </button>
+              }
+              {
+                pathname.includes('rsvp') && (
+                  <div className="inline-flex gap-1 items-center">
+                  <button
+                    disabled={u?.approved}
+                    onClick={async (e) => {
+                      e?.preventDefault();
+                      await approveRsvp(u);
+                    }} 
+                    className="sidebar-link focus:primary-btn disabled:bg-green-500 disabled:text-white disabled:cursor-not-allowed"
+                  >
+                    Approve{u?.approved ? "d" : ""}
+                  </button>
+                  <button
+                    onClick={async (e) => {
+                      e?.preventDefault();
+                      await rejectRsvp(u);
+                    }}
+                    className="sidebar-link focus:primary-btn"
+                  >
+                    Remove
+                  </button>
+                  </div>
+                )
               }
             </div>
           ))}

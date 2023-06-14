@@ -1,100 +1,148 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Loading from "../../components/Loading";
-import { IoAdd, IoPeopleOutline, IoRemove } from "react-icons/io5";
+import {
+  IoAdd,
+  IoPeopleOutline,
+  IoPersonAdd,
+  IoPersonAddOutline,
+  IoPersonOutline,
+  IoPersonRemoveOutline,
+  IoRemove,
+} from "react-icons/io5";
 import GetMembershipLogic from "../../Logic/Membership/GetMembership.logic";
 import { RiDeleteBackLine } from "react-icons/ri";
 import UserList from "../../components/UserList";
 import client from "../../appwrite.config";
 import { Databases, Query, Teams } from "appwrite";
+import GetEventLogic from "../../Logic/EventsLogic/getEvents";
+import {
+  MdOutlinePersonAdd,
+  MdOutlinePersonRemove,
+  MdOutlinePersonRemoveAlt1,
+  MdPeopleOutline,
+} from "react-icons/md";
 
 function Rsvps() {
-  const { loading, error, teams, teamsCount, deleteInvitation } =
-    GetMembershipLogic();
-
-  const [teamId, setTeamId] = useState(null);
   const [rsvps, setRsvps] = useState(null);
+  const [simplifiedRsvps, setSimplifiedRsvps] = useState(null);
   const [loadingRsvps, setLoadingRsvps] = useState(false);
+  const [eventId, setEventId] = useState(null);
+
+  const userId = JSON.parse(localStorage.getItem("token"))?.userId;
 
   const getEventRsvps = useCallback(async () => {
-    if (teamId) {
+    if (userId) {
       try {
         setLoadingRsvps((prev) => true);
         const database = new Databases(client);
         const response = await database.listDocuments(
-            process.env.REACT_APP_DATABASE_ID,
-            process.env.REACT_APP_RSVP_COLLECTION_ID,
-            [
-                Query.equals("teamId", teamId),
-            ]
-        )
+          process.env.REACT_APP_DATABASE_ID,
+          process.env.REACT_APP_RSVP_COLLECTION_ID,
+          [Query.equal("ownerUserId", userId), Query.equal("pending", true)]
+        );
+        console.log(response);
         setRsvps((prev) => response?.documents);
+        const groupedData = {};
+        response?.documents?.forEach((document) => {
+          const key = `${document.eventName}_${document.eventId}`;
+          if (!groupedData[key]) {
+            groupedData[key] = {
+              eventName: document?.eventName,
+              eventId: document?.eventId,
+              teamId: document?.teamId,
+              approvedCount: 0,
+              rejectedCount: 0,
+              users: [],
+            };
+          }
+          if (document.approved) {
+            groupedData[key].approvedCount++;
+          } else if (document.rejected) {
+            groupedData[key].rejectedCount++;
+          }
+
+          const user = {
+            documentId: document?.$id,
+            teamId: document?.teamId,
+            name: document?.userName,
+            email: document?.userEmail,
+            approved: document?.approved,
+            rejected: document?.rejected,
+            userId: document?.userId,
+            eventName: document?.eventName,
+            eventId: document?.eventId,
+            membershipId: document?.membershipId,
+          };
+          groupedData[key].users.push(user);
+        });
+        console.log(groupedData);
+        console.log(Object.values(groupedData));
+        setSimplifiedRsvps((prev) => Object.values(groupedData));
       } catch (err) {
         console.log(err);
       } finally {
         setLoadingRsvps((prev) => false);
       }
     }
-  }, [teamId]);
+  }, [userId]);
+
+  console.log("Simplified >> ", simplifiedRsvps);
 
   useEffect(() => {
-    if (teamId) getEventRsvps();
+    if (userId) getEventRsvps();
   }, [getEventRsvps]);
 
-  if (loading) return <Loading />;
+  if (loadingRsvps) return <Loading />;
 
   return (
     <>
-      {error && <p>{error}</p>}
-      {teams && teams?.length > 0 ? (
+      {simplifiedRsvps && simplifiedRsvps?.length > 0 ? (
         <div className="flex w-full flex-col py-6 group">
-          {teams.map((team) => (
-            <div
-              key={team?.$id}
-              className="flex py-4 justify-between border-b border-neutral-300 group gap-2 items-center"
-            >
+          {simplifiedRsvps?.map((event) => (
+            <div className="flex w-full justify-between pb-4 border-b-neutral-200 border-b">
               <h3
+                className="text-lg font-semibold cursor-pointer"
                 onClick={(e) => {
                   e?.preventDefault();
-                  setTeamId(team?.$id);
+                  setEventId(event?.eventId);
                 }}
-                className="font-semibold cursor-pointer"
               >
-                {team.name}
+                {event?.eventName}
               </h3>
-              <button
-                onClick={(e) => {
-                  e?.preventDefault();
-                  setTeamId(team?.$id);
-                }}
-                className="sidebar-link ml-auto flex gap-2 items-center text-neutral-500 my-0"
-              >
-                <IoPeopleOutline />
-                <p>{team.total} Member(s)</p>
-              </button>
-              {/* <button
-                onClick={deleteInvitation}
-                className="primary-btn flex gap-2 items-center text-neutral-500 my-0"
-              >
-                <IoRemove />
-                <p>Delete Invitation</p>
-              </button> */}
+              <div className="inline-flex items-center gap-6 select-none">
+                <UserCount
+                  count={event?.users?.length}
+                  icon={<MdPeopleOutline />}
+                  title="Total"
+                />
+                <UserCount
+                  count={event?.approvedCount}
+                  icon={<MdOutlinePersonAdd />}
+                  title="Approved"
+                />
+                <UserCount
+                  count={event?.rejectedCount}
+                  icon={<MdOutlinePersonRemove />}
+                  title="Rejected"
+                />
+              </div>
             </div>
           ))}
         </div>
       ) : (
         <p>You don't have any invites yet</p>
       )}
-      {teamId && (
+      {eventId && (
         <UserList
-          deleteInvitation={deleteInvitation}
           fetchingUsers={loadingRsvps}
           toggleShowUsers={(e) => {
             e?.preventDefault();
-            setTeamId((prev) => null);
+            setEventId((prev) => null);
           }}
-          users={rsvps}
-          teamName = {teams.find((team) => team.$id === teamId)?.name}
+          users={
+            simplifiedRsvps.find((event) => event.eventId === eventId).users
+          }
         />
       )}
     </>
@@ -102,3 +150,15 @@ function Rsvps() {
 }
 
 export default Rsvps;
+
+function UserCount({ count, icon, title }) {
+  return (
+    <div
+      className="flex items-center gap-2 text-lg text-neutral-600"
+      title={title}
+    >
+      {icon}
+      <p>{count}</p>
+    </div>
+  );
+}
