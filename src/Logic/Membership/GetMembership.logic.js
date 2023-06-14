@@ -1,6 +1,7 @@
 import {useState, useEffect, useCallback } from 'react'
 import client from '../../appwrite.config.js'
 import { Teams, Databases } from 'appwrite' 
+import { toast } from 'react-hot-toast'
 
 function GetMembershipLogic() {
 
@@ -29,9 +30,10 @@ function GetMembershipLogic() {
         getUserTeams()
     } , [getUserTeams])
 
-    const deleteInvitation = async (e) => {
-        e.preventDefault()
-        
+    const deleteInvitation = async ({membershipId, teamId}) => {
+        const teams = new Teams(client)
+        const response = await teams.deleteMembership(teamId, membershipId)
+        return response   
     }
 
     return { loading, error, teams, teamsCount, deleteInvitation }
