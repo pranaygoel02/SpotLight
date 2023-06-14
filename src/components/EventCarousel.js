@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import { IoArrowBack, IoArrowForward } from "react-icons/io5";
 import { Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import EventCard from "./EventCard";
 import ExploreEventCard from "./ExploreEventCard";
 
 function EventCarousel({ events, title }) {
@@ -51,10 +50,7 @@ function EventCarousel({ events, title }) {
             },
             820: {
               slidesPerView: 4,
-            },
-            // 960: {
-            //   slidesPerView: 5,
-            // },
+            }
           }}
         >
           {events?.map((item) => (

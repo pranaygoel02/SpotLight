@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import Border from "../assets/images/eventCard.png";
 import { IoLocation, IoPin } from "react-icons/io5";
 import { Link } from "react-router-dom";

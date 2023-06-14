@@ -2,7 +2,6 @@ import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import Brand from './Brand'
 import { footerLinks } from '../static/footerLinks'
-import { RiReactjsLine } from 'react-icons/ri'
 
 function Footer() {
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams, useNavigate, useParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import client from "../appwrite.config";
 import { Account } from "appwrite";
 import { toast } from "react-hot-toast";

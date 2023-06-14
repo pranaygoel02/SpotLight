@@ -1,9 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useCallback, useEffect, useState } from "react";
 import Loading from "../../components/Loading";
-import { IoAdd, IoPeopleOutline, IoRemove } from "react-icons/io5";
+import { IoPeopleOutline, IoRemove } from "react-icons/io5";
 import GetMembershipLogic from "../../Logic/Membership/GetMembership.logic";
-import { RiDeleteBackLine } from "react-icons/ri";
 import UserList from "../../components/UserList";
 import client from "../../appwrite.config";
 import { Teams } from "appwrite";

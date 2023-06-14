@@ -1,4 +1,4 @@
-import { Client, Account } from "appwrite";
+import { Account } from "appwrite";
 import client from "../../appwrite.config.js";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";

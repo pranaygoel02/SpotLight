@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import Logo from "../assets/images/logo.svg";
 import Logo2 from "../assets/images/logo_color.svg";
 
-function Brand({ size, color }) {
+function Brand({ size }) {
   const { pathname } = useLocation();
 
   return (

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { RiMenu3Line } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
-import Button from "./Button";
 import LogoutLogic from "../Logic/UserLogic.js/Logout.logic";
 import Brand from "./Brand";
 
@@ -49,9 +48,6 @@ function Navbar() {
             <div className="flex items-center justify-between w-full gap-16 my-8 font-poppins">
               {/* logo */}
               <div>
-                {/* <a href="/" className="flex gap-1 font-bold items-center ">
-                  <span>Logo</span>
-                </a> */}
                 <Brand />
               </div>
               {/* primary */}
@@ -69,7 +65,6 @@ function Navbar() {
                       </NavLink>
                     )
                 )}
-                {/* <Button text="Logout" cb={logout} /> */}
                 {token && <button onClick={logout}>Logout</button>}
               </div>
             </div>

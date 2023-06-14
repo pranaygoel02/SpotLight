@@ -5,22 +5,19 @@ import {
   MdComputer,
   MdDelete,
   MdEdit,
-  MdInsertInvitation,
-  MdOutlineCountertops,
 } from "react-icons/md";
 import { ColorExtractor } from "react-color-extractor";
 
 import CreateMembershipLogic from "../../Logic/Membership/CreateMembership.logic";
 
 import {
-  IoClose,
   IoCopy,
   IoLocation,
   IoPeopleOutline,
   IoPersonOutline,
-  IoSearch,
   IoWalletOutline,
 } from "react-icons/io5";
+
 import { toast } from "react-hot-toast";
 import { Databases, Teams } from "appwrite";
 import client from "../../appwrite.config";

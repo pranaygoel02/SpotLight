@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingLayout from "./layouts/LandingLayout";
-import Home from "./pages/landing/Home";
 import Login from "./pages/landing/Login";
 import Signup from "./pages/landing/Signup";
 import DashboardLayout from "./layouts/DashboardLayout";
@@ -12,7 +11,6 @@ import { Toaster } from "react-hot-toast";
 import Phone from "./pages/landing/Phone";
 import Otp from "./pages/landing/Otp";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Error from "./pages/Error";
 import Create from "./pages/dashboard/Create";
 import Events from "./pages/dashboard/Events";
 import Event from "./pages/dashboard/Event";

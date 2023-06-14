@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import client from "../../appwrite.config";
-import { ID, Query, Teams, Databases } from "appwrite";
+import { Teams, Databases } from "appwrite";
 import { useNotifications } from "../../context/notificationContext";
 
 export default function CreateMembershipLogic(teamId) {
   const [teamMembers, setTeamMembers] = useState(null);
   const [memberCount, setMemberCount] = useState(null);
-  const { sendNotification } = useNotifications();
-
+  
   async function createMembership({
     eventId,
     teamId,
