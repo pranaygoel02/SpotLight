@@ -21,11 +21,12 @@ function Explore() {
 
   return (
     <section className="container py-4 md:py-16">
+      <h1 className="pb-12 text-4xl font-bold">Explore the best events happening around you</h1>
       <div className="flex gap-4 mb-8 items-center overflow-auto text-neutral-500">
         {[{ label: "All" }, ...categories]?.map((item, index) => (
           <button
             onClick={(e) => {
-              e?.preventDefault();
+              e.preventDefault();
               if (item?.label === "All") setSearchParams((prev) => ({}));
               else
                 setSearchParams((prev) => ({ ...prev, category: item?.label }));
