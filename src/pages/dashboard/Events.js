@@ -39,14 +39,7 @@ function Events() {
   }, [events, searchParams]);
 
   return (
-    <div>
-      <div className="inline-flex justify-between w-full items-center">
-        <h2 className="page-title">Your Events</h2>
-        <Link to="/dashboard/create" className="primary-btn">
-          <IoAdd />
-          Create
-        </Link>
-      </div>
+    <>
       <div className="w-full px-6 my-4 rounded-[18px] bg-neutral-200 outline outline-1 outline-neutral-200 flex items-center justify-between">
         <input
           onChange={(e) => {
@@ -96,7 +89,7 @@ function Events() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

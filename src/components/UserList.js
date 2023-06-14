@@ -233,7 +233,7 @@ function UserList({
                                     Collaborator
                                   </option>
                                   <option value={"volunteer"}>Volunteer</option>
-                                  <option value={"attendee"}>Attendee</option>
+                                  {/* <option value={"attendee"}>Attendee</option> */}
                                 </select>
                               </div>
                             </div>

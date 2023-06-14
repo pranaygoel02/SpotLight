@@ -28,7 +28,7 @@ function Account() {
   const [phone, setPhone] = useState(userPhone);
 
   const verifyEmail = async (e) => {
-    e?.preventDefault();
+    e.preventDefault();
     console.log("verify email");
     try {
       setLoading((prev) => true);
@@ -93,7 +93,7 @@ function Account() {
   }
 
   const handleUpdateFields = async (e) => {
-    e?.preventDefault();
+    e.preventDefault();
     try {
       setLoading((prev) => true);
       const account = new Ac(client);
@@ -135,7 +135,7 @@ function Account() {
         <button
           className="rounded-[18px] bg-neutral-300 mt-2 p-4 outline outline-1 outline-neutral-300"
           onClick={(e) => {
-            e?.preventDefault();
+            e.preventDefault();
             setUpdateFields((prev) => !prev);
           }}
         >

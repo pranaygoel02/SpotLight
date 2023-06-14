@@ -19,41 +19,80 @@ import Event from "./pages/dashboard/Event";
 import AcceptInvite from "./pages/AcceptInvite";
 import Invites from "./pages/dashboard/Invites";
 import VeirfyEmail from "./pages/VerifyEmail";
-import Landing from './pages/landing/Landing'
+import Landing from "./pages/landing/Landing";
 import Explore from "./pages/landing/Explore";
 import EventPage from "./pages/landing/EventPage";
 import Ticket from "./components/Ticket";
+import Rsvps from "./pages/dashboard/Rsvp";
+import DashboardScreenLayout from "./layouts/DashboardScreenLayout";
 
 function App() {
   return (
     <>
-    <Toaster position="top-center" reverseOrder={false} />
-    <Router>
-      <Routes>
-        <Route path="/ticket" element={<Ticket />} />
-        <Route path="/" element={<ProtectedRoute><LandingLayout /></ProtectedRoute>}>
-          <Route path="/" element={<Landing />} />
-          <Route path="explore" element={<Explore />} />
-          <Route path='event/:id' element={<EventPage/>} />
-          <Route path="auth" element={<AuthLayout />}>
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<Signup />} />
-            <Route path="phone" element={<Phone />} />
-            <Route path="otp" element={<Otp />} />
+      <Toaster position="top-center" reverseOrder={false} />
+      <Router>
+        <Routes>
+          <Route path="/ticket" element={<Ticket />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <LandingLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="/" element={<Landing />} />
+            <Route path="explore" element={<Explore />} />
+            <Route path="event/:id" element={<EventPage />} />
+            <Route path="auth" element={<AuthLayout />}>
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<Signup />} />
+              <Route path="phone" element={<Phone />} />
+              <Route path="otp" element={<Otp />} />
+            </Route>
           </Route>
-        </Route>
-        <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
-          <Route path="" element={<Dashboard />} />
-          <Route path="create" element={<Create />} />
-          <Route path="events" element={<Events />} />
-          <Route path="event/:id" element={<Event />} />
-          <Route path="account" element={<Account />} />
-          <Route path="invities" element={<Invites />} />
-        </Route>
-        <Route path="/accept-invite/:eventId" element={<AcceptInvite />} />
-        <Route path='/verify-email' element={<VeirfyEmail/>} />
-      </Routes>
-    </Router>
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="" element={<Dashboard />} />
+            <Route path="create" element={<Create />} />
+            <Route path="event/:id" element={<Event />} />
+            <Route path="account" element={<Account />} />
+            <Route
+              path="events"
+              element={
+                <DashboardScreenLayout title={"Your Events"}>
+                  <Events />
+                </DashboardScreenLayout>
+              }
+            />
+            <Route
+              path="invities"
+              element={
+                <DashboardScreenLayout title={"Your Invites"}>
+                  <Invites />
+                </DashboardScreenLayout>
+              }
+            />
+            <Route
+              path="rsvp"
+              element={
+                <DashboardScreenLayout title={"Your RSVPs"}>
+                  {" "}
+                  <Rsvps />{" "}
+                </DashboardScreenLayout>
+              }
+            />
+          </Route>
+          <Route path="/accept-invite/:eventId" element={<AcceptInvite />} />
+          <Route path="/verify-email" element={<VeirfyEmail />} />
+        </Routes>
+      </Router>
     </>
   );
 }

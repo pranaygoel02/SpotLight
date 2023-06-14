@@ -8,6 +8,8 @@ import {
   IoLogOutOutline,
   IoNotifications,
   IoNotificationsOutline,
+  IoPeople,
+  IoPeopleOutline,
   IoPersonOutline,
   IoTicketOutline,
 } from "react-icons/io5";
@@ -15,7 +17,7 @@ import { Link, NavLink } from "react-router-dom";
 import LogoutLogic from "../Logic/UserLogic.js/Logout.logic";
 import client from "../appwrite.config";
 import { Account } from "appwrite";
-import { MdEventBusy } from "react-icons/md";
+import { MdEventBusy, MdRsvp } from "react-icons/md";
 import { useNotifications } from "../context/notificationContext";
 
 function Sidebar() {
@@ -53,6 +55,9 @@ function Sidebar() {
       </NavLink>
       <NavLink className="sidebar-link" to="invities">
         <IoTicketOutline /> Invities
+      </NavLink>
+      <NavLink className="sidebar-link" to="rsvp">
+        <IoPeopleOutline /> RSVPs
       </NavLink>
       <button className="sidebar-link" onClick={toggleNotificationBar}>
         <div className="relative">

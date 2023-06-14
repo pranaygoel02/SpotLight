@@ -6,34 +6,40 @@ import GetMembershipLogic from "../../Logic/Membership/GetMembership.logic";
 import { RiDeleteBackLine } from "react-icons/ri";
 import UserList from "../../components/UserList";
 import client from "../../appwrite.config";
-import { Teams } from "appwrite";
+import { Databases, Query, Teams } from "appwrite";
 
-function Invites() {
+function Rsvps() {
   const { loading, error, teams, teamsCount, deleteInvitation } =
     GetMembershipLogic();
 
   const [teamId, setTeamId] = useState(null);
-  const [memberships, setMemberships] = useState(null);
-  const [loadingMemberships, setLoadingMemberships] = useState(false);
+  const [rsvps, setRsvps] = useState(null);
+  const [loadingRsvps, setLoadingRsvps] = useState(false);
 
-  const getTeamMemberships = useCallback(async () => {
+  const getEventRsvps = useCallback(async () => {
     if (teamId) {
       try {
-        setLoadingMemberships((prev) => true);
-        const teams = new Teams(client);
-        const response = await teams.listMemberships(teamId);
-        setMemberships((prev) => response?.memberships);
+        setLoadingRsvps((prev) => true);
+        const database = new Databases(client);
+        const response = await database.listDocuments(
+            process.env.REACT_APP_DATABASE_ID,
+            process.env.REACT_APP_RSVP_COLLECTION_ID,
+            [
+                Query.equals("teamId", teamId),
+            ]
+        )
+        setRsvps((prev) => response?.documents);
       } catch (err) {
         console.log(err);
       } finally {
-        setLoadingMemberships((prev) => false);
+        setLoadingRsvps((prev) => false);
       }
     }
   }, [teamId]);
 
   useEffect(() => {
-    if (teamId) getTeamMemberships();
-  }, [getTeamMemberships]);
+    if (teamId) getEventRsvps();
+  }, [getEventRsvps]);
 
   if (loading) return <Loading />;
 
@@ -82,12 +88,12 @@ function Invites() {
       {teamId && (
         <UserList
           deleteInvitation={deleteInvitation}
-          fetchingUsers={loadingMemberships}
+          fetchingUsers={loadingRsvps}
           toggleShowUsers={(e) => {
             e?.preventDefault();
             setTeamId((prev) => null);
           }}
-          users={memberships}
+          users={rsvps}
           teamName = {teams.find((team) => team.$id === teamId)?.name}
         />
       )}
@@ -95,4 +101,4 @@ function Invites() {
   );
 }
 
-export default Invites;
+export default Rsvps;
