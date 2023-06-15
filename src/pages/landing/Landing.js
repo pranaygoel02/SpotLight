@@ -24,7 +24,7 @@ import {
   IoPeopleOutline,
   IoTicketOutline,
 } from "react-icons/io5";
-import { MdManageHistory, MdOutlinePrivacyTip, MdRsvp } from "react-icons/md";
+import { MdManageHistory, MdOutlineFileDownload, MdOutlinePrivacyTip, MdRsvp } from "react-icons/md";
 import { RiMouseLine, RiSteamLine } from "react-icons/ri";
 import Hero2 from "../../assets/images/3187910.jpg";
 import Security from "../../assets/images/security.jpg";
@@ -57,9 +57,15 @@ const data = [
   {
     title: "Easy Attendee Management",
     description:
-      "Keep track of attendees and their details with our comprehensive attendee management feature. Easily view and manage RSVPs, track attendance, and collect essential participant information.",
+      "Keep track of attendees our comprehensive attendee management feature. Easily view and manage RSVPs, track attendance, and collect essential participant information. Scan QR Codes to check-in attendees and ensure a smooth event experience for all participants.",
     icon: <IoPeopleOutline />,
   },
+  {
+    title: "Download Attendee List",
+    description:
+      "Staying always connected is unsure in the age of internet. So SpotLight lets the event owners download a list of attendees for each event with our attendee list download feature. Export attendee lists in XLSX format for easy access and management.",
+    icon: <MdOutlineFileDownload />,
+  }
 ];
 
 function Landing() {
