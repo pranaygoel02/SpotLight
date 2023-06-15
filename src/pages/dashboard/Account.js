@@ -89,6 +89,7 @@ function Account() {
     setName((prev) => userName);
     setEmail((prev) => userEmail);
     setPhone((prev) => userPhone);
+    setUserInfo(prev => user)
   };
 
   const handleUpdateFields = async (e) => {

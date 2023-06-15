@@ -8,18 +8,22 @@ import {
   IoPersonOutline,
   IoTicketOutline,
 } from "react-icons/io5";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import LogoutLogic from "../Logic/UserLogic.js/Logout.logic";
 import client from "../appwrite.config";
 import { Account } from "appwrite";
 import { useNotifications } from "../context/notificationContext";
 import Brand from "./Brand";
+import { useUser } from "../context/userContext";
 
 function Sidebar() {
   const { logout } = LogoutLogic();
-  const [userInfo, setUserInfo] = useState(null);
+  // const [userInfo, setUserInfo] = useState(null);
+
+  const { userInfo, setUserInfo } = useUser();
 
   const { toggleNotificationBar, unreadNotifications } = useNotifications();
+  const navigate = useNavigate();
 
   const getUserInfo = useCallback(async () => {
     try {
@@ -30,6 +34,9 @@ function Sidebar() {
       setUserInfo((prev) => res);
     } catch (err) {
       console.error(err);
+      localStorage.removeItem("spotlight-user");
+      localStorage.removeItem("token");
+      navigate("/");
     }
   }, []);
 
@@ -56,9 +63,16 @@ function Sidebar() {
       </NavLink>
       <button className="sidebar-link" onClick={toggleNotificationBar}>
         <div className="relative">
-        <IoNotificationsOutline />
-        {unreadNotifications > 0 && <p className="absolute -top-3 p-2 aspect-square -right-2 bg-primary text-white rounded-full text-[10px] text-center w-2 h-2 flex items-center justify-center"><span className="w-max h-max">{unreadNotifications > 9 ? `9+` : unreadNotifications}</span></p>}
-        </div>Notifications
+          <IoNotificationsOutline />
+          {unreadNotifications > 0 && (
+            <p className="absolute -top-3 p-2 aspect-square -right-2 bg-primary text-white rounded-full text-[10px] text-center w-2 h-2 flex items-center justify-center">
+              <span className="w-max h-max">
+                {unreadNotifications > 9 ? `9+` : unreadNotifications}
+              </span>
+            </p>
+          )}
+        </div>
+        Notifications
       </button>
       <div className="mt-auto flex flex-col">
         <NavLink
