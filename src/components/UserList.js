@@ -6,6 +6,8 @@ import { useLocation } from "react-router-dom";
 import { MdHandshake, MdPeople } from "react-icons/md";
 import { useNotifications } from "../context/notificationContext";
 import RsvpLogic from "../Logic/Explore/rsvp.logic";
+import { Databases, Query } from "appwrite";
+import client from "../appwrite.config";
 
 function UserList({
   toggleShowUsers,
@@ -17,7 +19,7 @@ function UserList({
   checkMembership,
   colors,
   deleteInvitation,
-  teamName
+  teamName,
 }) {
   const [filteredUsers, setFilteredUsers] = useState(null);
   const { pathname } = useLocation();
@@ -27,7 +29,7 @@ function UserList({
   console.log("====================================");
 
   const { sendNotification } = useNotifications();
-  const {approveRsvp, rejectRsvp} = RsvpLogic();
+  const { approveRsvp, rejectRsvp } = RsvpLogic();
 
   colors = colors ?? [
     [255, 107, 107],
@@ -54,7 +56,7 @@ function UserList({
         return (
           (user?.name ?? user?.userName).toLowerCase().includes(value || "") ||
           (user.email ?? user?.userEmail).toLowerCase().includes(value || "") ||
-          (user?.roles)?.join(",").includes(value || "")
+          user?.roles?.join(",").includes(value || "")
         );
       });
       setFilteredUsers((prev) => filtered);
@@ -83,6 +85,7 @@ function UserList({
     return {
       membershipId: user?.$id,
       teamId: user?.teamId,
+      userId: user?.userId
     };
   };
 
@@ -112,10 +115,30 @@ function UserList({
       } else {
         if (user.joined) {
           await deleteInvitation(userMembershipId(user.userId));
+          const databases = new Databases(client);
+          const res = await databases.listDocuments(
+            process.env.REACT_APP_DATABASE_ID,
+            process.env.REACT_APP_RSVP_COLLECTION_ID,
+            [
+              Query.equal("teamId", events?.teamId),
+              Query.equal("userId", user?.userId),
+            ]
+          );
+          console.log('RSVP DOCs  >>>>> ', res);
+          if (res?.documents?.length > 0) {
+            const delRes = await databases.deleteDocument(
+              process.env.REACT_APP_DATABASE_ID,
+              process.env.REACT_APP_RSVP_COLLECTION_ID,
+              res?.documents[0]?.$id
+            );
+            console.log(delRes);
+          }
           toast.success("Invitation deleted");
           await sendNotification({
             userId: user.userId,
-            message: `Your invitation to join ${teamName} event as a ${checkUserRoles(user?.userId).join('/')} has been revoked by the owner.`,
+            message: `Your invitation to join ${teamName} event as a ${checkUserRoles(
+              user?.userId
+            ).join("/")} has been revoked by the owner.`,
             fromUserId: fromUser?.$id,
             fromUserName: fromUser?.name,
           });
@@ -205,7 +228,10 @@ function UserList({
                 <button
                   disabled={checkUserIsOwner(u?.userId)}
                   style={{
-                    display: (checkUserIsOwner(u?.userId) || pathname.includes('rsvp')) ? "none" : "block",
+                    display:
+                      checkUserIsOwner(u?.userId) || pathname.includes("rsvp")
+                        ? "none"
+                        : "block",
                   }}
                   onClick={async (e) => {
                     e?.preventDefault();
@@ -319,15 +345,14 @@ function UserList({
                       )}
                 </button>
               }
-              {
-                pathname.includes('rsvp') && (
-                  <div className="inline-flex gap-1 items-center">
+              {pathname.includes("rsvp") && (
+                <div className="inline-flex gap-1 items-center">
                   <button
                     disabled={u?.approved}
                     onClick={async (e) => {
                       e?.preventDefault();
                       await approveRsvp(u);
-                    }} 
+                    }}
                     className="sidebar-link focus:primary-btn disabled:bg-green-500 disabled:text-white disabled:cursor-not-allowed"
                   >
                     Approve{u?.approved ? "d" : ""}
@@ -341,9 +366,8 @@ function UserList({
                   >
                     Remove
                   </button>
-                  </div>
-                )
-              }
+                </div>
+              )}
             </div>
           ))}
           {deleteInvitation && !checkUserIsOwner() && (
@@ -351,12 +375,33 @@ function UserList({
               onClick={async (e) => {
                 e?.preventDefault();
                 try {
-                  await deleteInvitation(userMembershipId());
+                  const { teamId, membershipId, userId } = userMembershipId();
+                  await deleteInvitation({teamId, membershipId});
                   toast.success("Invitation deleted");
                   const user = JSON.parse(
                     localStorage.getItem("spotlight-user")
-                  );              
-                  const owner = users?.find((u) => u?.roles?.includes('owner'))?.userId;
+                  );
+                  const databases = new Databases(client);
+                  const res = await databases.listDocuments(
+                    process.env.REACT_APP_DATABASE_ID,
+                    process.env.REACT_APP_RSVP_COLLECTION_ID,
+                    [
+                      Query.equal("teamId", teamId),
+                      Query.equal("userId", userId),
+                    ]
+                  );
+                  console.log('RSVP DOCS >>>>>> ', res);
+                  if (res?.documents?.length > 0) {
+                    const delRes = await databases.deleteDocument(
+                      process.env.REACT_APP_DATABASE_ID,
+                      process.env.REACT_APP_RSVP_COLLECTION_ID,
+                      res?.documents[0]?.$id
+                    );
+                    console.log(delRes);
+                  }
+                  const owner = users?.find((u) =>
+                    u?.roles?.includes("owner")
+                  )?.userId;
                   await sendNotification({
                     userId: owner,
                     message: `${user?.name} has rejected your invitation to join ${teamName}}`,

@@ -38,7 +38,8 @@ export default function RsvpLogic(event) {
         eventName: event?.title,
         userName: spotlightUser?.name,
         userEmail: spotlightUser?.email,
-        ownerUserId: event?.createdBy
+        ownerUserId: event?.createdBy,
+        pending: true
       }
     );
     console.log(response);
@@ -114,17 +115,6 @@ export default function RsvpLogic(event) {
         );
       }
       console.log(res);
-      // const response = await database.updateDocument(
-      //   process.env.REACT_APP_DATABASE_ID,
-      //   process.env.REACT_APP_RSVP_COLLECTION_ID,
-      //   documentId,
-      //   {
-      //     rejected: true,
-      //     approved: false,
-      //     pending: false
-      //   }
-      // );
-      // console.log(response);
       res = await database.deleteDocument(
         process.env.REACT_APP_DATABASE_ID,
         process.env.REACT_APP_RSVP_COLLECTION_ID,
