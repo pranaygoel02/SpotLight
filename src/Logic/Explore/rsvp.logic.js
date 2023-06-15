@@ -155,7 +155,7 @@ export default function RsvpLogic(event) {
       const account = new Account(client);
       const userRes = await account.get();
       console.log('USER >>>>>> ', userRes);
-      const getRsvpResponse = await getRsvp(userRes);
+      const getRsvpResponse = await getRsvp(userRes?.$id);
       console.log(getRsvpResponse);
       if (getRsvpResponse?.documents?.length > 0) {
         if (getRsvpResponse?.documents[0]?.approved === true) {
