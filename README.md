@@ -1,70 +1,27 @@
-# Getting Started with Create React App
+# SpotLight
+Empowering Individual Creators with Seamless RSVP and Event Management by bringing their creative self to the spotlight
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introduction
+In the dynamic world of event planning and management, individual creators are constantly seeking ways to streamline their processes and deliver exceptional experiences. Enter Spotlight, the ultimate RSVP and event management web app designed exclusively for creators. In this article, we will explore how Spotlight empowers individual creators by providing intuitive tools to simplify event planning, manage RSVPs effortlessly, and elevate their creative vision.
 
-## Available Scripts
+## What does Spotlight do?
+- ### Streamline Event Planning
+    Spotlight understands the unique needs of individual creators when it comes to event planning. With its user-friendly interface and comprehensive features, it takes the complexity out of organizing events. From setting dates and locations to providing detailed event descriptions and sending tickets, Spotlight ensures that the planning process remains seamless, allowing creators to focus on their artistic endeavors.
 
-In the project directory, you can run:
+- ### Effortless RSVP Management
+    Managing RSVPs can be a daunting task, but Spotlight simplifies the process. Creators can effortlessly send invitation links to potential collaborators and volunteers through email. The app provides real-time tracking of RSVPs by sending and receiving notifications, making it easy to manage attendee lists, monitor responses, and ensure accurate headcounts. With Spotlight, creators can confidently stay on top of their event's guest list.
 
-### `npm start`
+- ### Instant Updates for RSVPs and Invitations
+    With real-time notifications in the Spotlight app, event organizers can instantly inform attendees about RSVPs and invitations. As soon as someone RSVPs to an event or the event owner sends an invitation, the app triggers a real-time notification, providing attendees with immediate confirmation. This prompt communication ensures that attendees are promptly notified of their acceptance or invitation status, leaving no room for confusion and enabling them to plan their participation effectively.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- ### Accepted and Rejected Invitations
+    Real-time notifications in the Spotlight app play a crucial role in conveying the acceptance or rejection of invitations. Attendees receive timely notifications when their invitation is accepted or declined, allowing them to adjust their plans accordingly. By providing instant updates, the app fosters transparency and ensures that all participants are informed of the event's status, resulting in a smoother event planning process for organizers and attendees alike.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+## Tech Stack Used
+- **ReactJs** - for website frontend
+- **Appwrite Cloud Client SDK** - for Database, Storage, User Authentication, Realtime Notifications
+- **TailwindCSS** - for UI styling
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### [Live Demo](https://spot-light-appwrite.vercel.app)
+### [Read Full Article](https://pranaygoel.hashnode.dev/spotlight)
