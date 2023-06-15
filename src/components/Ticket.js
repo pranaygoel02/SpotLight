@@ -35,6 +35,10 @@ function Ticket({ text, event }) {
     exportComponentAsPNG(ticketRef, { fileName: `ticket.png` });
   };
 
+  useEffect(() => {
+    if(!loading && qr) download()
+  },[loading, qr])
+
   if (loading) return <Loading />;
 
   return (

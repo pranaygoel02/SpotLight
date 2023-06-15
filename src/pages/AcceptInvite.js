@@ -131,9 +131,10 @@ function AcceptInvite() {
           <div className="fixed inset-0 w-full h-full my-auto">
             <Ticket
               show={showTicket}
-              text={`{"teamId":${teamId},"userId":${userId}, "membershipId": ${membershipId}}`}
+              text={`${process.env.REACT_APP_WEBSITE_URL}/mark-attendance?teamId=${teamId}&membershipId=${membershipId}`}
               event={event}
             />
+            <p className="text-lg text-center text-white">We recommend downloading the ticket now.<br/>The QR Code will be scanned to mark attendance of the day of the event.</p>
           </div>
         ) : (
           <div className="fixed overflow-auto left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] flex flex-col gap-4 items-center text-center justify-center p-8 rounded-[18px] bg-white text-black">
@@ -147,9 +148,9 @@ function AcceptInvite() {
               cb={acceptInvite}
               loading={accepting}
             />
-            <button className="text-red-500" onClick={rejectInvite}>
+            {/* <button className="text-red-500" onClick={rejectInvite}>
               Reject Invitation
-            </button>
+            </button> */}
           </div>
         )}
       </div>

@@ -23,6 +23,7 @@ import EventPage from "./pages/landing/EventPage";
 import Ticket from "./components/Ticket";
 import Rsvps from "./pages/dashboard/Rsvp";
 import DashboardScreenLayout from "./layouts/DashboardScreenLayout";
+import MarkAttendance from "./pages/MarkAttendance";
 
 function App() {
   return (
@@ -89,6 +90,7 @@ function App() {
           </Route>
           <Route path="/accept-invite/:eventId" element={<AcceptInvite />} />
           <Route path="/verify-email" element={<VeirfyEmail />} />
+          <Route path="/mark-attendance" element={<MarkAttendance />} />
         </Routes>
       </Router>
     </>

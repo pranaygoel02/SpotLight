@@ -1,13 +1,14 @@
 import React, { useCallback, useState } from "react";
-import { IoClose, IoPerson, IoSearch } from "react-icons/io5";
+import { IoClose, IoDownload, IoPerson, IoSearch } from "react-icons/io5";
 import Loading from "./Loading";
 import { toast } from "react-hot-toast";
 import { useLocation } from "react-router-dom";
-import { MdHandshake, MdPeople } from "react-icons/md";
+import { MdDownloadForOffline, MdHandshake, MdPeople } from "react-icons/md";
 import { useNotifications } from "../context/notificationContext";
 import RsvpLogic from "../Logic/Explore/rsvp.logic";
 import { Databases, Query } from "appwrite";
 import client from "../appwrite.config";
+import * as XLSX from "xlsx";
 
 function UserList({
   toggleShowUsers,
@@ -85,7 +86,7 @@ function UserList({
     return {
       membershipId: user?.$id,
       teamId: user?.teamId,
-      userId: user?.userId
+      userId: user?.userId,
     };
   };
 
@@ -124,7 +125,7 @@ function UserList({
               Query.equal("userId", user?.userId),
             ]
           );
-          console.log('RSVP DOCs  >>>>> ', res);
+          console.log("RSVP DOCs  >>>>> ", res);
           if (res?.documents?.length > 0) {
             const delRes = await databases.deleteDocument(
               process.env.REACT_APP_DATABASE_ID,
@@ -153,6 +154,27 @@ function UserList({
     }
   };
 
+  const downloadExcel = (data) => {
+    const sanitizedData = data?.map((user) => {
+      return {
+        "Membarship ID": user?.$id,
+        "Name": user?.userName,
+        "Email": user?.userEmail,
+        "User ID": user?.userId,
+        "Invited": user?.invited,
+        "Joined": user?.joined,
+        "Confirm": user?.confirm,
+        "Roles": user?.roles?.join(","),
+      }
+    })
+    const worksheet = XLSX.utils.json_to_sheet(sanitizedData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    //let buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
+    //XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
+    XLSX.writeFile(workbook, "DataSheet.xlsx");
+  };
+
   return (
     <div className="flex flex-col h-full gap-2 p-4 border-l border-neutral-300 bg-gray-100/95 backdrop-blur shadow lg:shadow-none fixed top-0 right-0 overflow-auto min-w-[25vw]">
       <button onClick={toggleShowUsers} className="absolute top-6 right-4 z-10">
@@ -160,8 +182,23 @@ function UserList({
       </button>
       <div className="w-full space-y-4">
         <p className="page-title">
-          Search {deleteInvitation ? "Members" : "Users"}
+          Search {deleteInvitation ? "Members" : "Users"}{" "}
+          {checkUserIsOwner() && (
+            <button
+              onClick={(e) => {
+                e?.preventDefault();
+                downloadExcel(users);
+              }}
+              className="primary-btn items-center"
+              style={{
+                fontSize: "0.6rem",
+              }}
+            >
+              <MdDownloadForOffline className="text-base" /> Download XLSX
+            </button>
+          )}
         </p>
+
         <div className="w-full px-3 rounded-[18px] bg-neutral-200 outline outline-1 outline-neutral-200 flex items-center justify-between">
           <input
             onChange={filterUsers}
@@ -376,7 +413,7 @@ function UserList({
                 e?.preventDefault();
                 try {
                   const { teamId, membershipId, userId } = userMembershipId();
-                  await deleteInvitation({teamId, membershipId});
+                  await deleteInvitation({ teamId, membershipId });
                   toast.success("Invitation deleted");
                   const user = JSON.parse(
                     localStorage.getItem("spotlight-user")
@@ -390,7 +427,7 @@ function UserList({
                       Query.equal("userId", userId),
                     ]
                   );
-                  console.log('RSVP DOCS >>>>>> ', res);
+                  console.log("RSVP DOCS >>>>>> ", res);
                   if (res?.documents?.length > 0) {
                     const delRes = await databases.deleteDocument(
                       process.env.REACT_APP_DATABASE_ID,

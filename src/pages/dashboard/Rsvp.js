@@ -86,7 +86,7 @@ function Rsvps() {
       {simplifiedRsvps && simplifiedRsvps?.length > 0 ? (
         <div className="flex w-full flex-col py-6 group">
           {simplifiedRsvps?.map((event) => (
-            <div className="flex w-full justify-between pb-4 border-b-neutral-200 border-b">
+            <div className="flex w-full justify-between py-4 border-b-neutral-200 border-b">
               <h3
                 className="text-lg font-semibold cursor-pointer"
                 onClick={(e) => {
