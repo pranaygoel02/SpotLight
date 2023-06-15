@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import client from "../../appwrite.config";
-import { Databases, ID, Query, Teams } from "appwrite";
+import { Databases, ID, Query, Teams, Account } from "appwrite";
 import { useNotifications } from "../../context/notificationContext";
 
 export default function RsvpLogic(event) {
@@ -23,7 +23,7 @@ export default function RsvpLogic(event) {
     return false;
   };
 
-  const addRsvp = async () => {
+  const addRsvp = async (user) => {
     const database = new Databases(client);
     const response = await database.createDocument(
       process.env.REACT_APP_DATABASE_ID,
@@ -31,13 +31,13 @@ export default function RsvpLogic(event) {
       ID.unique(),
       {
         eventId: event?.$id,
-        userId: spotlightUser?.$id,
+        userId: user?.$id,
         teamId: event?.teamId,
         approved: false,
         rejected: false,
         eventName: event?.title,
-        userName: spotlightUser?.name,
-        userEmail: spotlightUser?.email,
+        userName: user?.name,
+        userEmail: user?.email,
         ownerUserId: event?.createdBy,
         pending: true
       }
@@ -46,14 +46,14 @@ export default function RsvpLogic(event) {
     return response;
   };
 
-  const getRsvp = async () => {
+  const getRsvp = async (userId) => {
     const database = new Databases(client);
     const response = await database.listDocuments(
       process.env.REACT_APP_DATABASE_ID,
       process.env.REACT_APP_RSVP_COLLECTION_ID,
       [
         Query.equal("eventId", event?.$id),
-        Query.equal("userId", spotlightUser?.$id),
+        Query.equal("userId", userId),
         Query.equal("teamId", event?.teamId),
       ]
     );
@@ -152,7 +152,10 @@ export default function RsvpLogic(event) {
     }
 
     try {
-      const getRsvpResponse = await getRsvp();
+      const account = new Account(client);
+      const userRes = await account.get();
+      console.log('USER >>>>>> ', userRes);
+      const getRsvpResponse = await getRsvp(userRes);
       console.log(getRsvpResponse);
       if (getRsvpResponse?.documents?.length > 0) {
         if (getRsvpResponse?.documents[0]?.approved === true) {
@@ -168,17 +171,17 @@ export default function RsvpLogic(event) {
         }
       }
       setAdding((prev) => true);
-      const response = await addRsvp();
+      const response = await addRsvp(userRes);
       console.log(response);
       toast.success(
         "RSVP has been send to the event owner. You will be notified when they approve your request."
       );
       await sendNotification({
         userId: event?.createdBy,
-        fromUserId: spotlightUser?.$id,
-        fromUserName: spotlightUser?.name,
+        fromUserId: userRes?.$id,
+        fromUserName: userRes?.name,
         type: "RSVP",
-        message: `${spotlightUser?.name} has RSVP'd to your event ${event?.title}`,
+        message: `${userRes?.name} has RSVP'd to your event ${event?.title}`,
       });
     } catch (err) {
       console.log(err);
