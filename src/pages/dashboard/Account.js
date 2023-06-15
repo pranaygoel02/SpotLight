@@ -3,15 +3,18 @@ import Avatar from "../../components/Avatar";
 import Input from "../../components/Input";
 import { MdVerified } from "react-icons/md";
 import client from "../../appwrite.config";
-import { Account as Ac } from "appwrite";
+import { Account as Ac, Databases, Query } from "appwrite";
 import { toast } from "react-hot-toast";
 import Button from "../../components/Button";
+import { useUser } from "../../context/userContext";
 
 function Account() {
   const [loading, setLoading] = useState(false);
   const [updateFields, setUpdateFields] = useState(false);
 
-  const user = JSON.parse(localStorage.getItem("spotlight-user"));
+  const {userInfo, setUserInfo} = useUser()
+
+  // const user = JSON.parse(localStorage.getItem("spotlight-user"));
 
   const {
     name: userName,
@@ -19,7 +22,7 @@ function Account() {
     phone: userPhone,
     emailVerification,
     phoneVerification,
-  } = user;
+  } = userInfo;
 
   const [name, setName] = useState(userName);
   const [email, setEmail] = useState(userEmail);
@@ -71,10 +74,8 @@ function Account() {
       cb: setPhone,
       disabled: true,
       rightIcon: phoneVerification ? <Verified /> : <Verify />,
-    }
-  ]
-
-  
+    },
+  ];
 
   const revalidateFields = () => {
     const user = JSON.parse(localStorage.getItem("spotlight-user"));
@@ -85,10 +86,10 @@ function Account() {
       emailVerification,
       phoneVerification,
     } = user;
-    setName(prev => userName);
-    setEmail(prev => userEmail);
-    setPhone(prev => userPhone);
-  }
+    setName((prev) => userName);
+    setEmail((prev) => userEmail);
+    setPhone((prev) => userPhone);
+  };
 
   const handleUpdateFields = async (e) => {
     e.preventDefault();
@@ -97,27 +98,45 @@ function Account() {
       const account = new Ac(client);
       console.log(userName, userEmail, userPhone);
       console.log(name, email, phone);
-      if(name !== userName) {
+      if (name !== userName) {
         const res = await account.updateName(name);
         console.log(res);
+        const databases = new Databases(client);
+        const userDoc = await databases.listDocuments(
+          process.env.REACT_APP_DATABASE_ID,
+          process.env.REACT_APP_USERS_COLLECTION_ID,
+          [Query.equal("userId", userInfo.$id)]
+        );
+        if (userDoc?.documents?.length > 0) {
+          const docRes = await databases.updateDocument(
+            process.env.REACT_APP_DATABASE_ID,
+            process.env.REACT_APP_USERS_COLLECTION_ID,
+            userDoc?.documents[0]?.$id,
+            {
+              name,
+            }
+          );
+        }
         toast.success("Name updated successfully!");
+        console.log(res);
         localStorage.setItem("spotlight-user", JSON.stringify(res));
         revalidateFields();
       }
     } catch (err) {
       console.log(err);
+      toast.error(err.message);
     } finally {
       setLoading((prev) => false);
     }
   };
 
   useEffect(() => {
-    if(!updateFields) {
-      setName(prev => userName);
-      setEmail(prev => userEmail);
-      setPhone(prev => userPhone);
+    if (!updateFields) {
+      setName((prev) => userName);
+      setEmail((prev) => userEmail);
+      setPhone((prev) => userPhone);
     }
-  },[updateFields])
+  }, [updateFields]);
 
   return (
     <div className="flex flex-col items-center justify-center h-full w-full gap-4 ">
