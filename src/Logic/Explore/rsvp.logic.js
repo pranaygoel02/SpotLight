@@ -146,6 +146,11 @@ export default function RsvpLogic(event) {
       return;
     }
 
+    if(event?.acceptingRsvp === false) {
+      toast.error("RSVP for this event is closed");
+      return;
+    }
+
     try {
       const getRsvpResponse = await getRsvp();
       console.log(getRsvpResponse);

@@ -43,6 +43,8 @@ function CreateEventLogic() {
   const [fetchingDoc, setFetchingDoc] = useState(false);
   const [imageId, setImageId] = useState(null);
   const [tnc, setTnc] = useState(null);
+  const [acceptingAttendance, setAcceptingAttendance] = useState(false);
+  const [acceptingRsvp, setAcceptingRsvp] = useState(false);
 
   const handleImage = (e) => {
     if (e.target.files[0]) {
@@ -77,7 +79,9 @@ function CreateEventLogic() {
         imageId,
         duration,
         language,
-        tnc
+        tnc,
+        acceptingAttendance,
+        acceptingRsvp
       } = response;
       setFetchedDoc((prev) => response);
       setTitle((prev) => title);
@@ -100,6 +104,8 @@ function CreateEventLogic() {
       setImagePreview((prev) => image);
       setImageId((prev) => imageId);
       setTnc((prev) => tnc);
+      setAcceptingAttendance((prev) => acceptingAttendance);
+      setAcceptingRsvp((prev) => acceptingRsvp);
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -115,6 +121,12 @@ function CreateEventLogic() {
     const updatedObj = {};
     if (value.title !== fetchedDoc?.title) {
       updatedObj.title = title;
+    }
+    if(value?.acceptingAttendance !== fetchedDoc?.acceptingAttendance) {
+      updatedObj.acceptingAttendance = acceptingAttendance;
+    }
+    if(value?.acceptingRsvp !== fetchedDoc?.acceptingRsvp) {
+      updatedObj.acceptingRsvp = acceptingRsvp;
     }
     if (value.tnc !== fetchedDoc?.tnc) {
       updatedObj.tnc = tnc;
@@ -283,7 +295,11 @@ function CreateEventLogic() {
           createdBy: token.userId,
           image: filePreviewUrl,
           imageId: filePreviewUrl ? uploadedFile?.$id : fetchedDoc?.imageId,
-          tnc
+          tnc,
+          acceptingAttendance,
+          duration,
+          language,
+          acceptingRsvp
         };
         const updatedValues = id ? getUpdatedValues(value) : value;
         console.log(updatedValues);
@@ -493,6 +509,40 @@ function CreateEventLogic() {
       cb: setMeetPassword,
       show: medium === "online",
     },
+    {
+      label: "Accepting Attendances",
+      value: acceptingAttendance,
+      // placeholder: "Please provide a meet password for your event.",
+      cb: setAcceptingAttendance,
+      show: true,
+      options: [
+        {
+          label: "Yes",
+          value: true,
+        },
+        {
+          label: "No",
+          value: false,
+        },
+      ],
+    },
+    {
+      label: "Accepting RSVPs",
+      value: acceptingRsvp,
+      // placeholder: "Please provide a meet password for your event.",
+      cb: setAcceptingRsvp,
+      show: true,
+      options: [
+        {
+          label: "Yes",
+          value: true,
+        },
+        {
+          label: "No",
+          value: false,
+        },
+      ],
+    }
   ];
 
   const removeImage = (e) => {

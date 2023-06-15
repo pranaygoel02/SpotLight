@@ -1,14 +1,13 @@
 import React from "react";
 import GetEventLogic from "../../Logic/EventsLogic/getEvents";
 import Loading from "../../components/Loading";
-import {
-  MdComputer,
-  MdCurrencyRupee
-} from "react-icons/md";
+import { MdComputer, MdCurrencyRupee } from "react-icons/md";
 import {
   IoBookmarkOutline,
   IoCalendarClearOutline,
+  IoLanguageOutline,
   IoLocationOutline,
+  IoTimerOutline,
   IoWalletOutline,
 } from "react-icons/io5";
 import { shareLinks } from "../../static/shareLinks";
@@ -41,6 +40,9 @@ function EventPage() {
     image,
     meet,
     tnc,
+    language,
+    duration,
+    acceptingRsvp,
   } = events;
 
   const start = startDate ? new Date(startDate?.split("+")[0]) : null;
@@ -50,11 +52,13 @@ function EventPage() {
   const startTime = start?.toTimeString()?.slice(0, 5);
   const endTime = end?.toTimeString()?.slice(0, 5);
 
+  console.log(events?.duration);
+
   const RSVPBtn = () => (
     <button
       disabled={adding}
       onClick={handleRSVP}
-      className="primary-btn disabled:opacity-60"
+      className={`primary-btn disabled:opacity-60`}
     >
       {price <= 0 ? "RSVP" : "BUY NOW"}
     </button>
@@ -71,6 +75,19 @@ function EventPage() {
           <div className="flex flex-col md:hidden w-full space-y-4">
             <div className="rounded-lg flex flex-col gap-4 outline w-full outline-1 outline-neutral-300 p-6">
               <h2 className="font-bold text-xl">{title}</h2>
+              <h2 className="inline-flex items-center gap-2 text-sm">
+                <IoBookmarkOutline /> {category}
+              </h2>
+              {duration?.length > 0 && (
+                <h2 className="inline-flex items-center gap-2 text-sm">
+                  <IoTimerOutline /> {duration.split(":").join("h ")}m
+                </h2>
+              )}
+              {language?.length > 0 && (
+                <h2 className="inline-flex items-center gap-2 text-sm">
+                  <IoLanguageOutline /> {language}
+                </h2>
+              )}
               <h2 className="inline-flex items-center gap-2 text-sm">
                 <IoBookmarkOutline /> {category}
               </h2>
@@ -150,7 +167,7 @@ function EventPage() {
                 Terms and Conditions
               </h2>
               <ul className="display-linebreak text-neutral-800 text-sm font-grostek list-disc">
-                {tnc?.split("\n")?.map(t => (
+                {tnc?.split("\n")?.map((t) => (
                   <li>{t}</li>
                 ))}
               </ul>
@@ -163,6 +180,16 @@ function EventPage() {
             <h2 className="inline-flex items-center gap-2 text-sm">
               <IoBookmarkOutline /> {category}
             </h2>
+            {duration?.length > 0 && (
+              <h2 className="inline-flex items-center gap-2 text-sm">
+                <IoTimerOutline /> {duration.split(":").join("h ")}m
+              </h2>
+            )}
+            {language?.length > 0 && (
+              <h2 className="inline-flex items-center gap-2 text-sm">
+                <IoLanguageOutline /> {language}
+              </h2>
+            )}
             <h2 className="inline-flex items-center gap-2 text-sm">
               <IoCalendarClearOutline /> {startDay}, {startTime}
               {startDay === endDay && ` | ${endTime}`}
