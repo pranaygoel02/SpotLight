@@ -134,20 +134,12 @@ function CreateEventLogic() {
     if (value.description !== fetchedDoc?.description) {
       updatedObj.description = description;
     }
-    
-      new Date(value.startDate).toUTCString() ===
-        new Date(fetchedDoc?.startDate?.split("+")[0]).toUTCString()
-    );
     if (
       new Date(value.startDate).toUTCString() !==
       new Date(fetchedDoc?.startDate?.split("+")[0]).toUTCString()
     ) {
       updatedObj.startDate = startDate.length > 0 ? startDate : null;
     }
-    
-      new Date(value.endDate).toUTCString() !==
-        new Date(fetchedDoc?.endDate?.split("+")[0]).toUTCString(), endDate
-    );
     if (
       new Date(value.endDate).toUTCString() !==
       new Date(fetchedDoc?.endDate?.split("+")[0]).toUTCString()
@@ -230,19 +222,6 @@ function CreateEventLogic() {
       if (image === null) {
         throw new Error("Please provide an image for your event.");
       }
-      
-        title,
-        description,
-        privacy,
-        medium,
-        startDate,
-        endDate,
-        category,
-        location: [String(location), String(latitude), String(longitude)],
-        meet: [String(meetLink), String(meetId), String(meetPassword)],
-        createdBy: token.userId,
-        image: image,
-      });
       try {
         let uploadedFile, filePreviewUrl;
         const storage = new Storage(client);
