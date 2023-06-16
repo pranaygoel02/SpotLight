@@ -17,6 +17,14 @@ In the dynamic world of event planning and management, individual creators are c
 - ### Accepted and Rejected Invitations
     Real-time notifications in the Spotlight app play a crucial role in conveying the acceptance or rejection of invitations. Attendees receive timely notifications when their invitation is accepted or declined, allowing them to adjust their plans accordingly. By providing instant updates, the app fosters transparency and ensures that all participants are informed of the event's status, resulting in a smoother event planning process for organizers and attendees alike.
 
+- ### Effortless Attendance Tracking
+    With QR Code Scanning, marking attendance becomes a breeze. Attendees can simply present their event tickets or registration QR codes at the entrance, and event organizers can swiftly scan and record their attendance. This eliminates the need for manual check-ins and ensures accurate and efficient tracking of attendees.
+
+- ### Seamless Integration
+    The QR Code Scanning feature seamlesssly integrates with SpotLight's event management system. Event organizers can easily access the scanning functionality through any QR Code scanning system, making it convenient to manage attendance on-site.
+
+- ### Comprehensive Attendee List Downloads
+    Gaining insights and maintaining a record of attendees is vital for event evaluation and future planning. SpotLight empowers organizers by providing the ability to download a comprehensive list of attendees in an XLSX file format. This list includes essential details such as attendee names, contact information, attendance information, and any additional data captured during registration. The downloadable file can be easily shared with team members, and sponsors, or used for post-event analysis.
 
 ## Tech Stack Used
 - **ReactJs** - for website frontend
