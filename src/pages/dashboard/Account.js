@@ -30,14 +30,14 @@ function Account() {
 
   const verifyEmail = async (e) => {
     e.preventDefault();
-    console.log("verify email");
+    
     try {
       setLoading((prev) => true);
       const account = new Ac(client);
       const res = await account.createVerification(
         `${process.env.REACT_APP_WEBSITE_URL}/verify-email`
       );
-      console.log(res);
+      
       toast.success("Verification email sent");
     } catch (err) {
       console.error(err);
@@ -97,11 +97,11 @@ function Account() {
     try {
       setLoading((prev) => true);
       const account = new Ac(client);
-      console.log(userName, userEmail, userPhone);
-      console.log(name, email, phone);
+      
+      
       if (name !== userName) {
         const res = await account.updateName(name);
-        console.log(res);
+        
         const databases = new Databases(client);
         const userDoc = await databases.listDocuments(
           process.env.REACT_APP_DATABASE_ID,
@@ -119,12 +119,12 @@ function Account() {
           );
         }
         toast.success("Name updated successfully!");
-        console.log(res);
+        
         localStorage.setItem("spotlight-user", JSON.stringify(res));
         revalidateFields();
       }
     } catch (err) {
-      console.log(err);
+      
       toast.error(err.message);
     } finally {
       setLoading((prev) => false);

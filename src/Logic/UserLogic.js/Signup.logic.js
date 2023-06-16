@@ -103,13 +103,13 @@ function SignupLogic() {
     }
     setSigningin((prev) => true);
     setValidateMessage((prev) => null);
-    console.log("Signing you up", name, email, password);
+    
 
     const account = new Account(client);
     const database = new Databases(client);
     try {
       const response = await account.create(ID.unique(), email, password, name);
-      console.log(response);
+      
       const addUserToDBResponse = await database.createDocument(
         process.env.REACT_APP_DATABASE_ID,
         process.env.REACT_APP_USERS_COLLECTION_ID,
@@ -120,12 +120,12 @@ function SignupLogic() {
           userId: response.$id,
         }
       )
-      console.log(addUserToDBResponse);
+      
       const loggedInResponse = await account.createEmailSession(
         email,
         password
       );
-      console.log(loggedInResponse);
+      
       localStorage.setItem("token", JSON.stringify(loggedInResponse));
       toast.success("Signed up successfully");
       navigate("/auth/phone", {
@@ -137,7 +137,7 @@ function SignupLogic() {
         }
       });
     } catch (error) {
-      console.log(error, error.message);
+      
       setValidateMessage((prev) => error.message);
       toast.error(error.message);
     } finally {

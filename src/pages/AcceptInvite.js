@@ -19,7 +19,7 @@ function AcceptInvite() {
   const membershipId = searchParams.get("membershipId");
   const secret = searchParams.get("secret");
 
-  console.log(teamId, userId, membershipId, secret);
+  
 
   const [accepting, setAccepting] = useState(false);
   const [event, setEvent] = useState(null);
@@ -52,7 +52,7 @@ function AcceptInvite() {
         )
         setUser((prev) => userResponse);
       } catch (err) {
-        console.log(err);
+        
       } finally {
         setLoading((prev) => false);
       }
@@ -73,7 +73,7 @@ function AcceptInvite() {
         userId,
         secret
       );
-      console.log(res, user);
+      
       toast.success("Invitation accepted successfully!");
       await sendNotification({
         message: `${res?.userName} accepted your invitation to ${res?.teamName}!`,
@@ -87,7 +87,7 @@ function AcceptInvite() {
         toast.success("Your ticket is ready!");
       }
     } catch (err) {
-      console.log(err);
+      
       toast.error(err.message ?? err);
     } finally {
       setAccepting((prev) => false);
@@ -99,9 +99,9 @@ function AcceptInvite() {
     setAccepting((prev) => true);
     try {
       const teams = new Teams(client);
-      console.log('Taam Id >>>>', teamId, membershipId);
+      
       const res = await teams.deleteMembership(teamId, membershipId);
-      console.log(res);
+      
       toast.success("Invitation rejected successfully!");
       await sendNotification({
         message: `${user?.name ?? user?.userName ?? user?.email ?? `User with ID ${userId}`} rejected your invitation to ${event?.title}!`,
@@ -111,7 +111,7 @@ function AcceptInvite() {
       })
       navigate("/");
     } catch (err) {
-      console.log(err);
+      
       toast.error(err.message ?? err);
     } finally {
       setAccepting((prev) => false);

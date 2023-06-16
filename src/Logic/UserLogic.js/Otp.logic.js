@@ -56,7 +56,7 @@ function OtpLogic() {
     e?.preventDefault();
     setSigningin((prev) => true);
     setValidateMessage((prev) => null);
-    console.log("Phone ", phone);
+    
 
     const account = new Account(client);
 
@@ -65,11 +65,11 @@ function OtpLogic() {
         userId,
         otp
       );
-      console.log(sendOTPResponse);
+      
       toast.success("OTP verified successfully.");
       navigate("/", { replace: true });
     } catch (error) {
-      console.log(error, error.message);
+      
       setValidateMessage((prev) => error.message);
     } finally {
       setSigningin((prev) => false);
@@ -80,12 +80,12 @@ function OtpLogic() {
     const account = new Account(client);
     try {
       const sendOTPResponse = await account.createPhoneVerification();
-        console.log(sendOTPResponse);
+        
         toast.success("OTP resend successfully.");
         setTimeLeft(new Date(sendOTPResponse?.expire).getTime() - new Date().getTime());
       }  
       catch(err) {
-        console.log(err); 
+        
         toast.error("Internal Server Error.");
     }
   }

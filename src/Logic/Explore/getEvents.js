@@ -17,9 +17,9 @@ function GetExporeLogic() {
   const [error, setError] = useState(null);
 
   const buildQuery = useCallback(() => {
-    console.log('====================================');
-    console.log('Cat >>>>>> ', category);
-    console.log('====================================');
+    
+    
+    
     if(category !== null) return [
         Query.equal("category", category),
         Query.equal("privacy", "public")
@@ -34,7 +34,7 @@ function GetExporeLogic() {
 
   const getEvents = useCallback(async () => {
     try {
-      console.log(filter);
+      
       setError((prev) => null);
       setLoading((prev) => true);
       const database = new Databases(client);
@@ -45,7 +45,7 @@ function GetExporeLogic() {
           ? [Query.equal("privacy", "public")]
           : buildQuery()
       );
-      console.log(response);
+      
       setEvents((prev) => response?.documents);
       setEventCount((prev) => response?.total);
       setPublicEvent((prev) =>
@@ -58,9 +58,9 @@ function GetExporeLogic() {
         response?.documents?.filter((event) => event.medium === "online")
       );
     } catch (err) {
-      console.log('====================================');
-      console.log(err);
-      console.log('====================================');
+      
+      
+      
       setError((prev) => err.message);
     } finally {
       setLoading((prev) => false);
@@ -76,7 +76,7 @@ function GetExporeLogic() {
         process.env.REACT_APP_EVENTS_COLLECTION_ID,
         id
       );
-      console.log(response);
+      
       setEvents((prev) => response);
     } catch (err) {
       setError((prev) => err.message);

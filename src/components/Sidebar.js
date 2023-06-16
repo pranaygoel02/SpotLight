@@ -29,7 +29,7 @@ function Sidebar() {
     try {
       const account = new Account(client);
       const res = await account.get();
-      console.log(res);
+      
       localStorage.setItem("spotlight-user", JSON.stringify(res));
       setUserInfo((prev) => res);
     } catch (err) {

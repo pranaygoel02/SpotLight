@@ -22,7 +22,7 @@ function Invites() {
         const response = await teams.listMemberships(teamId);
         setMemberships((prev) => response?.memberships);
       } catch (err) {
-        console.log(err);
+        
       } finally {
         setLoadingMemberships((prev) => false);
       }

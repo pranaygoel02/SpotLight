@@ -8,7 +8,7 @@ export default function RsvpLogic(event) {
   const token = JSON.parse(localStorage.getItem("token"));
   const cookieFallback = JSON.parse(localStorage.getItem("cookieFallback"));
   const spotlightUser = JSON.parse(localStorage.getItem("spotlight-user"));
-  console.log("EVENT RSVP : ", event);
+  
 
   const [adding, setAdding] = useState(false);
 
@@ -42,7 +42,7 @@ export default function RsvpLogic(event) {
         pending: true
       }
     );
-    console.log(response);
+    
     return response;
   };
 
@@ -57,7 +57,7 @@ export default function RsvpLogic(event) {
         Query.equal("teamId", event?.teamId),
       ]
     );
-    console.log(response);
+    
     return response;
   };
 
@@ -74,7 +74,7 @@ export default function RsvpLogic(event) {
         "",
         name
       );
-      console.log(res);
+      
       const database = new Databases(client);
       const response = await database.updateDocument(
         process.env.REACT_APP_DATABASE_ID,
@@ -85,7 +85,7 @@ export default function RsvpLogic(event) {
           membershipId: res.$id,
         }
       );
-      console.log(response);
+      
       await sendNotification({
         userId: userId,
         fromUserId: spotlightUser?.$id,
@@ -96,14 +96,14 @@ export default function RsvpLogic(event) {
       toast.success(`RSVP for ${name} has been approved`);
     }
     catch(err) {
-      console.log(err);
+      
       toast.error(err.message);
     }
   }
 
   const rejectRsvp = async ( user ) => {
     const {teamId, userId, name, email, documentId, eventName, eventId, membershipId} = user;
-    console.log(user);
+    
     try {
       const database = new Databases(client);
       let res
@@ -114,7 +114,7 @@ export default function RsvpLogic(event) {
           membershipId
         );
       }
-      console.log(res);
+      
       res = await database.deleteDocument(
         process.env.REACT_APP_DATABASE_ID,
         process.env.REACT_APP_RSVP_COLLECTION_ID,
@@ -130,7 +130,7 @@ export default function RsvpLogic(event) {
       toast.success(`RSVP has been rejected`);
     }
     catch(err) {
-      console.log(err);
+      
       toast.error(err.message);
     }
   }
@@ -154,9 +154,9 @@ export default function RsvpLogic(event) {
     try {
       const account = new Account(client);
       const userRes = await account.get();
-      console.log('USER >>>>>> ', userRes);
+      
       const getRsvpResponse = await getRsvp(userRes?.$id);
-      console.log(getRsvpResponse);
+      
       if (getRsvpResponse?.documents?.length > 0) {
         if (getRsvpResponse?.documents[0]?.approved === true) {
           toast.error(
@@ -172,7 +172,7 @@ export default function RsvpLogic(event) {
       }
       setAdding((prev) => true);
       const response = await addRsvp(userRes);
-      console.log(response);
+      
       toast.success(
         "RSVP has been send to the event owner. You will be notified when they approve your request."
       );
@@ -184,7 +184,7 @@ export default function RsvpLogic(event) {
         message: `${userRes?.name} has RSVP'd to your event ${event?.title}`,
       });
     } catch (err) {
-      console.log(err);
+      
       toast.error(err.message);
     } finally {
       setAdding((prev) => false);

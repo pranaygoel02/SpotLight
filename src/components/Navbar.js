@@ -12,7 +12,7 @@ function Navbar() {
   let token = localStorage.getItem("token");
 
   useEffect(() => {
-    console.log(token);
+    
     setNavData((prev) => [
       {
         title: "Explore",

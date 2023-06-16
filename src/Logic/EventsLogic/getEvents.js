@@ -34,7 +34,7 @@ function GetEventLogic() {
 
 
         try {
-            console.log(filter);
+            
             setLoading(prev => true)
             const database = new Databases(client);
             const response = await database.listDocuments(
@@ -44,7 +44,7 @@ function GetEventLogic() {
                     Query.equal('createdBy', JSON.parse(localStorage.getItem('token')).userId)
                 ] : buildQuery()
             );
-            console.log(response);
+            
             setEvents(prev => response?.documents);
             setEventCount(prev => response?.total);
             setPrivateEvent(prev => response?.documents?.filter(event => event.privacy === "private"))
@@ -74,7 +74,7 @@ function GetEventLogic() {
                     Query.equal('privacy', 'public')
                 ]
             );
-            console.log(response);
+            
             if(!pathname.includes('dashboard') && response.privacy === 'private') throw new Error('This event is private')
             setEvents(prev => response);
         }

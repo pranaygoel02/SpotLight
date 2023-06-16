@@ -32,11 +32,11 @@ function VeirfyEmail() {
         userId,
         secret
       );
-      console.log(res);
+      
       toast.success("Email verified successfully!");
       navigate("/dashboard/account");
     } catch (err) {
-      console.log(err);
+      
       toast.error(err.message ?? err ?? "Something went wrong!");
       navigate('/')
     } finally {

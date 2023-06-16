@@ -29,7 +29,7 @@ function GetUsersLogic() {
         }
         catch (err) {
             setError(prev => err.message)
-            console.log(err);
+            
             toast.error(err.message)
         }
         finally {

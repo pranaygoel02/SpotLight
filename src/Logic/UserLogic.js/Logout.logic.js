@@ -15,13 +15,13 @@ function LogoutLogic() {
 
     try {
       const logoutResponse = await account.deleteSessions();
-      console.log(logoutResponse);
+      
       localStorage.removeItem("token");
       localStorage.removeItem("spotlight-user");
       toast.success("Logged out successfully");
       navigate("/");
     } catch (error) {
-      console.log(error);
+      
       toast.error(error.message);
     }
   };

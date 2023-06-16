@@ -27,7 +27,7 @@ function Rsvps() {
           process.env.REACT_APP_RSVP_COLLECTION_ID,
           [Query.equal("ownerUserId", userId), Query.equal("pending", true)]
         );
-        console.log(response);
+        
         setRsvps((prev) => response?.documents);
         const groupedData = {};
         response?.documents?.forEach((document) => {
@@ -62,18 +62,18 @@ function Rsvps() {
           };
           groupedData[key].users.push(user);
         });
-        console.log(groupedData);
-        console.log(Object.values(groupedData));
+        
+        
         setSimplifiedRsvps((prev) => Object.values(groupedData));
       } catch (err) {
-        console.log(err);
+        
       } finally {
         setLoadingRsvps((prev) => false);
       }
     }
   }, [userId]);
 
-  console.log("Simplified >> ", simplifiedRsvps);
+  
 
   useEffect(() => {
     if (userId) getEventRsvps();

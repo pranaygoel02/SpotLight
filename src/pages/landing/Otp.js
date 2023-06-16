@@ -7,9 +7,9 @@ function Otp() {
 
     const { inputs, validateMessage, updatePhoneVerificationStatus, signingin, timeString, phone, timeLeft, resendCode } = OtpLogic();
 
-    console.log('====================================');
-    console.log(inputs, validateMessage, updatePhoneVerificationStatus, signingin);
-    console.log('====================================');
+    
+    
+    
 
   return (
     <>

@@ -11,13 +11,13 @@ function PhoneLogic() {
   const [phoneCode, setPhoneCode] = useState(null);
 
   const { state } = useLocation();
-  console.log('====================================');
-  console.log(state);
-  console.log('====================================');
+  
+  
+  
   const navigate = useNavigate();
 
   const { email, password, countryCode } = state;
-  console.log("Router >>>>>> ", email, password, countryCode);
+  
 
   
 
@@ -34,13 +34,13 @@ function PhoneLogic() {
             )[0]?.code
         );
       } catch (error) {
-        console.log(error);
+        
       }
     };
     if (countryCode && countryCode.length > 0) getPhoneCode();
   }, [countryCode]);
 
-  console.log("Phone Code >>>>> ", phoneCode);
+  
 
   const inputs = [
     {
@@ -57,7 +57,7 @@ function PhoneLogic() {
     e?.preventDefault();
     setSigningin((prev) => true);
     setValidateMessage((prev) => null);
-    console.log("Phone ", phone);
+    
 
     const account = new Account(client);
 
@@ -66,9 +66,9 @@ function PhoneLogic() {
         `${phoneCode}${phone}`,
         password
       );
-      console.log(phoneUpdateResponse);
+      
       const sendOTPResponse = await account.createPhoneVerification();
-      console.log(sendOTPResponse);
+      
       toast.success("Phone number updated successfully. Please Check for OTP.");
       navigate("/auth/otp", {
         replace: true,
@@ -80,7 +80,7 @@ function PhoneLogic() {
         },
       });
     } catch (error) {
-      console.log(error, error.message);
+      
       setValidateMessage((prev) => error.message);
       toast.error(error.message);
     } finally {

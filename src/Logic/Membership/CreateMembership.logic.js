@@ -15,7 +15,7 @@ export default function CreateMembershipLogic(teamId) {
     email,
     role,
   }) {
-    console.log(teamId, userId, email, name, role);
+    
     if (typeof role !== "string") {
       throw new Error("Role must be a string value");
     }
@@ -30,7 +30,7 @@ export default function CreateMembershipLogic(teamId) {
       "",
       name
     );
-    console.log(res);
+    
     setTeamMembers((prev) => [...prev, res]);
     setMemberCount((prev) => prev + 1);
     return res;
@@ -41,7 +41,7 @@ export default function CreateMembershipLogic(teamId) {
       try {
         const teams = new Teams(client);
         const res = await teams.listMemberships(teamId);
-        console.log(res);
+        
         setMemberCount((prev) => res.total);
         setTeamMembers((prev) => res.memberships);
       } catch (err) {

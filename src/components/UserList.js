@@ -25,9 +25,9 @@ function UserList({
   const [filteredUsers, setFilteredUsers] = useState(null);
   const { pathname } = useLocation();
 
-  console.log("====================================");
-  console.log(users);
-  console.log("====================================");
+  
+  
+  
 
   const { sendNotification } = useNotifications();
   const { approveRsvp, rejectRsvp } = RsvpLogic();
@@ -51,9 +51,9 @@ function UserList({
     (e) => {
       const value = e.target.value.toLowerCase();
       const filtered = users.filter((user) => {
-        console.log("====================================");
-        console.log(user.roles);
-        console.log("====================================");
+        
+        
+        
         return (
           (user?.name ?? user?.userName).toLowerCase().includes(value || "") ||
           (user.email ?? user?.userEmail).toLowerCase().includes(value || "") ||
@@ -74,9 +74,9 @@ function UserList({
   const checkUserRoles = (id) => {
     const userId = JSON.parse(localStorage.getItem("spotlight-user"))?.["$id"];
     const user = users?.find((user) => user?.userId === (id ?? userId));
-    console.log("====================================");
-    console.log(user?.roles);
-    console.log("====================================");
+    
+    
+    
     return user?.roles;
   };
 
@@ -91,7 +91,7 @@ function UserList({
   };
 
   const handleInvite = async (user, role) => {
-    console.log(createMembership);
+    
     const fromUser = JSON.parse(localStorage.getItem("spotlight-user"));
     try {
       if (typeof createMembership === "function") {
@@ -103,7 +103,7 @@ function UserList({
           email: user.email,
           role,
         });
-        console.log(res);
+        
         toast.success(`${user.name} has been invited to the event`);
 
         await sendNotification({
@@ -125,14 +125,14 @@ function UserList({
               Query.equal("userId", user?.userId),
             ]
           );
-          console.log("RSVP DOCs  >>>>> ", res);
+          
           if (res?.documents?.length > 0) {
             const delRes = await databases.deleteDocument(
               process.env.REACT_APP_DATABASE_ID,
               process.env.REACT_APP_RSVP_COLLECTION_ID,
               res?.documents[0]?.$id
             );
-            console.log(delRes);
+            
           }
           toast.success("Invitation deleted");
           await sendNotification({
@@ -148,7 +148,7 @@ function UserList({
         }
       }
     } catch (err) {
-      console.log(err);
+      
       toast.error(err.message);
     } finally {
     }
@@ -272,7 +272,7 @@ function UserList({
                   }}
                   onClick={async (e) => {
                     e?.preventDefault();
-                    console.log(createMembership);
+                    
                     toast.custom((t) =>
                       typeof createMembership === "function" ? (
                         <form
@@ -282,7 +282,7 @@ function UserList({
                             const formData = Object.fromEntries(
                               new FormData(form)
                             );
-                            console.log(formData);
+                            
                             await handleInvite(u, formData.role);
                             toast.dismiss(t.id);
                           }}
@@ -427,14 +427,14 @@ function UserList({
                       Query.equal("userId", userId),
                     ]
                   );
-                  console.log("RSVP DOCS >>>>>> ", res);
+                  
                   if (res?.documents?.length > 0) {
                     const delRes = await databases.deleteDocument(
                       process.env.REACT_APP_DATABASE_ID,
                       process.env.REACT_APP_RSVP_COLLECTION_ID,
                       res?.documents[0]?.$id
                     );
-                    console.log(delRes);
+                    
                   }
                   const owner = users?.find((u) =>
                     u?.roles?.includes("owner")

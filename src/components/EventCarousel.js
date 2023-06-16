@@ -6,9 +6,9 @@ import ExploreEventCard from "./ExploreEventCard";
 
 function EventCarousel({ events, title }) {
   const swiperRef = useRef(null);
-  console.log("====================================");
-  console.log(events);
-  console.log("====================================");
+  
+  
+  
 
   return (
     <div>

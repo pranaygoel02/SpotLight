@@ -18,7 +18,7 @@ function GetMembershipLogic() {
             setTeamsCount(prev => response.total)        
         }
         catch(err) {
-            console.log(err);
+            
         }
         finally {
             setLoading(prev => false)

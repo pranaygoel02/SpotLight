@@ -9,7 +9,7 @@ dayjs.extend(relativeTime)
 
 function NotificationCard({userId, fromUserId, fromUserName, link, message, $createdAt }) {
 
-  console.log('NotificationCard >>>>>> ', $createdAt);
+  
 
   const time = dayjs($createdAt).fromNow(true)
 

@@ -7,9 +7,9 @@ function Signup() {
 
     const { inputs, validateMessage, signUpUser, signingin, navigateToPhone } = SignupLogic();
 
-    console.log('====================================');
-    console.log(inputs, validateMessage, signUpUser, signingin);
-    console.log('====================================');
+    
+    
+    
 
   return (
     <form onSubmit={signUpUser} className='w-full'>

@@ -18,7 +18,7 @@ function EventPage() {
   const { loading, error, events, id } = GetEventLogic();
   const { token, cookieFallback, handleRSVP, checkUserIsOwner, adding } =
     RsvpLogic(events);
-  console.log(events);
+  
 
   const { pathname } = useLocation();
 
@@ -52,7 +52,7 @@ function EventPage() {
   const startTime = start?.toTimeString()?.slice(0, 5);
   const endTime = end?.toTimeString()?.slice(0, 5);
 
-  console.log(events?.duration);
+  
 
   const RSVPBtn = () => (
     <button

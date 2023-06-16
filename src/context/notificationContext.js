@@ -26,7 +26,7 @@ export default function NotificationProvider({ children }) {
                 ID.unique(),
                 data
             );
-            console.log(res);
+            
         } catch (err) {
             console.error(err);
         }
@@ -44,7 +44,7 @@ export default function NotificationProvider({ children }) {
                     Query.orderDesc('$updatedAt')
                 ]
             );
-            console.log(res);
+            
             setNotifications(prev => res.documents);
         } catch (err) {
             console.error(err);
@@ -57,13 +57,13 @@ export default function NotificationProvider({ children }) {
 
     const uniqueArray = a => [...new Set(a.map(o => JSON.stringify(o)))].map(s => JSON.parse(s))
 
-    console.log('Unread Notifications >>>>>> ', unreadNotifications);
+    
 
 
     useEffect(() => {
-        console.log('useEffect');
+        
         client.subscribe(`databases.${process.env.REACT_APP_DATABASE_ID}.collections.${process.env.REACT_APP_NOTIFICATIONS_COLLECTION_ID}.documents`, (res) => {
-            console.log('Payload >>>>>> ', res.payload);
+            
             if(res.payload?.userId !== JSON.parse(localStorage.getItem('spotlight-user'))?.$id) return;
             setNotifications(prev => uniqueArray([res.payload, ...prev]));
             if(!show) {

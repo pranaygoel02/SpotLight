@@ -14,7 +14,7 @@ function CreateEventLogic() {
 
   const id = searchParams.get("id");
 
-  console.log(id);
+  
 
   const navigate = useNavigate();
 
@@ -63,7 +63,7 @@ function CreateEventLogic() {
         process.env.REACT_APP_EVENTS_COLLECTION_ID,
         id
       );
-      console.log(response);
+      
       const {
         title,
         description,
@@ -134,7 +134,7 @@ function CreateEventLogic() {
     if (value.description !== fetchedDoc?.description) {
       updatedObj.description = description;
     }
-    console.log(
+    
       new Date(value.startDate).toUTCString() ===
         new Date(fetchedDoc?.startDate?.split("+")[0]).toUTCString()
     );
@@ -144,7 +144,7 @@ function CreateEventLogic() {
     ) {
       updatedObj.startDate = startDate.length > 0 ? startDate : null;
     }
-    console.log(
+    
       new Date(value.endDate).toUTCString() !==
         new Date(fetchedDoc?.endDate?.split("+")[0]).toUTCString(), endDate
     );
@@ -184,7 +184,7 @@ function CreateEventLogic() {
   const handleCreateEvent = async (e) => {
     e?.preventDefault();
     const token = JSON.parse(localStorage.getItem("token"));
-    console.log(token);
+    
     setSigningin((prev) => true);
     setValidateMessage((prev) => null);
     try {
@@ -230,7 +230,7 @@ function CreateEventLogic() {
       if (image === null) {
         throw new Error("Please provide an image for your event.");
       }
-      console.log({
+      
         title,
         description,
         privacy,
@@ -252,25 +252,25 @@ function CreateEventLogic() {
               process.env.REACT_APP_IMAGES_BUCKET_ID,
               fetchedDoc?.imageId
             );
-            console.log(deletedFile);
+            
           }
           uploadedFile = await storage.createFile(
             process.env.REACT_APP_IMAGES_BUCKET_ID,
             ID.unique(),
             image
           );
-          console.log(uploadedFile);
+          
           filePreviewUrl = await storage.getFilePreview(
             uploadedFile.bucketId,
             uploadedFile.$id
           );
-          console.log(filePreviewUrl);
+          
         } else if (image === null) {
           const deletedFile = await storage.deleteFile(
             process.env.REACT_APP_IMAGES_BUCKET_ID,
             fetchedDoc?.imageId
           );
-          console.log(deletedFile);
+          
           filePreviewUrl = null;
         } else {
           filePreviewUrl = image;
@@ -302,13 +302,13 @@ function CreateEventLogic() {
           acceptingRsvp
         };
         const updatedValues = id ? getUpdatedValues(value) : value;
-        console.log(updatedValues);
+        
         const databases = new Databases(client);
         const teams = new Teams(client);
         let teamId;
         if (id === undefined || id === null || id === "" || !id) {
           const teamResponse = await teams.create(ID.unique(), title);
-          console.log(teamResponse);
+          
           teamId = teamResponse.$id;
         }
         const response = id
@@ -324,22 +324,22 @@ function CreateEventLogic() {
               ID.unique(),
               { ...value, teamId }
             );
-        console.log(response);
+        
         if(title !== fetchedDoc?.title) {
           const teamNameUpdate = await teams.updateName(teamId, title);
-          console.log(teamNameUpdate);
+          
         }
         // const updateTeamPreferences = await teams.updatePrefs( teamId, {...fetchedDoc?, ...response } )
-        // console.log(updateTeamPreferences);
+        // 
         toast.success(`Event ${id ? "updated" : "created"} successfully`);
         navigate(-1);
       } catch (error) {
-        console.log(error);
+        
         setValidateMessage((prev) => error.message);
         toast.error(error.message);
       }
     } catch (err) {
-      console.log(err);
+      
       toast.error(err.message);
     } finally {
       setSigningin((prev) => false);

@@ -52,7 +52,7 @@ function compareLightness(color1, color2) {
 
 function Event() {
   const { loading, error, events, id } = GetEventLogic();
-  console.log(events);
+  
 
   const {
     users,
@@ -63,7 +63,7 @@ function Event() {
 
   const [colors, setColors] = useState([]);
 
-  console.log(colors);
+  
 
   const navigate = useNavigate();
 
@@ -72,7 +72,7 @@ function Event() {
       const teams = new Teams(client);
       const database = new Databases(client);
       const teamResponse = await teams.delete(events?.teamId);
-      console.log(teamResponse);
+      
       const response = await database.deleteDocument(
         process.env.REACT_APP_DATABASE_ID,
         process.env.REACT_APP_EVENTS_COLLECTION_ID,
@@ -136,9 +136,9 @@ function Event() {
   };
 
   useEffect(() => {
-    console.log("Team ID: ", events?.teamId, "SUBSCRIBING TO TEAM");
+    
     const unsubscribe = client.subscribe(`teams.${events?.teamId}`, (response) => {
-      console.log("Team RT: ", response.payload);
+      
     });
     return () => unsubscribe();
   },[]);
@@ -156,7 +156,7 @@ function Event() {
     return "Invite";
   };
 
-  console.log(teamMembers, memberCount);
+  
 
   if (loading) return <Loading />;
 

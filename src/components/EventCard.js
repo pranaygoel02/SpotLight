@@ -7,7 +7,7 @@ const EventCard = ({
   event: { title, description, category, image, location, $id, medium, startDate, endDate },
 }) => {
 
-  console.log(startDate);
+  
 
   return (
     <Link to={`/dashboard/event/${$id}`} className="bg-white overflow-hidden text-black p-2 rounded-[18px] mr-2 outline outline-1 outline-neutral-100 shadow-sm hover:shadow-lg transition-all">

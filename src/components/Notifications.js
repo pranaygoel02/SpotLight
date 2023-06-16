@@ -6,7 +6,7 @@ import { IoArrowBack } from "react-icons/io5";
 function Notifications() {
   const { show, toggleNotificationBar, notifications, unreadNotifications } = useNotifications();
 
-  console.log('Notifications >>>>>> ',notifications);
+  
 
   return show ? <div className={` overflow-y-auto  transition-all border-r border-neutral-200`}>
     <h2 className="sticky bg-gray-100 top-0 p-4 z-10 px-2 page-title w-full border-neutral-200 border-b inline-flex gap-2 items-center "><button onClick={toggleNotificationBar}><IoArrowBack className="text-neutral-800"/></button> Notifications</h2>

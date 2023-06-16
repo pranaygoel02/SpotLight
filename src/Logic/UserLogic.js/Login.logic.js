@@ -51,7 +51,7 @@ function LoginLogic() {
     e?.preventDefault();
     setSigningin((prev) => true);
     setValidateMessage((prev) => null);
-    console.log("Signing you up", email, password);
+    
 
     const account = new Account(client);
 
@@ -60,11 +60,11 @@ function LoginLogic() {
         email,
         password
       );
-      console.log(loggedInResponse);
+      
       localStorage.setItem("token", JSON.stringify(loggedInResponse));
       toast.success("Logged in successfully");
       const accountDetails = await account.get();
-      console.log(accountDetails);
+      
       if (accountDetails.phoneVerification)
         navigate("/", { replace: true });
       else if (
@@ -78,7 +78,7 @@ function LoginLogic() {
         });
       else {
         const sendOTPResponse = await account.createPhoneVerification();
-        console.log(sendOTPResponse);
+        
         toast.success("OTP sent to your phone.");
         navigate("/auth/otp", {
           state: {
@@ -91,7 +91,7 @@ function LoginLogic() {
         });
       }
     } catch (error) {
-      console.log(error, error.message);
+      
       setValidateMessage((prev) => error.message);
       toast.error(error.message);
     } finally {

@@ -6,9 +6,9 @@ import Button from '../../components/Button';
 function Login() {
   const { inputs, validateMessage, loginUser, signingin } = LoginLogic();
 
-    console.log('====================================');
-    console.log(inputs, validateMessage, signingin);
-    console.log('====================================');
+    
+    
+    
 
   return (
     <form onSubmit={loginUser} className='w-full'>

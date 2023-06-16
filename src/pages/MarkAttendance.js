@@ -54,13 +54,13 @@ function MarkAttendance() {
             ))
             throw new Error('Already marked attendance!');
         }
-        console.log(getMember);
+        
       const res = await teams.updateMembershipRoles(
         teamId,
         membershipId,
         [ ...getMember?.roles ,"attended"]
       );
-      console.log(res);
+      
       toast.success("Attendance Marked successfully!");
         setState((prev) => (
             {
@@ -70,7 +70,7 @@ function MarkAttendance() {
             }
         ))
     } catch (err) {
-      console.log(err);
+      
       toast.error(err.message ?? err ?? "Something went wrong!");
         setState((prev) => (
             {
