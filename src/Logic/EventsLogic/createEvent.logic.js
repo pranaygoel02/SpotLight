@@ -509,23 +509,23 @@ function CreateEventLogic() {
       cb: setMeetPassword,
       show: medium === "online",
     },
-    {
-      label: "Accepting Attendances",
-      value: acceptingAttendance,
-      // placeholder: "Please provide a meet password for your event.",
-      cb: setAcceptingAttendance,
-      show: true,
-      options: [
-        {
-          label: "Yes",
-          value: true,
-        },
-        {
-          label: "No",
-          value: false,
-        },
-      ],
-    },
+    // {
+    //   label: "Accepting Attendances",
+    //   value: acceptingAttendance,
+    //   // placeholder: "Please provide a meet password for your event.",
+    //   cb: setAcceptingAttendance,
+    //   show: true,
+    //   options: [
+    //     {
+    //       label: "Yes",
+    //       value: true,
+    //     },
+    //     {
+    //       label: "No",
+    //       value: false,
+    //     },
+    //   ],
+    // },
     {
       label: "Accepting RSVPs",
       value: acceptingRsvp,
