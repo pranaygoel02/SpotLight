@@ -62,7 +62,7 @@ function AuthLayout() {
             {button.text}
           </Link>
         )}
-        <img src={""} />
+        <img alt="blank" src={""} />
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ function Card({ photo, name, title, comment }) {
         "{comment}"
       </p>
       <div className="flex items-center gap-4">
-        <img className="w-12 rounded-full object-cover" src={photo} />
+        <img alt="photo" className="w-12 rounded-full object-cover" src={photo} />
         <div>
           <h3 className="font-base font-medium">{name}</h3>
           <p className="text-neutral-500">{title}</p>

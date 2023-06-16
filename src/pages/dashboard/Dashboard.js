@@ -10,7 +10,6 @@ function Dashboard() {
   const {
     loading,
     error,
-    events,
     eventCount,
     privateEvent,
     publicEvent,
@@ -49,7 +48,7 @@ function Dashboard() {
         {!loading && eventCount === 0 && 
         <div className="flex flex-col h-[80vh] justify-center items-center gap-8">
           <p className="text-neutral-400 text-xl font-semibold">No events found. Add your first event.</p> 
-          <img className="w-[45%] h-max object-contain" src={NotFoundEvent}/>
+          <img alt="not found" className="w-[45%] h-max object-contain" src={NotFoundEvent}/>
         </div>
         }
         {!loading && eventCount > 0 && <div className="flex justify-between items-center">

@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import client from "../../appwrite.config";
 import { Teams, Databases } from "appwrite";
-import { useNotifications } from "../../context/notificationContext";
 
 export default function CreateMembershipLogic(teamId) {
   const [teamMembers, setTeamMembers] = useState(null);
@@ -20,7 +19,6 @@ export default function CreateMembershipLogic(teamId) {
       throw new Error("Role must be a string value");
     }
     const teams = new Teams(client);
-    const databases = new Databases(client);
     const res = await teams.createMembership(
       teamId,
       typeof role === "undefined" || typeof role !== "string" ? [] : [role],

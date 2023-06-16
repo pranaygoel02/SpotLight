@@ -13,7 +13,7 @@ function OtpLogic() {
 
   const navigate = useNavigate();
   const {state} = useLocation()
-  const { password, userId, secret, phone, expire } = state;
+  const { userId, phone, expire } = state;
 
   
   const inputs = [

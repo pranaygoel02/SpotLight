@@ -8,7 +8,6 @@ function Events() {
     loading,
     error,
     events,
-    eventCount,
     privateEvent,
     publicEvent,
     offlineEvent,
@@ -22,7 +21,7 @@ function Events() {
 
   useEffect(() => {
     const filter = searchParams.get("filter");
-    const search = searchParams.get("search") ?? "";
+    // const search = searchParams.get("search") ?? "";
     if (filter === "total") {
       setFilteredEvents((prev) => events);
     } else if (filter === "private") {

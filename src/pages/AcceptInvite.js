@@ -100,7 +100,7 @@ function AcceptInvite() {
     try {
       const teams = new Teams(client);
       
-      const res = await teams.deleteMembership(teamId, membershipId);
+      await teams.deleteMembership(teamId, membershipId);
       
       toast.success("Invitation rejected successfully!");
       await sendNotification({
@@ -124,6 +124,7 @@ function AcceptInvite() {
     return (
       <div className="h-screen w-screen relative bg-black">
         <img
+          alt="event"
           src={event?.image}
           className="w-full h-full opacity-50 object-cover"
         />

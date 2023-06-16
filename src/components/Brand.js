@@ -12,7 +12,7 @@ function Brand({ size }) {
       className={`font-extrabold gap-2 capitalize inline-flex text-xl items-center ${(pathname.includes('dashboard') || pathname.includes('auth')) && 'text-primary'} font-poppins`}
       to={"/"}
     >
-      <img className={size ?? "w-8"} src={(pathname.includes('dashboard') || pathname.includes('auth')) ? Logo2 : Logo} />
+      <img alt="Logo" className={size ?? "w-8"} src={(pathname.includes('dashboard') || pathname.includes('auth')) ? Logo2 : Logo} />
       <span className={(pathname.includes('dashboard') || pathname.includes('auth')) ? 'hidden' : 'block'}>SpotLight</span>
     </Link>
   );

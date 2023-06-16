@@ -10,12 +10,8 @@ import Loading from "../../components/Loading";
 function Create() {
   const {
     inputs,
-    validateMessage,
     signingin,
-    imageError,
-    images,
     handleImage,
-    setImages,
     imagePreview,
     fileRef,
     handleCreateEvent,
@@ -59,7 +55,7 @@ function Create() {
           </button>
           {imagePreview && (
             <div className="w-60 outline outline-1 outline-neutral-300 h-100 object-cover rounded-[18px] relative overflow-hidden">
-              <img className="w-full" src={imagePreview ?? ""} />
+              <img alt="preview" className="w-full" src={imagePreview ?? ""} />
               <button onClick={removeImage} className="absolute top-0 right-0 m-2 bg-neutral-400 rounded-[18px] p-1 text-white shadow-md" title="Delete Image">
                 <IoClose/>
               </button>

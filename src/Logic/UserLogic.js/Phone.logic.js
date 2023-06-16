@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Account, Locale } from "appwrite";
 import client from "../../appwrite.config.js";
 import { toast } from "react-hot-toast";
-import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function PhoneLogic() {
   const [phone, setPhone] = useState("");

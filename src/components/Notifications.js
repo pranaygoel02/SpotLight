@@ -4,7 +4,7 @@ import NotificationCard from "./NotificationCard";
 import { IoArrowBack } from "react-icons/io5";
 
 function Notifications() {
-  const { show, toggleNotificationBar, notifications, unreadNotifications } = useNotifications();
+  const { show, toggleNotificationBar, notifications } = useNotifications();
 
   
 

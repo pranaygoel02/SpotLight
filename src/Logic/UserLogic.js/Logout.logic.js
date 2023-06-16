@@ -14,7 +14,7 @@ function LogoutLogic() {
     const account = new Account(client);
 
     try {
-      const logoutResponse = await account.deleteSessions();
+      await account.deleteSessions();
       
       localStorage.removeItem("token");
       localStorage.removeItem("spotlight-user");

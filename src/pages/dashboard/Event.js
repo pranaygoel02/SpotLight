@@ -232,6 +232,7 @@ function Event() {
               }
             >
               <img
+                alt="event"
                 className="h-full max-h-[65vh] rounded-[18px] object-cover w-full object-center"
                 src={events?.image}
               />
@@ -253,6 +254,7 @@ function Event() {
               {events?.medium === "offline" && (
                 <>
                   <iframe
+                    title="map"
                     className="w-full h-max outline outline-1 outline-neutral-300 shadow-md rounded-[18px]"
                     src={`https://maps.google.com/maps?q=${events.location[1]},${events.location[2]}&hl=en&output=embed`}
                   ></iframe>

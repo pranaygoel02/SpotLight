@@ -7,13 +7,11 @@ import { categories } from "../../Logic/EventsLogic/categories";
 function Explore() {
   const {
     events,
-    publicEvent,
     offlineEvent,
     onlineEvent,
     loading,
     error,
     setSearchParams,
-    searchParams,
     category,
   } = GetExporeLogic();
 

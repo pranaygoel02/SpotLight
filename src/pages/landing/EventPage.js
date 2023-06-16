@@ -15,8 +15,8 @@ import { useLocation } from "react-router-dom";
 import RsvpLogic from "../../Logic/Explore/rsvp.logic";
 
 function EventPage() {
-  const { loading, error, events, id } = GetEventLogic();
-  const { token, cookieFallback, handleRSVP, checkUserIsOwner, adding } =
+  const { loading, error, events } = GetEventLogic();
+  const { handleRSVP, adding } =
     RsvpLogic(events);
   
 
@@ -27,11 +27,9 @@ function EventPage() {
   if (error) return <div>{error}</div>;
 
   const {
-    $id,
     title,
     description,
     medium,
-    privacy,
     price,
     category,
     startDate,
@@ -42,7 +40,6 @@ function EventPage() {
     tnc,
     language,
     duration,
-    acceptingRsvp,
   } = events;
 
   const start = startDate ? new Date(startDate?.split("+")[0]) : null;
@@ -69,6 +66,7 @@ function EventPage() {
       <div className="grid grid-cols-1 md:grid-cols-6 gap-8 md:items-start">
         <div className="col-span-4 space-y-4">
           <img
+            alt="event image"
             src={image}
             className="rounded-lg w-full aspect-video object-cover"
           />
@@ -106,6 +104,7 @@ function EventPage() {
                     <IoLocationOutline />
                     <span className="flex-1">{location[0]}</span>
                     <iframe
+                      title="map"
                       className="w-full h-max outline outline-1 outline-neutral-300 shadow-md rounded-lg flex-1 mt-2"
                       src={`https://maps.google.com/maps?q=${location[1]},${location[2]}&hl=en&output=embed`}
                     ></iframe>
@@ -205,6 +204,7 @@ function EventPage() {
                   <IoLocationOutline />
                   <span className="flex-1">{location[0]}</span>
                   <iframe
+                    title="map"
                     className="w-full h-max outline outline-1 outline-neutral-300 shadow-md rounded-lg flex-1 mt-2"
                     src={`https://maps.google.com/maps?q=${location[1]},${location[2]}&hl=en&output=embed`}
                   ></iframe>

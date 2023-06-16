@@ -102,7 +102,7 @@ export default function RsvpLogic(event) {
   }
 
   const rejectRsvp = async ( user ) => {
-    const {teamId, userId, name, email, documentId, eventName, eventId, membershipId} = user;
+    const {teamId, userId, documentId, eventName, membershipId} = user;
     
     try {
       const database = new Databases(client);

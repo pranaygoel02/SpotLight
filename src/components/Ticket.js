@@ -52,7 +52,7 @@ function Ticket({ text, event }) {
         }}
       >
         <div className="rounded-l-[18px] bg-primary p-2 h-full text-white flex items-center justify-center">
-          <img src={Barcode} className="w-full h-[80%] object-contain m-auto" />
+          <img alt="Barcode" src={Barcode} className="w-full h-[80%] object-contain m-auto" />
         </div>
         <div
           className="col-span-4 relative bg-slate-200 w-full h-full border-l-[3px] border-r-[3px] border-spacing-2 border-dashed border-l-primary border-r-secondary"
@@ -79,6 +79,7 @@ function Ticket({ text, event }) {
         </div>
         <div className="p-16 h-full flex flex-col items-center justify-center gap-4 rounded-r-[18px] bg-secondary">
           <img
+            alt="QR Code"
             src={qr}
             className="m-0 outline-dashed outline-1 outline-neutral-300 outline-offset-8"
           />

@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Loading from "../../components/Loading";
-import { IoPeopleOutline, IoRemove } from "react-icons/io5";
+import { IoPeopleOutline } from "react-icons/io5";
 import GetMembershipLogic from "../../Logic/Membership/GetMembership.logic";
 import UserList from "../../components/UserList";
 import client from "../../appwrite.config";
 import { Teams } from "appwrite";
 
 function Invites() {
-  const { loading, error, teams, teamsCount, deleteInvitation } =
+  const { loading, error, teams, deleteInvitation } =
     GetMembershipLogic();
 
   const [teamId, setTeamId] = useState(null);

@@ -83,8 +83,6 @@ function Account() {
       name: userName,
       email: userEmail,
       phone: userPhone,
-      emailVerification,
-      phoneVerification,
     } = user;
     setName((prev) => userName);
     setEmail((prev) => userEmail);
