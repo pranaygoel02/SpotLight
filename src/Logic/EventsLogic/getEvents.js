@@ -67,12 +67,7 @@ function GetEventLogic() {
             const response = await database.getDocument(
                 process.env.REACT_APP_DATABASE_ID,
                 process.env.REACT_APP_EVENTS_COLLECTION_ID,
-                id,
-                pathname.includes('dashboard') ? [
-                    Query.equal('createdBy', JSON.parse(localStorage.getItem('token')).userId)
-                ] : [
-                    Query.equal('privacy', 'public')
-                ]
+                id
             );
             
             if(!pathname.includes('dashboard') && response.privacy === 'private') throw new Error('This event is private')
