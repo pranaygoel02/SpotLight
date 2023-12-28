@@ -72,11 +72,81 @@ To set up the project, follow these steps:
    ```
 
 6. Start the project:
+
    ```bash
    npm start
    ```
 
-Now you can access the SpotLight web app in your browser at `http://localhost:3000`.
+7. Create a project in Appwrite and collections in the `events` database in appwrite:
+
+   - `events` collection:
+
+     - Attributes:
+       - createdBy
+       - userId
+       - title
+       - description
+       - privacy
+       - medium
+       - startDate
+       - endDate
+       - duration
+       - category
+       - maxParticipants
+       - location
+       - meet
+       - image
+       - imageId
+       - tnc
+       - acceptingAttendance
+       - language
+       - acceptingRsvp
+     - Indexes:
+       - createdBy
+       - userId
+       - privacy
+       - category
+
+   - `notifications` collection:
+
+     - Attributes:
+       - userId
+       - message
+       - fromUserId
+       - fromUserName
+       - link
+       - type
+     - Indexes:
+       - userId
+
+   - `rsvp` collection:
+
+     - Attributes:
+       - userId
+       - eventId
+       - teamId
+       - approved
+       - rejected
+       - eventName
+       - userName
+       - userEmail
+       - ownerUserId
+       - pending
+       - type
+       - membershipId
+     - Indexes:
+       - userId
+       - rsvp
+       - owner
+
+   - `users` collection:
+     - Attributes:
+       - userId
+       - name
+       - email
+       - role
+     - Indexes:
+       - userId
 
 ### [Live Demo](https://spot-light-appwrite.vercel.app)
 
