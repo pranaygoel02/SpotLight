@@ -5,16 +5,16 @@ import { Teams, Databases } from "appwrite";
 export default function CreateMembershipLogic(teamId) {
   const [teamMembers, setTeamMembers] = useState(null);
   const [memberCount, setMemberCount] = useState(null);
-  
+
   async function createMembership({
     eventId,
     teamId,
     userId,
     name,
+    phone,
     email,
     role,
   }) {
-    
     if (typeof role !== "string") {
       throw new Error("Role must be a string value");
     }
@@ -25,10 +25,10 @@ export default function CreateMembershipLogic(teamId) {
       `${process.env.REACT_APP_WEBSITE_URL}/accept-invite/${eventId}`,
       email,
       userId,
-      "",
+      phone,
       name
     );
-    
+
     setTeamMembers((prev) => [...prev, res]);
     setMemberCount((prev) => prev + 1);
     return res;
@@ -39,7 +39,7 @@ export default function CreateMembershipLogic(teamId) {
       try {
         const teams = new Teams(client);
         const res = await teams.listMemberships(teamId);
-        
+
         setMemberCount((prev) => res.total);
         setTeamMembers((prev) => res.memberships);
       } catch (err) {
